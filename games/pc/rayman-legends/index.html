@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rayman Legends</title>
+    <title>Mark Exported Document</title>
     <link rel="icon" type="image/png" href="icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -29,203 +29,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        .font-mono {
-            font-family: 'Fira Code', monospace;
-        }
-        
-        /* Mark Markdown Rendered Output Styles */
-        .mark-rendered {
-            color: inherit;
-            line-height: 1.6;
-            word-wrap: break-word;
-        }
-        .mark-rendered h1 { font-size: 2.1em; font-weight: 700; margin-top: 0.8em; margin-bottom: 0.4em; border-bottom: 1px solid currentColor; opacity: 0.95; }
-        .mark-rendered h2 { font-size: 1.65em; font-weight: 600; margin-top: 0.7em; margin-bottom: 0.35em; border-bottom: 1px solid rgba(128,128,128,0.2); }
-        .mark-rendered h3 { font-size: 1.35em; font-weight: 600; margin-top: 0.6em; margin-bottom: 0.3em; }
-        .mark-rendered h4 { font-size: 1.15em; font-weight: 600; margin-top: 0.5em; margin-bottom: 0.25em; }
-        .mark-rendered h5 { font-size: 1.0em; font-weight: 600; margin-top: 0.4em; margin-bottom: 0.2em; }
-        .mark-rendered h6 { font-size: 0.88em; font-weight: 600; margin-top: 0.4em; margin-bottom: 0.2em; opacity: 0.8; }
-        
-        .mark-rendered p { margin-bottom: 0.85em; }
-        .mark-rendered mark { background-color: #f6e05e; color: #1a202c; padding: 0.1em 0.3em; border-radius: 0.2em; }
-        
-        /* Admonitions */
-        .mark-admonition {
-            border-left: 4px solid;
-            padding: 0.8em 1.1em;
-            margin: 1em 0;
-            border-radius: 0 0.375rem 0.375rem 0;
-            background-color: rgba(128, 128, 128, 0.08);
-        }
-        .mark-admonition-title {
-            font-weight: 700;
-            margin-bottom: 0.4em;
-            text-transform: capitalize;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .mark-admonition.note { border-color: #3b82f6; }
-        .mark-admonition.note .mark-admonition-title { color: #3b82f6; }
-        .mark-admonition.info { border-color: #06b6d4; }
-        .mark-admonition.info .mark-admonition-title { color: #06b6d4; }
-        .mark-admonition.warning { border-color: #f59e0b; }
-        .mark-admonition.warning .mark-admonition-title { color: #f59e0b; }
-        .mark-admonition.danger { border-color: #ef4444; }
-        .mark-admonition.danger .mark-admonition-title { color: #ef4444; }
-        .mark-admonition.greentext { border-color: #22c55e; }
-        .mark-admonition.greentext .mark-admonition-title { color: #22c55e; }
-
-        /* Spoilers */
-        .mark-spoiler {
-            background-color: #2d3748;
-            color: transparent;
-            cursor: pointer;
-            padding: 0.1em 0.4em;
-            border-radius: 0.25rem;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-        .mark-spoiler:hover, .mark-spoiler.revealed {
-            background-color: rgba(128, 128, 128, 0.2);
-            color: inherit;
-        }
-
-        /* Blockquotes */
-        .mark-rendered blockquote {
-            border-left: 4px solid #a0aec0;
-            padding-left: 1rem;
-            margin: 0.8rem 0;
-            color: #718096;
-            font-style: italic;
-        }
-        .dark .mark-rendered blockquote {
-            border-left-color: #4a5568;
-            color: #a0aec0;
-        }
-
-        /* Tables */
-        .mark-rendered table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        .mark-rendered th, .mark-rendered td {
-            border: 1px solid #cbd5e0;
-            padding: 0.5rem 0.8rem;
-        }
-        .dark .mark-rendered th, .dark .mark-rendered td {
-            border-color: #4a5568;
-        }
-        .mark-rendered th {
-            background-color: rgba(0, 0, 0, 0.05);
-            font-weight: 600;
-        }
-        .dark .mark-rendered th {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Code blocks */
-        .mark-rendered pre {
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            overflow-x: auto;
-            margin: 0.8rem 0;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9em;
-        }
-        .mark-rendered code {
-            font-family: 'Fira Code', monospace;
-            background-color: rgba(128, 128, 128, 0.15);
-            padding: 0.15em 0.4em;
-            border-radius: 0.25rem;
-            font-size: 0.9em;
-        }
-        .mark-rendered pre code {
-            background-color: transparent;
-            padding: 0;
-        }
-
-        /* TOC Box */
-        .mark-toc {
-            background-color: rgba(128, 128, 128, 0.08);
-            border: 1px solid rgba(128, 128, 128, 0.2);
-            border-radius: 0.375rem;
-            padding: 1rem;
-            margin: 1rem 0;
-            display: inline-block;
-            min-width: 240px;
-            max-width: 100%;
-        }
-        .mark-toc-title {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(128,128,128,0.2);
-            padding-bottom: 0.25rem;
-        }
-        .mark-toc ul {
-            list-style-type: none;
-            padding-left: 1rem;
-            margin: 0;
-        }
-        .mark-toc > ul {
-            padding-left: 0;
-        }
-        .mark-toc a {
-            color: #3182ce;
-            text-decoration: none;
-        }
-        .mark-toc a:hover {
-            text-decoration: underline;
-        }
-        .dark .mark-toc a {
-            color: #63b3ed;
-        }
-
-        /* Custom link styling to inherit parent font color when wrapped in color tags */
-        .mark-link {
-            color: inherit;
-        }
-
-        /* Lists */
-        .mark-rendered ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.8rem; }
-        .mark-rendered ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.8rem; }
-        .mark-rendered ul ul, .mark-rendered ol ol, .mark-rendered ul ol, .mark-rendered ol ul {
-            margin-bottom: 0;
-        }
-        .mark-rendered li { margin-bottom: 0.2rem; }
-
-        /* Checkboxes */
-        .mark-task-list { list-style: none !important; padding-left: 0.5rem !important; }
-        .mark-task-item { display: flex; align-items: center; gap: 0.5rem; }
-
-        /* Floating Images */
-        .img-float-left { float: left; margin-right: 1rem; margin-bottom: 0.5rem; }
-        .img-float-right { float: right; margin-left: 1rem; margin-bottom: 0.5rem; }
-
-        /* Scrollbar aesthetics */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.6); }
-    
-    </style>
+    <style>body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}.font-mono{font-family:'Fira Code',monospace}.mark-rendered{color:inherit;line-height:1.6;word-wrap:break-word}.mark-rendered h1{font-size:2.1em;font-weight:700;margin-top:.8em;margin-bottom:.4em;border-bottom:1px solid currentColor;opacity:.95}.mark-rendered h2{font-size:1.65em;font-weight:600;margin-top:.7em;margin-bottom:.35em;border-bottom:1px solid rgba(128,128,128,.2)}.mark-rendered h3{font-size:1.35em;font-weight:600;margin-top:.6em;margin-bottom:.3em}.mark-rendered h4{font-size:1.15em;font-weight:600;margin-top:.5em;margin-bottom:.25em}.mark-rendered h5{font-size:1em;font-weight:600;margin-top:.4em;margin-bottom:.2em}.mark-rendered h6{font-size:.88em;font-weight:600;margin-top:.4em;margin-bottom:.2em;opacity:.8}.mark-rendered p{margin-bottom:.85em}.mark-rendered mark{background-color:#f6e05e;color:#1a202c;padding:.1em .3em;border-radius:.2em}.mark-admonition{border-left:4px solid;padding:.8em 1.1em;margin:1em 0;border-radius:0 .375rem .375rem 0;background-color:rgba(128,128,128,.08)}.mark-admonition-title{font-weight:700;margin-bottom:.4em;text-transform:capitalize;display:flex;align-items:center;gap:.5rem}.mark-admonition.note{border-color:#3b82f6}.mark-admonition.note .mark-admonition-title{color:#3b82f6}.mark-admonition.info{border-color:#06b6d4}.mark-admonition.info .mark-admonition-title{color:#06b6d4}.mark-admonition.warning{border-color:#f59e0b}.mark-admonition.warning .mark-admonition-title{color:#f59e0b}.mark-admonition.danger{border-color:#ef4444}.mark-admonition.danger .mark-admonition-title{color:#ef4444}.mark-admonition.greentext{border-color:#22c55e}.mark-admonition.greentext .mark-admonition-title{color:#22c55e}.mark-spoiler{background-color:#2d3748;color:transparent;cursor:pointer;padding:.1em .4em;border-radius:.25rem;transition:all .2s ease;user-select:none}.mark-spoiler.revealed,.mark-spoiler:hover{background-color:rgba(128,128,128,.2);color:inherit}.mark-rendered blockquote{border-left:4px solid #a0aec0;padding-left:1rem;margin:.8rem 0;color:#718096;font-style:italic}.dark .mark-rendered blockquote{border-left-color:#4a5568;color:#a0aec0}.mark-rendered table{width:100%;border-collapse:collapse;margin:1rem 0}.mark-rendered td,.mark-rendered th{border:1px solid #cbd5e0;padding:.5rem .8rem}.dark .mark-rendered td,.dark .mark-rendered th{border-color:#4a5568}.mark-rendered th{background-color:rgba(0,0,0,.05);font-weight:600}.dark .mark-rendered th{background-color:rgba(255,255,255,.05)}.mark-rendered pre{background-color:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:.375rem;overflow-x:auto;margin:.8rem 0;font-family:'Fira Code',monospace;font-size:.9em}.mark-rendered code{font-family:'Fira Code',monospace;background-color:rgba(128,128,128,.15);padding:.15em .4em;border-radius:.25rem;font-size:.9em}.mark-rendered pre code{background-color:transparent;padding:0}.mark-toc{background-color:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.2);border-radius:.375rem;padding:1rem;margin:1rem 0;display:inline-block;min-width:240px;max-width:100%}.mark-toc-title{font-weight:700;margin-bottom:.5rem;border-bottom:1px solid rgba(128,128,128,.2);padding-bottom:.25rem}.mark-toc ul{list-style-type:none;padding-left:1rem;margin:0}.mark-toc>ul{padding-left:0}.mark-toc a{color:#3182ce;text-decoration:none}.mark-toc a:hover{text-decoration:underline}.dark .mark-toc a{color:#63b3ed}.mark-link{color:inherit}.mark-rendered ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:.8rem}.mark-rendered ol{list-style-type:decimal;padding-left:1.5rem;margin-bottom:.8rem}.mark-rendered ol ol,.mark-rendered ol ul,.mark-rendered ul ol,.mark-rendered ul ul{margin-bottom:0}.mark-rendered li{margin-bottom:.2rem}.mark-task-list{list-style:none!important;padding-left:.5rem!important}.mark-task-item{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}.img-float-left{float:left;margin-right:1rem;margin-bottom:.5rem}.img-float-right{float:right;margin-left:1rem;margin-bottom:.5rem}</style>
 </head>
 <body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text p-6 sm:p-10 min-h-screen transition-colors duration-200">
-    <!-- Floating Dark Mode Toggle Button -->
+    <script type="text/template" id="mark-raw-markdown">#![Alt Tag](https://cdn2.steamgriddb.com/icon/dc5c768b5dc76a084531934b34601977.ico){100px:100px} Rayman Legends Free Download (v1.3.140380)
+##Download Links:
+%#05DF72%⚬ [Rayman Legends Part1 via Mediafire](https://www.mediafire.com/file/kk96vtd8ehm5130/Rayman_Legends.part1.rar/file) %%
+
+%#05DF72%⚬ [Rayman Legends Part2 via Mediafire](https://www.mediafire.com/file/c7vvneyq1d7536e/Rayman_Legends.part2.rar/file) %%
+
+%#21BCFF%+ [Wiki](https://en.wikipedia.org/wiki/Rayman_Legends) %%
+~by %#FF8904% [SteamUnlocked](https://steamunlocked.org/) %%
+~pre-installed game by %#FF8904% [Angel06oficial](https://gravatar.com/totallytacoc43f8d4da2) %%</script>
     <div class="fixed top-4 right-4 z-50">
-        <button onclick="toggleExportDarkMode()" title="Toggle Dark/Light Mode" class="p-2.5 rounded-full bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md transition flex items-center justify-center">
+        <button onclick="toggleExportDarkMode()" title="Toggle Dark/Light Mode" class="w-10 h-10 rounded-full bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md transition flex items-center justify-center">
             <i id="export-theme-icon" class="fa-solid fa-sun text-yellow-400"></i>
         </button>
     </div>
-
     <div class="max-w-4xl mx-auto mark-rendered">
 <h1 id="header--alt-tag-https-cdn2-steamgriddb-com-icon-dc5c768b5dc76a084531934b34601977-ico-100px-100px-rayman-legends-free-download-v1-3-140380-" style=""><img src="https://cdn2.steamgriddb.com/icon/dc5c768b5dc76a084531934b34601977.ico" alt="Alt Tag" class="rounded max-w-full inline-block " style="width: 100px; height: 100px; object-fit: cover;" onerror="this.src='https://placehold.co/300x150?text=Image+Not+Found'"> Rayman Legends Free Download (v1.3.140380)</h1>
 <h2 id="header-download-links-" style="">Download Links:</h2>
@@ -233,15 +53,12 @@
 <p><span style="color: #05DF72;">⚬ <a href="https://www.mediafire.com/file/c7vvneyq1d7536e/Rayman_Legends.part2.rar/file" target="_blank" rel="noopener" class="mark-link underline hover:opacity-80">Rayman Legends Part2 via Mediafire</a></span></p>
 <p><span style="color: #21BCFF;">+ <a href="https://en.wikipedia.org/wiki/Rayman_Legends" target="_blank" rel="noopener" class="mark-link underline hover:opacity-80">Wiki</a></span><br>~by <span style="color: #FF8904;"><a href="https://steamunlocked.org/" target="_blank" rel="noopener" class="mark-link underline hover:opacity-80">SteamUnlocked</a></span><br>~pre-installed game by <span style="color: #FF8904;"><a href="https://gravatar.com/totallytacoc43f8d4da2" target="_blank" rel="noopener" class="mark-link underline hover:opacity-80">Angel06oficial</a></span></p>
     </div>
-
     <script>
         function toggleExportDarkMode() {
             document.documentElement.classList.toggle('dark');
             const icon = document.getElementById('export-theme-icon');
-            if (document.documentElement.classList.contains('dark')) {
-                icon.className = 'fa-solid fa-sun text-yellow-400';
-            } else {
-                icon.className = 'fa-solid fa-moon text-gray-600';
+            if (icon) {
+                icon.className = document.documentElement.classList.contains('dark') ? 'fa-solid fa-sun text-yellow-400' : 'fa-solid fa-moon text-gray-600';
             }
         }
     </script>
