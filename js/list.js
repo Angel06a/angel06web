@@ -39,7 +39,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Slime Rancher "https://rentry.co/dzwd6zp4"
   -Sonic The Hedgehog 3D "https://rentry.co/m46az9tz"
   -Spore "https://steamunlocked.org/spore-collection-free-download/"
-  -Street Fighter X Tekken "https://rentry.co/po7v3pwu"
+  -Street Fighter X Tekken "https://angel06a.github.io/angel06web/games/pc/SFTK/"
   -Super Mario 64 Port "https://sm64coopdx.com/" "https://vimm.net/vault/2764" *Descargar* *Rom*
   -Super Smash Flash 2 "https://www.supersmashflash.com/play/ssf2/downloads/"
   -The Legend of Zelda Port "https://www.shipofharkinian.com/" "https://vimm.net/vault/2637" *Descargar* *Rom*
