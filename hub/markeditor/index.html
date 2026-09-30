@@ -86,10 +86,10 @@
     </div>
 
     <!-- Main Workspace Container -->
-    <main class="flex-1 flex overflow-hidden relative">
+    <main class="flex-1 flex overflow-hidden relative min-h-0">
         <!-- Left Pane: Editor Input -->
-        <section id="pane-editor" class="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg">
-            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+        <section id="pane-editor" class="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg h-full min-h-0">
+            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center flex-shrink-0">
                 <span><i class="fa-solid fa-pen-to-square mr-1"></i> MARKDOWN EDITOR</span>
                 <span class="text-[10px] bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded">Mark Dialect</span>
             </div>
@@ -117,16 +117,16 @@
                 <button type="button" onclick="insertFormat('!!! note Callout Title\n    ', '', 'Callout content here')" title="Admonition / Callout" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-circle-exclamation"></i></button>
             </div>
 
-            <textarea id="markdown-input" spellcheck="false" class="flex-1 w-full p-4 resize-none outline-none font-mono text-sm leading-relaxed bg-transparent text-gray-800 dark:text-gray-200 focus:ring-0 border-0" placeholder="Type or paste your Mark markdown here..."></textarea>
+            <textarea id="markdown-input" spellcheck="false" class="flex-1 w-full p-4 resize-none outline-none font-mono text-sm leading-relaxed bg-transparent text-gray-800 dark:text-gray-200 focus:ring-0 border-0 overflow-y-auto" placeholder="Type or paste your Mark markdown here..."></textarea>
         </section>
 
         <!-- Right Pane: Live Render Preview -->
-        <section id="pane-preview" class="hidden lg:flex w-full lg:w-1/2 flex-col bg-gray-50 dark:bg-mark-bg">
-            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+        <section id="pane-preview" class="hidden lg:flex w-full lg:w-1/2 flex-col bg-gray-50 dark:bg-mark-bg h-full min-h-0">
+            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center flex-shrink-0">
                 <span><i class="fa-solid fa-eye mr-1"></i> LIVE RENDERED PREVIEW</span>
                 <span id="rendering-indicator" class="text-[10px] text-teal-600 dark:text-teal-400 font-semibold opacity-0 transition-opacity">Updated</span>
             </div>
-            <div id="preview-output" class="flex-1 p-6 overflow-y-auto mark-rendered"></div>
+            <div id="preview-output" class="flex-1 p-6 overflow-y-auto mark-rendered min-h-0"></div>
         </section>
     </main>
 
