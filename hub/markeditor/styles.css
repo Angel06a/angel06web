@@ -1,0 +1,184 @@
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.font-mono {
+    font-family: 'Fira Code', monospace;
+}
+
+/* Mark Markdown Rendered Output Styles */
+.mark-rendered {
+    color: inherit;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+.mark-rendered h1 { font-size: 2.1em; font-weight: 700; margin-top: 0.8em; margin-bottom: 0.4em; border-bottom: 1px solid currentColor; opacity: 0.95; }
+.mark-rendered h2 { font-size: 1.65em; font-weight: 600; margin-top: 0.7em; margin-bottom: 0.35em; border-bottom: 1px solid rgba(128,128,128,0.2); }
+.mark-rendered h3 { font-size: 1.35em; font-weight: 600; margin-top: 0.6em; margin-bottom: 0.3em; }
+.mark-rendered h4 { font-size: 1.15em; font-weight: 600; margin-top: 0.5em; margin-bottom: 0.25em; }
+.mark-rendered h5 { font-size: 1.0em; font-weight: 600; margin-top: 0.4em; margin-bottom: 0.2em; }
+.mark-rendered h6 { font-size: 0.88em; font-weight: 600; margin-top: 0.4em; margin-bottom: 0.2em; opacity: 0.8; }
+
+.mark-rendered p { margin-bottom: 0.85em; }
+.mark-rendered mark { background-color: #f6e05e; color: #1a202c; padding: 0.1em 0.3em; border-radius: 0.2em; }
+
+/* Admonitions */
+.mark-admonition {
+    border-left: 4px solid;
+    padding: 0.8em 1.1em;
+    margin: 1em 0;
+    border-radius: 0 0.375rem 0.375rem 0;
+    background-color: rgba(128, 128, 128, 0.08);
+}
+.mark-admonition-title {
+    font-weight: 700;
+    margin-bottom: 0.4em;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.mark-admonition.note { border-color: #3b82f6; }
+.mark-admonition.note .mark-admonition-title { color: #3b82f6; }
+.mark-admonition.info { border-color: #06b6d4; }
+.mark-admonition.info .mark-admonition-title { color: #06b6d4; }
+.mark-admonition.warning { border-color: #f59e0b; }
+.mark-admonition.warning .mark-admonition-title { color: #f59e0b; }
+.mark-admonition.danger { border-color: #ef4444; }
+.mark-admonition.danger .mark-admonition-title { color: #ef4444; }
+.mark-admonition.greentext { border-color: #22c55e; }
+.mark-admonition.greentext .mark-admonition-title { color: #22c55e; }
+
+/* Spoilers */
+.mark-spoiler {
+    background-color: #2d3748;
+    color: transparent;
+    cursor: pointer;
+    padding: 0.1em 0.4em;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+.mark-spoiler:hover, .mark-spoiler.revealed {
+    background-color: rgba(128, 128, 128, 0.2);
+    color: inherit;
+}
+
+/* Blockquotes */
+.mark-rendered blockquote {
+    border-left: 4px solid #a0aec0;
+    padding-left: 1rem;
+    margin: 0.8rem 0;
+    color: #718096;
+    font-style: italic;
+}
+.dark .mark-rendered blockquote {
+    border-left-color: #4a5568;
+    color: #a0aec0;
+}
+
+/* Tables */
+.mark-rendered table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+.mark-rendered th, .mark-rendered td {
+    border: 1px solid #cbd5e0;
+    padding: 0.5rem 0.8rem;
+}
+.dark .mark-rendered th, .dark .mark-rendered td {
+    border-color: #4a5568;
+}
+.mark-rendered th {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+}
+.dark .mark-rendered th {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Code blocks */
+.mark-rendered pre {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    margin: 0.8rem 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+}
+.mark-rendered code {
+    font-family: 'Fira Code', monospace;
+    background-color: rgba(128, 128, 128, 0.15);
+    padding: 0.15em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+}
+.mark-rendered pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* TOC Box */
+.mark-toc {
+    background-color: rgba(128, 128, 128, 0.08);
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    display: inline-block;
+    min-width: 240px;
+    max-width: 100%;
+}
+.mark-toc-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(128,128,128,0.2);
+    padding-bottom: 0.25rem;
+}
+.mark-toc ul {
+    list-style-type: none;
+    padding-left: 1rem;
+    margin: 0;
+}
+.mark-toc > ul {
+    padding-left: 0;
+}
+.mark-toc a {
+    color: #3182ce;
+    text-decoration: none;
+}
+.mark-toc a:hover {
+    text-decoration: underline;
+}
+.dark .mark-toc a {
+    color: #63b3ed;
+}
+
+/* Custom link styling to inherit parent font color when wrapped in color tags */
+.mark-link {
+    color: inherit;
+}
+
+/* Lists */
+.mark-rendered ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.8rem; }
+.mark-rendered ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.8rem; }
+.mark-rendered ul ul, .mark-rendered ol ol, .mark-rendered ul ol, .mark-rendered ol ul {
+    margin-bottom: 0;
+}
+.mark-rendered li { margin-bottom: 0.2rem; }
+
+/* Checkboxes */
+.mark-task-list { list-style: none !important; padding-left: 0.5rem !important; }
+.mark-task-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
+
+/* Floating Images */
+.img-float-left { float: left; margin-right: 1rem; margin-bottom: 0.5rem; }
+.img-float-right { float: right; margin-left: 1rem; margin-bottom: 0.5rem; }
+
+/* Scrollbar aesthetics */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.6); }

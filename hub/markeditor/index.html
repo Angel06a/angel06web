@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkEditor</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        mark: {
+                            bg: '#181a1b',
+                            card: '#222426',
+                            border: '#383c3e',
+                            text: '#e8e6e3',
+                            accent: '#458588',
+                            hover: '#326264'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text h-full flex flex-col transition-colors duration-200">
+
+    <!-- Top Header Toolbar -->
+    <header class="bg-white dark:bg-mark-card border-b border-gray-200 dark:border-mark-border px-4 py-2.5 flex items-center justify-between shadow-sm z-10 flex-shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-file-pen text-teal-600 dark:text-teal-400 text-xl"></i>
+                <span class="font-bold text-lg tracking-tight">Mark<span class="text-teal-600 dark:text-teal-400">Editor</span></span>
+            </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <button id="btn-sample" onclick="loadSampleMarkdown()" title="Load sample markdown template" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-rotate-left"></i> <span class="hidden md:inline">Sample</span>
+            </button>
+            <button id="btn-copy" onclick="copyRenderedHTML()" title="Copy rendered HTML" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+                <i class="fa-regular fa-copy"></i> <span class="hidden md:inline">Copy HTML</span>
+            </button>
+            <button id="btn-download" onclick="downloadMarkdown()" title="Download raw markdown text" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-download"></i> <span class="hidden md:inline">Export</span>
+            </button>
+            <button id="btn-import" onclick="triggerImport()" title="Import .md or .html file" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-file-import"></i> <span class="hidden md:inline">Import</span>
+            </button>
+            <input type="file" id="file-import-input" accept=".md,.markdown,.html,.htm,.txt" onchange="handleFileImport(event)" class="hidden">
+            <button id="btn-clear" onclick="clearEditor()" title="Clear editor content" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-900/60 dark:text-red-400 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-trash-can"></i> <span class="hidden md:inline">Clear</span>
+            </button>
+            <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-1"></div>
+            <button onclick="toggleHelpModal(true)" title="Syntax Cheatsheet" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-teal-50 hover:bg-teal-100 text-teal-700 dark:bg-teal-950/50 dark:hover:bg-teal-900/80 dark:text-teal-300 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-question"></i> <span class="hidden md:inline">Syntax Help</span>
+            </button>
+            <button onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" class="w-9 h-9 flex items-center justify-center rounded text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Tab Switcher -->
+    <div class="flex lg:hidden bg-gray-200 dark:bg-gray-800 p-1 border-b border-gray-300 dark:border-gray-700 flex-shrink-0">
+        <button id="tab-edit" onclick="switchMobileTab('edit')" class="flex-1 py-1.5 text-xs font-semibold rounded bg-white dark:bg-gray-700 shadow-sm text-center">
+            <i class="fa-solid fa-code mr-1"></i> Markdown Input
+        </button>
+        <button id="tab-preview" onclick="switchMobileTab('preview')" class="flex-1 py-1.5 text-xs font-semibold rounded text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-center">
+            <i class="fa-solid fa-eye mr-1"></i> Live Preview
+        </button>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-1 flex overflow-hidden relative">
+        <!-- Left Pane: Editor Input -->
+        <section id="pane-editor" class="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg">
+            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+                <span><i class="fa-solid fa-pen-to-square mr-1"></i> MARKDOWN EDITOR</span>
+                <span class="text-[10px] bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded">Mark Dialect</span>
+            </div>
+
+            <!-- Quick Formatting Toolbar -->
+            <div class="bg-gray-100 dark:bg-gray-800/60 px-3 py-1.5 border-b border-gray-200 dark:border-mark-border flex flex-wrap gap-1 items-center text-xs overflow-x-auto flex-shrink-0">
+                <button type="button" onclick="insertFormat('**', '**', 'bold text')" title="Bold" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-bold"></i></button>
+                <button type="button" onclick="insertFormat('*', '*', 'italic text')" title="Italic" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-italic"></i></button>
+                <button type="button" onclick="insertFormat('~~', '~~', 'strikethrough text')" title="Strikethrough" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-strikethrough"></i></button>
+                <button type="button" onclick="insertFormat('==', '==', 'highlighted text')" title="Highlight" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-highlighter"></i></button>
+                <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5"></div>
+                <button type="button" onclick="insertFormat('### ', '', 'Heading')" title="Heading 3" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-heading"></i></button>
+                <button type="button" onclick="insertFormat('%red%', '%%', 'colored text')" title="Mark Color (%red%...%%)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-palette text-red-500"></i></button>
+                <button type="button" onclick="insertFormat('!~red;', '~!', 'underlined text')" title="Mark Underline (!~...~!)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-underline"></i></button>
+                <button type="button" onclick="insertFormat('!> ', '', 'Secret spoiler text')" title="Mark Spoiler (!>)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-eye-slash"></i></button>
+                <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5"></div>
+                <button type="button" onclick="insertFormat('[', '](https://example.com)', 'link text')" title="Link" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-link"></i></button>
+                <button type="button" onclick="insertFormat('![Alt text](', '){250px:100px}', 'https://placehold.co/400x200')" title="Image with Size" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-image"></i></button>
+                <button type="button" onclick="insertFormat('`', '`', 'code')" title="Inline Code" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-code"></i></button>
+                <button type="button" onclick="insertFormat('```javascript\n', '\n```', '// code here')" title="Code Block" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-file-code"></i></button>
+                <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5"></div>
+                <button type="button" onclick="insertFormat('- ', '', 'List item')" title="Bullet List" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-list-ul"></i></button>
+                <button type="button" onclick="insertFormat('- [ ] ', '', 'Task item')" title="Task Item" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-square-check"></i></button>
+                <button type="button" onclick="insertFormat('> ', '', 'Quote text')" title="Blockquote" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-quote-right"></i></button>
+                <button type="button" onclick="insertFormat('!!! note Callout Title\n    ', '', 'Callout content here')" title="Admonition / Callout" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-circle-exclamation"></i></button>
+            </div>
+
+            <textarea id="markdown-input" spellcheck="false" class="flex-1 w-full p-4 resize-none outline-none font-mono text-sm leading-relaxed bg-transparent text-gray-800 dark:text-gray-200 focus:ring-0 border-0" placeholder="Type or paste your Mark markdown here..."></textarea>
+        </section>
+
+        <!-- Right Pane: Live Render Preview -->
+        <section id="pane-preview" class="hidden lg:flex w-full lg:w-1/2 flex-col bg-gray-50 dark:bg-mark-bg">
+            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+                <span><i class="fa-solid fa-eye mr-1"></i> LIVE RENDERED PREVIEW</span>
+                <span id="rendering-indicator" class="text-[10px] text-teal-600 dark:text-teal-400 font-semibold opacity-0 transition-opacity">Updated</span>
+            </div>
+            <div id="preview-output" class="flex-1 p-6 overflow-y-auto mark-rendered"></div>
+        </section>
+    </main>
+
+    <!-- Footer Status Bar -->
+    <footer class="bg-white dark:bg-mark-card border-t border-gray-200 dark:border-mark-border px-4 py-1.5 text-xs text-gray-500 dark:text-gray-400 flex flex-wrap justify-between items-center gap-2 flex-shrink-0">
+        <div class="flex items-center space-x-4 font-mono text-[11px]">
+            <span>Words: <strong id="stat-words" class="text-gray-700 dark:text-gray-300">0</strong></span>
+            <span>Chars: <strong id="stat-chars" class="text-gray-700 dark:text-gray-300">0</strong></span>
+            <span>Lines: <strong id="stat-lines" class="text-gray-700 dark:text-gray-300">0</strong></span>
+        </div>
+        <div class="text-[11px]">
+            Mark Markdown Engine • Standalone Ready
+        </div>
+    </footer>
+
+    <!-- Mark Syntax Cheatsheet Modal -->
+    <div id="help-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border rounded-lg shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-book text-teal-500"></i> Mark Syntax Reference Cheat Sheet</h3>
+                <button onclick="toggleHelpModal(false)" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto font-mono text-xs space-y-4 text-gray-700 dark:text-gray-300">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Colored Text Syntax</div>
+                        <code>%red% Red Text %%</code><br>
+                        <code>%#ACBDEF% Custom Hex Color %%</code>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Underline Formatting (4 parameters)</div>
+                        <code>!~ Underlined ~!</code><br>
+                        <code>!~red; Underlined Color ~!</code><br>
+                        <code>!~green;double; Wavy/Double Style ~!</code><br>
+                        <code>!~blue;solid;underline;4; Full Options ~!</code>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Table of Contents & Headers</div>
+                        <code>[TOC]</code> (h1 to h6)<br>
+                        <code>[TOC2]</code> (h2 to h6)<br>
+                        <code>-&gt; Centered Header &lt;-</code><br>
+                        <code>-&gt; Right Aligned Header -&gt;</code>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Admonition / Callout Boxes</div>
+                        <code>!!! note Title Optional</code><br>
+                        <code>&nbsp;&nbsp;&nbsp;&nbsp;Indented box content here</code><br>
+                        <span class="text-[10px] opacity-75">(Types: note, info, warning, danger, greentext)</span>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Image Extensions & Sizing</div>
+                        <code>![Alt](url){100px:200px}</code> (width:height)<br>
+                        <code>![Alt](url#left)</code> or <code>#right</code> (Floats)<br>
+                        <code>!;</code> (Clear float)
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Spoilers, Formatting & Escape</div>
+                        <code>!&gt; Clickable Spoiler</code><br>
+                        <code>==Highlighted Mark==</code><br>
+                        <code>\*escaped markdown symbols\*</code><br>
+                        <code>[//]: (Hidden Comment)</code>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-3 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-mark-border text-right">
+                <button onclick="toggleHelpModal(false)" class="px-4 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded font-medium text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-12 right-6 bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-4 py-2 rounded shadow-lg text-xs font-semibold transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none z-50">
+        Notification message
+    </div>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
