@@ -33,7 +33,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Naruto Shippuden: Ultimate Ninja STORM 3 "https://steamunlocked.org/naruto-shippuden-ultimate-ninja-storm-3-full-burst-hd-free-download/"
   -Pureya "https://steamunlocked.org/pureya-free-download/"
   -Quake III Arena "https://steamunlocked.org/quake-iii-arena-free-download/" "https://ioquake3.org/" *Juego Base* *Ioquake3*
-  -Rayman Legends "https://rentry.co/q5cxt3kd"
+  -Rayman Legends "https://angel06a.github.io/angel06web/games/pc/rayman-legends/"
   -Serious Sam HD "https://steamunlocked.org/serious-sam-hd-the-second-encounter-free-download/"
   -Slayin DX "https://steamunlocked.org/slayin-dx-free-download/"
   -Slime Rancher "https://rentry.co/dzwd6zp4"
