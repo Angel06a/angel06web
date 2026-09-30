@@ -104,11 +104,12 @@ Juegos Android (emoji.android)=🎮 (emoji.android)=:
   -Slayin "https://www.mediafire.com/file/aya455c8ig96hjw/Slayin_2.0.13.apk/file"
   -Slime Rancher "https://apkvision.org/games/action/slime-rancher-106836/"
   -Street Fighter IV CE "https://apkvision.org/games/action/street-fighter-iv-ce-netflix-128855/"
-  -Super Mario 64 Port "https://github.com/coop-deluxe/sm64coopdx/releases" "https://vimm.net/vault/2764" *Descargar* *Rom*
+  -Super Mario 64 Port "https://github.com/ManIsCat2/sm64coopdx/releases" "https://vimm.net/vault/2764" *Descargar* *Rom*
   -The Legend of Zelda Port "https://github.com/linkzenic/Shipwright-Android/releases" "https://vimm.net/vault/2637" *Descargar* *Rom*
   -Zombie Avengers Dreamsky Stickman War "https://www.mediafire.com/file/7qmtqoinva2itn4/Zombie_Avengers_Dreamsky_Stickman_War_2.0.3.apk/file"
 Programas Android (emoji.android)=⚙️ (emoji.android)=:
   -ARMSX2 (Emular PS2) =🕹️="https://play.google.com/store/apps/details?id=come.nanodata.armsx2"
+  -Azahar (Emular 3DS) =🕹️="https://play.google.com/store/apps/details?id=io.github.lime3ds.android"
   -CapCut Pro (Editor de Video) "https://www.mediafire.com/file/wvhjm75wj4cqdoc/CapCut+Pro+v13.9.0_(AndroidApkData.net).apk/file"
   -Daijishō (Frontend) (Emular) =🕹️="https://play.google.com/store/apps/details?id=com.magneticchen.daijishou"
   -Filmora (Editor de Video) "https://apkpure.com/es/filmora-movie-video-editor/com.wondershare.filmorago"
