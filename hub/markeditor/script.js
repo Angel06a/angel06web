@@ -507,7 +507,14 @@ function switchMobileTab(tab) {
 
     const isEdit = tab === 'edit';
     if (paneEditor) paneEditor.classList.toggle('hidden', !isEdit);
-    if (panePreview) panePreview.classList.toggle('hidden', isEdit);
+    if (panePreview) {
+        panePreview.classList.toggle('hidden', isEdit);
+        if (!isEdit) {
+            panePreview.classList.add('flex');
+        } else {
+            panePreview.classList.remove('flex');
+        }
+    }
 
     const activeClass = 'flex-1 py-1.5 text-xs font-semibold rounded bg-white dark:bg-gray-700 shadow-sm text-center';
     const inactiveClass = 'flex-1 py-1.5 text-xs font-semibold rounded text-gray-600 dark:text-gray-400 hover:text-gray-900 text-center';
