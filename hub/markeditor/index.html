@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkEditor</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icon.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        mark: {
+                            bg: '#181a1b',
+                            card: '#222426',
+                            border: '#383c3e',
+                            text: '#e8e6e3',
+                            accent: '#458588',
+                            hover: '#326264'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style id="mark-core-styles">
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+        
+        /* Mark Markdown Rendered Output Styles */
+        .mark-rendered {
+            color: inherit;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+        .mark-rendered h1 { font-size: 2.1em; font-weight: 700; margin-top: 0.8em; margin-bottom: 0.4em; border-bottom: 1px solid currentColor; opacity: 0.95; }
+        .mark-rendered h2 { font-size: 1.65em; font-weight: 600; margin-top: 0.7em; margin-bottom: 0.35em; border-bottom: 1px solid rgba(128,128,128,0.2); }
+        .mark-rendered h3 { font-size: 1.35em; font-weight: 600; margin-top: 0.6em; margin-bottom: 0.3em; }
+        .mark-rendered h4 { font-size: 1.15em; font-weight: 600; margin-top: 0.5em; margin-bottom: 0.25em; }
+        .mark-rendered h5 { font-size: 1.0em; font-weight: 600; margin-top: 0.4em; margin-bottom: 0.2em; }
+        .mark-rendered h6 { font-size: 0.88em; font-weight: 600; margin-top: 0.4em; margin-bottom: 0.2em; opacity: 0.8; }
+        
+        .mark-rendered p { margin-bottom: 0.85em; }
+        .mark-rendered mark { background-color: #f6e05e; color: #1a202c; padding: 0.1em 0.3em; border-radius: 0.2em; }
+        
+        /* Admonitions */
+        .mark-admonition {
+            border-left: 4px solid;
+            padding: 0.8em 1.1em;
+            margin: 1em 0;
+            border-radius: 0 0.375rem 0.375rem 0;
+            background-color: rgba(128, 128, 128, 0.08);
+        }
+        .mark-admonition-title {
+            font-weight: 700;
+            margin-bottom: 0.4em;
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .mark-admonition.note { border-color: #3b82f6; }
+        .mark-admonition.note .mark-admonition-title { color: #3b82f6; }
+        .mark-admonition.info { border-color: #06b6d4; }
+        .mark-admonition.info .mark-admonition-title { color: #06b6d4; }
+        .mark-admonition.warning { border-color: #f59e0b; }
+        .mark-admonition.warning .mark-admonition-title { color: #f59e0b; }
+        .mark-admonition.danger { border-color: #ef4444; }
+        .mark-admonition.danger .mark-admonition-title { color: #ef4444; }
+        .mark-admonition.greentext { border-color: #22c55e; }
+        .mark-admonition.greentext .mark-admonition-title { color: #22c55e; }
+
+        /* Spoilers */
+        .mark-spoiler {
+            background-color: #2d3748;
+            color: transparent;
+            cursor: pointer;
+            padding: 0.1em 0.4em;
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .mark-spoiler:hover, .mark-spoiler.revealed {
+            background-color: rgba(128, 128, 128, 0.2);
+            color: inherit;
+        }
+
+        /* Blockquotes */
+        .mark-rendered blockquote {
+            border-left: 4px solid #a0aec0;
+            padding-left: 1rem;
+            margin: 0.8rem 0;
+            color: #718096;
+            font-style: italic;
+        }
+        .dark .mark-rendered blockquote {
+            border-left-color: #4a5568;
+            color: #a0aec0;
+        }
+
+        /* Tables */
+        .mark-rendered table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .mark-rendered th, .mark-rendered td {
+            border: 1px solid #cbd5e0;
+            padding: 0.5rem 0.8rem;
+        }
+        .dark .mark-rendered th, .dark .mark-rendered td {
+            border-color: #4a5568;
+        }
+        .mark-rendered th {
+            background-color: rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+        }
+        .dark .mark-rendered th {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Code blocks */
+        .mark-rendered pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            margin: 0.8rem 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+        .mark-rendered code {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(128, 128, 128, 0.15);
+            padding: 0.15em 0.4em;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        .mark-rendered pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        /* TOC Box */
+        .mark-toc {
+            background-color: rgba(128, 128, 128, 0.08);
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: inline-block;
+            min-width: 240px;
+            max-width: 100%;
+        }
+        .mark-toc-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(128,128,128,0.2);
+            padding-bottom: 0.25rem;
+        }
+        .mark-toc ul {
+            list-style-type: none;
+            padding-left: 1rem;
+            margin: 0;
+        }
+        .mark-toc > ul {
+            padding-left: 0;
+        }
+        .mark-toc a {
+            color: #3182ce;
+            text-decoration: none;
+        }
+        .mark-toc a:hover {
+            text-decoration: underline;
+        }
+        .dark .mark-toc a {
+            color: #63b3ed;
+        }
+
+        /* Custom link styling to inherit parent font color when wrapped in color tags */
+        .mark-link {
+            color: inherit;
+        }
+
+        /* Lists */
+        .mark-rendered ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.8rem; }
+        .mark-rendered ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.8rem; }
+        .mark-rendered ul ul, .mark-rendered ol ol, .mark-rendered ul ol, .mark-rendered ol ul {
+            margin-bottom: 0;
+        }
+        .mark-rendered li { margin-bottom: 0.2rem; }
+
+        /* Checkboxes */
+        .mark-task-list { list-style: none !important; padding-left: 0.5rem !important; }
+        .mark-task-item { display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Floating Images */
+        .img-float-left { float: left; margin-right: 1rem; margin-bottom: 0.5rem; }
+        .img-float-right { float: right; margin-left: 1rem; margin-bottom: 0.5rem; }
+
+        /* Scrollbar aesthetics */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.6); }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text h-full flex flex-col transition-colors duration-200">
+
+    <!-- Top Header Toolbar -->
+    <header class="bg-white dark:bg-mark-card border-b border-gray-200 dark:border-mark-border px-4 py-2.5 flex items-center justify-between shadow-sm z-10 flex-shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-file-pen text-teal-600 dark:text-teal-400 text-xl"></i>
+                <span class="font-bold text-lg tracking-tight">Mark<span class="text-teal-600 dark:text-teal-400">Editor</span></span>
+            </div>
+            <span class="hidden sm:inline text-xs px-2 py-0.5 rounded bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-mono">v2.5 Full Syntax</span>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <button id="btn-copy" onclick="copyRenderedHTML()" title="Copy rendered HTML" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+                <i class="fa-regular fa-copy"></i> <span class="hidden md:inline">Copy HTML</span>
+            </button>
+            <button id="btn-download" onclick="downloadMarkdown()" title="Download raw markdown text" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-download"></i> <span class="hidden md:inline">Export</span>
+            </button>
+            <button id="btn-clear" onclick="clearEditor()" title="Clear editor content" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-900/60 dark:text-red-400 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-trash-can"></i> <span class="hidden md:inline">Clear</span>
+            </button>
+            <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-1"></div>
+            <button onclick="toggleHelpModal(true)" title="Syntax Cheatsheet" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-teal-50 hover:bg-teal-100 text-teal-700 dark:bg-teal-950/50 dark:hover:bg-teal-900/80 dark:text-teal-300 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-question"></i> <span class="hidden md:inline">Syntax Help</span>
+            </button>
+            <button onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" class="p-2 rounded text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Tab Switcher -->
+    <div class="flex lg:hidden bg-gray-200 dark:bg-gray-800 p-1 border-b border-gray-300 dark:border-gray-700 flex-shrink-0">
+        <button id="tab-edit" onclick="switchMobileTab('edit')" class="flex-1 py-1.5 text-xs font-semibold rounded bg-white dark:bg-gray-700 shadow-sm text-center">
+            <i class="fa-solid fa-code mr-1"></i> Markdown Input
+        </button>
+        <button id="tab-preview" onclick="switchMobileTab('preview')" class="flex-1 py-1.5 text-xs font-semibold rounded text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-center">
+            <i class="fa-solid fa-eye mr-1"></i> Live Preview
+        </button>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-1 flex overflow-hidden relative">
+        <!-- Left Pane: Editor Input -->
+        <section id="pane-editor" class="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg">
+            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+                <span><i class="fa-solid fa-pen-to-square mr-1"></i> MARKDOWN EDITOR</span>
+                <span class="text-[10px] bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded">Mark Dialect</span>
+            </div>
+            <textarea id="markdown-input" spellcheck="false" class="flex-1 w-full p-4 resize-none outline-none font-mono text-sm leading-relaxed bg-transparent text-gray-800 dark:text-gray-200 focus:ring-0 border-0" placeholder="Type or paste your Mark markdown here..."></textarea>
+        </section>
+
+        <!-- Right Pane: Live Render Preview -->
+        <section id="pane-preview" class="hidden lg:flex w-full lg:w-1/2 flex-col bg-gray-50 dark:bg-mark-bg">
+            <div class="bg-gray-50 dark:bg-mark-card px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+                <span><i class="fa-solid fa-eye mr-1"></i> LIVE RENDERED PREVIEW</span>
+                <span id="rendering-indicator" class="text-[10px] text-teal-600 dark:text-teal-400 font-semibold opacity-0 transition-opacity">Updated</span>
+            </div>
+            <div id="preview-output" class="flex-1 p-6 overflow-y-auto mark-rendered"></div>
+        </section>
+    </main>
+
+    <!-- Footer Status Bar -->
+    <footer class="bg-white dark:bg-mark-card border-t border-gray-200 dark:border-mark-border px-4 py-1.5 text-xs text-gray-500 dark:text-gray-400 flex flex-wrap justify-between items-center gap-2 flex-shrink-0">
+        <div class="flex items-center space-x-4 font-mono text-[11px]">
+            <span>Words: <strong id="stat-words" class="text-gray-700 dark:text-gray-300">0</strong></span>
+            <span>Chars: <strong id="stat-chars" class="text-gray-700 dark:text-gray-300">0</strong></span>
+            <span>Lines: <strong id="stat-lines" class="text-gray-700 dark:text-gray-300">0</strong></span>
+        </div>
+        <div class="text-[11px]">
+            Mark Markdown Engine • Standalone Ready
+        </div>
+    </footer>
+
+    <!-- Mark Syntax Cheatsheet Modal -->
+    <div id="help-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border rounded-lg shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-book text-teal-500"></i> Mark Syntax Reference Cheat Sheet</h3>
+                <button onclick="toggleHelpModal(false)" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto font-mono text-xs space-y-4 text-gray-700 dark:text-gray-300">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Colored Text Syntax</div>
+                        <code>%red% Red Text %%</code><br>
+                        <code>%#ACBDEF% Custom Hex Color %%</code>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Underline Formatting (4 parameters)</div>
+                        <code>!~ Underlined ~!</code><br>
+                        <code>!~red; Underlined Color ~!</code><br>
+                        <code>!~green;double; Wavy/Double Style ~!</code><br>
+                        <code>!~blue;solid;underline;4; Full Options ~!</code>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Table of Contents & Headers</div>
+                        <code>[TOC]</code> (h1 to h6)<br>
+                        <code>[TOC2]</code> (h2 to h6)<br>
+                        <code>-> Centered Header <-</code><br>
+                        <code>-> Right Aligned Header -></code>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Admonition / Callout Boxes</div>
+                        <code>!!! note Title Optional</code><br>
+                        <code>&nbsp;&nbsp;&nbsp;&nbsp;Indented box content here</code><br>
+                        <span class="text-[10px] opacity-75">(Types: note, info, warning, danger, greentext)</span>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Image Extensions & Sizing</div>
+                        <code>![Alt](url){100px:200px}</code> (width:height)<br>
+                        <code>![Alt](url#left)</code> or <code>#right</code> (Floats)<br>
+                        <code>!;</code> (Clear float)
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                        <div class="font-bold text-teal-600 dark:text-teal-400 mb-1">Spoilers, Formatting & Escape</div>
+                        <code>!> Clickable Spoiler</code><br>
+                        <code>==Highlighted Mark==</code><br>
+                        <code>\*escaped markdown symbols\*</code><br>
+                        <code>[//]: (Hidden Comment)</code>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-3 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-mark-border text-right">
+                <button onclick="toggleHelpModal(false)" class="px-4 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded font-medium text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-12 right-6 bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-4 py-2 rounded shadow-lg text-xs font-semibold transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none z-50">
+        Notification message
+    </div>
+
+    <script>
+        // Sample Mark Markdown Document loaded by default
+        const DEFAULT_MARKDOWN = `# Mark Markdown Publisher
+Welcome to the recreated **Mark** Markdown publisher app!
+
+[TOC]
+
+***
+
+## Header Alignments & Styling
+-> Centered Header <-
+-> Right Aligned Header ->
+
+### Inline Text Formatting
+*Italics*, **Bold**, ~~Strikeout~~, and ==Highlighted Mark==.
+You can also escape symbols: \*Not Italics\*.
+
+### Colored & Underlined Extensions
+%red% Colored Red Text %% and %#3182ce% Hex Color Text %%.
+%#ff5555% [%#ff5555% Colored Link %%](https://example.com) %%
+
+Underline syntax supports parameters: \`!~color; style; type; thickness;~\`
+!~ Simple Underlined Text ~!
+!~red; Underlined Text With Color ~!
+!~green;wavy; Underlined Text Plus Wavy Style ~!
+!~blue;double;line-through; Underlined Plus Line Through ~!
+!~#d69e2e;dashed;underline;4; Custom Thickness & Dashed ~!
+
+Nested combinations: %violet% !~green; Double Combination Color ~! %%
+
+### Spoilers & Comments
+!> This is a secret spoiler text! Click to reveal.
+
+[//]: (This is a hidden comment and will not render)
+
+### Admonitions / Callouts
+!!! note Useful Note
+    Admonitions are callout boxes! Supported types: note, info, warning, danger, greentext.
+
+!!! danger
+    This is a danger callout without an explicit title.
+
+### Lists & Tasks
+- Bulleted list item
+    - Nested list item (4 spaces or tab)
+- [ ] Unchecked Task item
+- [x] Completed Task item
+
+1. Numbered Item 1
+2. Numbered Item 2
+
+### Blockquotes
+>> How to use quotes in Markdown?
+> Just prepend text with > character.
+
+### Code Block
+\`\`\`javascript
+// Mark live syntax parsing
+function helloWorld() {
+    console.log("Hello from Mark!");
+}
+helloWorld();
+\`\`\`
+
+### Custom Tables
+Header 1 \\n Line 2 | Header 2
+:---: | ---:
+Centered Cell | Right Cell
+Cell \\n with break | Cell
+
+### Images & Youtube Embeds
+![Mark Logo](https://placehold.co/400x120/1e293b/38bdf8?text=Mark+Image){250px:75px}
+
+[![Youtube Thumbnail](https://placehold.co/300x150/0284c7/ffffff?text=Play+Video){200px:100px}](https://youtube.com)
+
+!;
+Floating clear separator applied above using \`!;\`.
+`;
+
+        // DOM Element Cache
+        const markdownInput = document.getElementById('markdown-input');
+        const previewOutput = document.getElementById('preview-output');
+        const statWords = document.getElementById('stat-words');
+        const statChars = document.getElementById('stat-chars');
+        const statLines = document.getElementById('stat-lines');
+
+        // Helper: Debounce execution for input performance
+        function debounce(func, wait = 150) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        // Initial setup
+        window.onload = function() {
+            markdownInput.value = DEFAULT_MARKDOWN;
+            parseAndRender();
+            
+            // Check system preference for dark mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.add('dark'); // Default to Mark Dark
+            }
+            updateThemeIcon();
+        };
+
+        // Optimized Event Listener with Debounce
+        markdownInput.addEventListener('input', debounce(() => {
+            parseAndRender();
+        }, 150));
+
+        /**
+         * Main Parser Function for Custom Mark Markdown Syntax
+         */
+        function parseAndRender() {
+            const rawText = markdownInput.value;
+            updateStats(rawText);
+
+            let headersList = []; // Track headers for TOC generation
+            
+            // 1. Pre-process escaped characters to placeholders
+            let text = rawText
+                .replace(/\\([*~=%!#>\\`\-_\[\]\(\)])/g, (match, char) => `&#${char.charCodeAt(0)};`);
+
+            // 2. Remove comments [//]: (comment)
+            text = text.replace(/^\[\/\/\]:\s*\((.*?)\)$/gm, '');
+
+            // 3. Process Code Blocks (protect contents from markdown parser)
+            const codeBlocks = [];
+            text = text.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+                const id = `___CODE_BLOCK_${codeBlocks.length}___`;
+                const escapedCode = escapeHTML(code.trimEnd());
+                codeBlocks.push(`<pre><code class="language-${lang}">${escapedCode}</code></pre>`);
+                return id;
+            });
+
+            // 4. Process Inline Code
+            const inlineCodes = [];
+            text = text.replace(/`([^`]+)`/g, (match, code) => {
+                const id = `___INLINE_CODE_${inlineCodes.length}___`;
+                inlineCodes.push(`<code>${escapeHTML(code)}</code>`);
+                return id;
+            });
+
+            // 5. Admonitions / Callouts: !!! type Title
+            text = parseAdmonitions(text);
+
+            // 6. Headers and Headings Alignment
+            text = text.replace(/^(#{1,6})\s*(.*?)$/gm, (match, hashes, title) => {
+                const level = hashes.length;
+                let align = '';
+                let cleanTitle = title.trim();
+
+                if (cleanTitle.startsWith('->') && cleanTitle.endsWith('<-')) {
+                    align = 'text-align: center;';
+                    cleanTitle = cleanTitle.substring(2, cleanTitle.length - 2).trim();
+                } else if (cleanTitle.startsWith('->') && cleanTitle.endsWith('->')) {
+                    align = 'text-align: right;';
+                    cleanTitle = cleanTitle.substring(2, cleanTitle.length - 2).trim();
+                }
+
+                const headerId = 'header-' + cleanTitle.toLowerCase().replace(/[^\w]+/g, '-');
+                headersList.push({ level, title: cleanTitle, id: headerId });
+
+                return `<h${level} id="${headerId}" style="${align}">${cleanTitle}</h${level}>`;
+            });
+
+            // Non-hash center/right headers: -> Centered <- or -> Right ->
+            text = text.replace(/^->\s*(.*?)\s*<-$/gm, '<p style="text-align: center; font-weight: 600;">$1</p>');
+            text = text.replace(/^->\s*(.*?)\s*->$/gm, '<p style="text-align: right; font-weight: 600;">$1</p>');
+
+            // 7. Table of Contents Replacement ([TOC], [TOC2], [TOC3])
+            text = text.replace(/\[TOC(\d?)\]/g, (match, minLevel) => {
+                const startLevel = minLevel ? parseInt(minLevel, 10) : 1;
+                return generateTOCHTML(headersList, startLevel);
+            });
+
+            // 8. Tables Parsing
+            text = parseTables(text);
+
+            // 9. Blockquotes
+            text = text.replace(/^(>+)\s*(.*?)$/gm, (match, quotes, content) => {
+                const depth = quotes.length;
+                let result = content;
+                for (let i = 0; i < depth; i++) {
+                    result = `blockquote>${result}</blockquote`;
+                }
+                return `<${result}>`;
+            });
+
+            // 10. Horizontal Rules & Float Clear
+            text = text.replace(/^!;\s*$/gm, '<div style="clear: both;"></div>');
+            text = text.replace(/^(\*\*\*|---|___)\s*$/gm, '<hr class="my-4 border-gray-300 dark:border-gray-700">');
+
+            // 11. Custom Mark Underline Parser
+            // Format: !~color;style;type;thickness; Text ~!
+            text = text.replace(/!~([^;~]+)?(;[^;~]+)?(;[^;~]+)?(;[^;~]+)?;\s*([\s\S]*?)\s*~!/g, (match, p1, p2, p3, p4, content) => {
+                return formatMarkUnderline(p1, p2, p3, p4, content);
+            });
+
+            // Simple Underline Fallback: !~ Text ~!
+            text = text.replace(/!~\s*([\s\S]*?)\s*~!/g, '<span style="text-decoration: underline;">$1</span>');
+
+            // 12. Spoilers
+            text = text.replace(/!>\s*(.*?)$/gm, '<span class="mark-spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+
+            // 13. Basic Inline Styles
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            text = text.replace(/~~(.*?)~~/g, '<del>$1</del>');
+            text = text.replace(/==(.*?)==/g, '<mark>$1</mark>');
+
+            // 14. Images & Extensions
+            // ![Alt](url){size} #left/#right
+            text = text.replace(/!\[([^\]]*)\]\(([^)]+?)\)(?:\{([^}]+)\})?/g, (match, alt, urlAndHash, size) => {
+                let url = urlAndHash;
+                let floatClass = '';
+                let titleAttr = '';
+
+                // Title string check
+                if (url.includes('"')) {
+                    const parts = url.split('"');
+                    url = parts[0].trim();
+                    titleAttr = `title="${parts[1]}"`;
+                }
+
+                // Float check
+                if (url.includes('#left')) {
+                    url = url.replace('#left', '');
+                    floatClass = 'img-float-left';
+                } else if (url.includes('#right')) {
+                    url = url.replace('#right', '');
+                    floatClass = 'img-float-right';
+                }
+
+                // Size handling
+                let styleAttr = '';
+                if (size) {
+                    const dimensions = size.split(':');
+                    if (dimensions.length === 2) {
+                        const w = parseDimension(dimensions[0]);
+                        const h = parseDimension(dimensions[1]);
+                        styleAttr = `style="width: ${w}; height: ${h}; object-fit: cover;"`;
+                    } else if (dimensions.length === 1) {
+                        const w = parseDimension(dimensions[0]);
+                        styleAttr = `style="width: ${w};"`;
+                    }
+                }
+
+                return `<img src="${url}" alt="${alt}" ${titleAttr} class="rounded max-w-full inline-block ${floatClass}" ${styleAttr} onerror="this.src='https://placehold.co/300x150?text=Image+Not+Found'">`;
+            });
+
+            // 15. Links (usamos mark-link con color: inherit para permitir que spans con color heredados lo modifiquen)
+            text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="mark-link underline hover:opacity-80">$1</a>');
+
+            // 16. Custom Mark Colors (se procesa DESPUÉS de los links para que envuelva la etiqueta <a> completa)
+            // %color% Text %% OR %#HEX% Text %%
+            text = parseMarkColors(text);
+
+            // 17. Unordered Lists, Task Lists & Ordered Lists
+            text = parseLists(text);
+
+            // 18. Paragraphs & Line Breaks
+            text = parseParagraphs(text);
+
+            // Restore code blocks & inline code
+            inlineCodes.forEach((codeHTML, idx) => {
+                text = text.replace(`___INLINE_CODE_${idx}___`, codeHTML);
+            });
+            codeBlocks.forEach((blockHTML, idx) => {
+                text = text.replace(`___CODE_BLOCK_${idx}___`, blockHTML);
+            });
+
+            // Asynchronous DOM update via requestAnimationFrame for smooth UI rendering
+            requestAnimationFrame(() => {
+                previewOutput.innerHTML = text;
+
+                // Flash indicator
+                const indicator = document.getElementById('rendering-indicator');
+                indicator.style.opacity = '1';
+                setTimeout(() => { indicator.style.opacity = '0'; }, 500);
+            });
+        }
+
+        // Helper: Parse dimension units
+        function parseDimension(val) {
+            val = val.trim();
+            if (/^\d+$/.test(val)) return val + 'px';
+            return val;
+        }
+
+        function parseAdmonitions(text) {
+            const lines = text.split('\n');
+            let result = [];
+            let inAdmonition = false;
+            let admType = 'warning';
+            let admTitle = '';
+            let admContent = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const match = line.match(/^!!!\s*(\w+)?\s*(.*)$/);
+
+                if (match) {
+                    if (inAdmonition) {
+                        result.push(renderAdmonitionBlock(admType, admTitle, admContent));
+                        admContent = [];
+                    }
+                    inAdmonition = true;
+                    admType = match[1] || 'warning';
+                    admTitle = match[2] || admType;
+                } else if (inAdmonition) {
+                    if (line.startsWith('    ') || line.startsWith('\t')) {
+                        admContent.push(line.replace(/^(    |\t)/, ''));
+                    } else if (line.trim() === '') {
+                        admContent.push('');
+                    } else {
+                        result.push(renderAdmonitionBlock(admType, admTitle, admContent));
+                        inAdmonition = false;
+                        admContent = [];
+                        result.push(line);
+                    }
+                } else {
+                    result.push(line);
+                }
+            }
+
+            if (inAdmonition) {
+                result.push(renderAdmonitionBlock(admType, admTitle, admContent));
+            }
+
+            return result.join('\n');
+        }
+
+        function renderAdmonitionBlock(type, title, contentLines) {
+            const icons = {
+                note: 'fa-circle-info',
+                info: 'fa-circle-exclamation',
+                warning: 'fa-triangle-exclamation',
+                danger: 'fa-radiation',
+                greentext: 'fa-check-circle'
+            };
+            const icon = icons[type] || 'fa-bell';
+            const body = contentLines.join('\n').trim();
+            return `<div class="mark-admonition ${type}">
+                <div class="mark-admonition-title"><i class="fa-solid ${icon}"></i> ${escapeHTML(title)}</div>
+                <div>${body}</div>
+            </div>`;
+        }
+
+        function parseMarkColors(text) {
+            // Nested colors regex evaluation
+            let prevText;
+            const colorRegex = /%([#\w]+)%\s*([\s\S]*?)\s*%%/g;
+            do {
+                prevText = text;
+                text = text.replace(colorRegex, (match, color, content) => {
+                    const validColor = color.startsWith('#') ? color : color;
+                    return `<span style="color: ${validColor};">${content}</span>`;
+                });
+            } while (text !== prevText);
+            return text;
+        }
+
+        function formatMarkUnderline(p1, p2, p3, p4, content) {
+            // Extract tokens clean of leading semicolons
+            const cleanP1 = p1 ? p1.trim() : 'default';
+            const cleanP2 = p2 ? p2.replace(';', '').trim() : 'default';
+            const cleanP3 = p3 ? p3.replace(';', '').trim() : 'default';
+            const cleanP4 = p4 ? p4.replace(';', '').trim() : 'default';
+
+            let color = 'currentColor';
+            let style = 'solid';
+            let type = 'underline';
+            let thickness = '1px';
+
+            const processParam = (val) => {
+                if (!val || val === 'default') return;
+                if (/^(solid|double|dotted|dashed|wavy)$/.test(val)) style = val;
+                else if (/^(underline|line-through|overline|both)$/.test(val)) type = val === 'both' ? 'underline overline' : val;
+                else if (/^\d+$/.test(val)) thickness = `${val}px`;
+                else color = val;
+            };
+
+            processParam(cleanP1);
+            processParam(cleanP2);
+            processParam(cleanP3);
+            processParam(cleanP4);
+
+            return `<span style="text-decoration-line: ${type}; text-decoration-color: ${color}; text-decoration-style: ${style}; text-decoration-thickness: ${thickness};">${content}</span>`;
+        }
+
+        function parseTables(text) {
+            const lines = text.split('\n');
+            let inTable = false;
+            let tableBuffer = [];
+            let result = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line.includes('|')) {
+                    inTable = true;
+                    tableBuffer.push(line);
+                } else {
+                    if (inTable) {
+                        result.push(renderTable(tableBuffer));
+                        tableBuffer = [];
+                        inTable = false;
+                    }
+                    result.push(lines[i]);
+                }
+            }
+            if (inTable) {
+                result.push(renderTable(tableBuffer));
+            }
+            return result.join('\n');
+        }
+
+        function renderTable(rows) {
+            if (rows.length < 2) return rows.join('\n');
+
+            let html = '<table><thead>';
+            const headers = rows[0].split('|').map(s => s.trim()).filter((s, idx, arr) => idx > 0 && idx < arr.length - 1 || arr.length === 1 || s !== '');
+            const alignments = rows[1].split('|').map(s => s.trim()).filter((s, idx, arr) => idx > 0 && idx < arr.length - 1 || arr.length === 1 || s !== '');
+
+            const alignStyles = alignments.map(a => {
+                if (a.startsWith(':') && a.endsWith(':')) return 'text-align: center;';
+                if (a.endsWith(':')) return 'text-align: right;';
+                if (a.startsWith(':')) return 'text-align: left;';
+                return '';
+            });
+
+            html += '<tr>';
+            headers.forEach((h, idx) => {
+                const align = alignStyles[idx] || '';
+                const cleanH = h.replace(/\\n/g, '<br>');
+                html += `<th style="${align}">${cleanH}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            for (let i = 2; i < rows.length; i++) {
+                const cells = rows[i].split('|').map(s => s.trim()).filter((s, idx, arr) => idx > 0 && idx < arr.length - 1 || arr.length === 1 || s !== '');
+                html += '<tr>';
+                cells.forEach((c, idx) => {
+                    const align = alignStyles[idx] || '';
+                    const cleanC = c.replace(/\\n/g, '<br>');
+                    html += `<td style="${align}">${cleanC}</td>`;
+                });
+                html += '</tr>';
+            }
+
+            html += '</tbody></table>';
+            return html;
+        }
+
+        function parseLists(text) {
+            const lines = text.split('\n');
+            let result = [];
+            let inList = false;
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+
+                // Task Checkboxes
+                if (/^\s*[-\*]\s+\[ \]/.test(line)) {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    line = line.replace(/^\s*[-\*]\s+\[ \]\s*(.*)$/, '<div class="mark-task-item"><input type="checkbox" disabled> <span>$1</span></div>');
+                    result.push(line);
+                    continue;
+                }
+                if (/^\s*[-\*]\s+\[[xX]\]/.test(line)) {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    line = line.replace(/^\s*[-\*]\s+\[[xX]\]\s*(.*)$/, '<div class="mark-task-item"><input type="checkbox" checked disabled> <span class="line-through">$1</span></div>');
+                    result.push(line);
+                    continue;
+                }
+
+                // Standard Bullet Lists
+                if (/^\s*[-\*]\s+(.*)$/.test(line)) {
+                    const content = line.replace(/^\s*[-\*]\s+(.*)$/, '$1');
+                    if (!inList) {
+                        result.push('<ul>');
+                        inList = true;
+                    }
+                    result.push(`<li>${content}</li>`);
+                } else {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    result.push(line);
+                }
+            }
+            if (inList) {
+                result.push('</ul>');
+            }
+
+            return result.join('\n');
+        }
+
+        function parseParagraphs(text) {
+            return text.split(/\n\n+/).map(p => {
+                const trimmed = p.trim();
+                if (trimmed.startsWith('<h') || 
+                    trimmed.startsWith('<table') || 
+                    trimmed.startsWith('<div') || 
+                    trimmed.startsWith('<pre') || 
+                    trimmed.startsWith('<ul') || 
+                    trimmed.startsWith('<ol') || 
+                    trimmed.startsWith('<blockquote')) {
+                    return p;
+                }
+                return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+            }).join('\n');
+        }
+
+        function generateTOCHTML(headers, minLevel) {
+            if (headers.length === 0) return '';
+            const filtered = headers.filter(h => h.level >= minLevel);
+            if (filtered.length === 0) return '';
+
+            let tocHTML = '<div class="mark-toc"><div class="mark-toc-title">Table of Contents</div><ul>';
+            filtered.forEach(h => {
+                const indent = (h.level - minLevel) * 1.2;
+                tocHTML += `<li style="margin-left: ${indent}rem;"><a href="#${h.id}">${escapeHTML(h.title)}</a></li>`;
+            });
+            tocHTML += '</ul></div>';
+            return tocHTML;
+        }
+
+        function updateStats(text) {
+            const chars = text.length;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const lines = text.split('\n').length;
+
+            statChars.textContent = chars.toLocaleString();
+            statWords.textContent = words.toLocaleString();
+            statLines.textContent = lines.toLocaleString();
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>"']/g, match => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[match]));
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-yellow-400';
+            } else {
+                icon.className = 'fa-solid fa-moon text-gray-600';
+            }
+        }
+
+        function switchMobileTab(tab) {
+            const paneEditor = document.getElementById('pane-editor');
+            const panePreview = document.getElementById('pane-preview');
+            const tabEdit = document.getElementById('tab-edit');
+            const tabPreview = document.getElementById('tab-preview');
+
+            if (tab === 'edit') {
+                paneEditor.classList.remove('hidden');
+                panePreview.classList.add('hidden');
+                tabEdit.className = 'flex-1 py-1.5 text-xs font-semibold rounded bg-white dark:bg-gray-700 shadow-sm text-center';
+                tabPreview.className = 'flex-1 py-1.5 text-xs font-semibold rounded text-gray-600 dark:text-gray-400 hover:text-gray-900 text-center';
+            } else {
+                paneEditor.classList.add('hidden');
+                panePreview.classList.remove('hidden');
+                tabPreview.className = 'flex-1 py-1.5 text-xs font-semibold rounded bg-white dark:bg-gray-700 shadow-sm text-center';
+                tabEdit.className = 'flex-1 py-1.5 text-xs font-semibold rounded text-gray-600 dark:text-gray-400 hover:text-gray-900 text-center';
+            }
+        }
+
+        function toggleHelpModal(show) {
+            const modal = document.getElementById('help-modal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        function clearEditor() {
+            if (confirm("Are you sure you want to clear the editor?")) {
+                markdownInput.value = '';
+                parseAndRender();
+                showToast("Editor cleared");
+            }
+        }
+
+        async function copyRenderedHTML() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const customCSS = document.getElementById('mark-core-styles').innerHTML;
+            
+            const fullHTML = `<!DOCTYPE html>
+<html lang="en" class="${isDark ? 'dark' : ''}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Exported Document</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        mark: {
+                            bg: '#181a1b',
+                            card: '#222426',
+                            border: '#383c3e',
+                            text: '#e8e6e3',
+                            accent: '#458588',
+                            hover: '#326264'
+                        }
+                    }
+                }
+            }
+        }
+    <\/script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+${customCSS}
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text p-6 sm:p-10 min-h-screen transition-colors duration-200">
+    <!-- Floating Dark Mode Toggle Button -->
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleExportDarkMode()" title="Toggle Dark/Light Mode" class="p-2.5 rounded-full bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md transition flex items-center justify-center">
+            <i id="export-theme-icon" class="fa-solid ${isDark ? 'fa-sun text-yellow-400' : 'fa-moon text-gray-600'}"></i>
+        </button>
+    </div>
+
+    <div class="max-w-4xl mx-auto mark-rendered">
+${previewOutput.innerHTML}
+    </div>
+
+    <script>
+        function toggleExportDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('export-theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-yellow-400';
+            } else {
+                icon.className = 'fa-solid fa-moon text-gray-600';
+            }
+        }
+    <\/script>
+</body>
+</html>`;
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(fullHTML);
+                } else {
+                    // Fallback para entornos donde no esté disponible navigator.clipboard
+                    const textarea = document.createElement('textarea');
+                    textarea.value = fullHTML;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                }
+                showToast("Full styled HTML copied to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy HTML");
+            }
+        }
+
+        function downloadMarkdown() {
+            const blob = new Blob([markdownInput.value], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mark-entry.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Markdown file downloaded!");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('translate-y-10', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
