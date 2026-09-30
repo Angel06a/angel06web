@@ -134,6 +134,7 @@ Páginas Web (emoji.web)=(emoji.web)=:
   -GamesGX (Ps2 Roms) (Emular) =🕹️= "https://www.gamesgx.net/"
   -Icon Converter =⚙️= "https://redketchup.io/icon-converter" *Utilizar*
   -Jetpack Joyride =🎮= "https://emupedia.net/emupedia-game-jetpack-joyride/" *Jugar*
+  -MarkEditor =⚙️= "https://angel06a.github.io/angel06web/hub/markeditor/" *Utilizar*
   -NoPayStation (Ps3 Roms) (Emular) =🕹️= "https://nopaystation.com/browse"
   -OpenLara (Tomb Raider) =🎮= "https://emupedia.net/emupedia-game-tomb-raider/" *Jugar*
   -Photopea (Editor de Imagen) =⚙️= "https://www.photopea.com/" *Utilizar*
