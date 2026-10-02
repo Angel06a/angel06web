@@ -403,6 +403,30 @@ body {
   height: auto !important;
 }
 
+/* Listas: viñetas, numeración y sangría (Tailwind las resetea) */
+.mark-rendered ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.mark-rendered ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.mark-rendered ol ol,
+.mark-rendered ol ul,
+.mark-rendered ul ol,
+.mark-rendered ul ul {
+  margin-bottom: 0;
+}
+
+.mark-rendered li {
+  margin-bottom: 0.2rem;
+}
+
 .mark-toc {
   background-color: rgba(128, 128, 128, 0.08);
   border: 1px solid rgba(128, 128, 128, 0.2);
@@ -490,3 +514,154 @@ body {
     display: flex !important;
   }
 }
+
+/* =========================================================
+   Botones de la cabecera y de la barra del editor
+   Sustituyen las cadenas largas de clases Tailwind del HTML.
+   Colores = paleta de Tailwind. Modo oscuro con .dark.
+   Cada botón define --btn-bg / --btn-bg-hover / --btn-fg.
+   (Se usa "button.clase" para ganar al reset de Tailwind.)
+   ========================================================= */
+
+button.hdr-btn,
+button.hdr-icon-btn,
+button.tool-btn,
+button.tool-btn-label,
+select.hdr-select {
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+  border-radius: 0.25rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+button.hdr-btn:hover,
+button.hdr-icon-btn:hover,
+button.tool-btn:hover,
+button.tool-btn-label:hover,
+select.hdr-select:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+/* --- Cabecera: botones con texto + icono --- */
+button.hdr-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+@media (min-width: 640px) {
+  button.hdr-btn {
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+.hdr-btn--neutral { --btn-bg: #f3f4f6; --btn-bg-hover: #e5e7eb; --btn-fg: currentColor; }
+.dark .hdr-btn--neutral { --btn-bg: #374151; --btn-bg-hover: #4b5563; }
+
+.hdr-btn--primary { --btn-bg: #0d9488; --btn-bg-hover: #0f766e; --btn-fg: #ffffff; }
+button.hdr-btn.hdr-btn--primary { font-weight: 600; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+.hdr-btn--danger { --btn-bg: #fef2f2; --btn-bg-hover: #fee2e2; --btn-fg: #dc2626; }
+.dark .hdr-btn--danger { --btn-bg: rgba(69, 10, 10, 0.4); --btn-bg-hover: rgba(127, 29, 29, 0.6); --btn-fg: #f87171; }
+
+.hdr-btn--help { --btn-bg: #f0fdfa; --btn-bg-hover: #ccfbf1; --btn-fg: #0f766e; }
+.dark .hdr-btn--help { --btn-bg: rgba(4, 47, 46, 0.5); --btn-bg-hover: rgba(19, 78, 74, 0.8); --btn-fg: #5eead4; }
+
+/* --- Cabecera: botón de tema (solo icono) --- */
+.hdr-icon-btn { --btn-bg: transparent; --btn-bg-hover: #e5e7eb; --btn-fg: #4b5563; }
+.dark .hdr-icon-btn { --btn-bg-hover: #374151; --btn-fg: #d1d5db; }
+
+button.hdr-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+@media (min-width: 640px) {
+  button.hdr-icon-btn { width: 2.25rem; height: 2.25rem; }
+}
+
+/* --- Cabecera: selector de idioma --- */
+.hdr-select { --btn-bg: #f3f4f6; --btn-bg-hover: #e5e7eb; --btn-fg: #374151; --sel-border: #e5e7eb; }
+.dark .hdr-select { --btn-bg: #374151; --btn-bg-hover: #4b5563; --btn-fg: #e5e7eb; --sel-border: #4b5563; }
+
+select.hdr-select {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border: 1px solid var(--sel-border);
+}
+
+/* --- Menú desplegable de plantillas --- */
+button.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #374151;
+}
+
+button.menu-item:hover { background-color: #f3f4f6; }
+.dark button.menu-item { color: #e5e7eb; }
+.dark button.menu-item:hover { background-color: #374151; }
+
+@media (min-width: 640px) {
+  button.menu-item { font-size: 0.875rem; line-height: 1.25rem; }
+}
+
+/* --- Barra del editor: botones de icono --- */
+.tool-btn { --btn-bg: transparent; --btn-bg-hover: #e5e7eb; --btn-fg: #374151; }
+.dark .tool-btn { --btn-bg-hover: #374151; --btn-fg: #d1d5db; }
+button.tool-btn { padding: 0.375rem; flex-shrink: 0; }
+
+/* --- Barra del editor: botones con texto (Descarga, Badge, ...) --- */
+button.tool-btn-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.tb-blue    { --btn-bg: #dbeafe; --btn-bg-hover: #bfdbfe; --btn-fg: #1d4ed8; }
+.tb-indigo  { --btn-bg: #e0e7ff; --btn-bg-hover: #c7d2fe; --btn-fg: #4338ca; }
+.tb-amber   { --btn-bg: #fef3c7; --btn-bg-hover: #fde68a; --btn-fg: #b45309; }
+.tb-emerald { --btn-bg: #d1fae5; --btn-bg-hover: #a7f3d0; --btn-fg: #047857; }
+.tb-teal    { --btn-bg: #ccfbf1; --btn-bg-hover: #99f6e4; --btn-fg: #0f766e; }
+
+.dark .tb-blue    { --btn-bg: rgba(30, 58, 138, 0.4);  --btn-bg-hover: rgba(30, 64, 175, 0.6);  --btn-fg: #93c5fd; }
+.dark .tb-indigo  { --btn-bg: rgba(49, 46, 129, 0.4);  --btn-bg-hover: rgba(55, 48, 163, 0.6);  --btn-fg: #a5b4fc; }
+.dark .tb-amber   { --btn-bg: rgba(120, 53, 15, 0.4);  --btn-bg-hover: rgba(146, 64, 14, 0.6);  --btn-fg: #fcd34d; }
+.dark .tb-emerald { --btn-bg: rgba(6, 78, 59, 0.4);    --btn-bg-hover: rgba(6, 95, 70, 0.6);    --btn-fg: #6ee7b7; }
+.dark .tb-teal    { --btn-bg: rgba(19, 78, 74, 0.4);   --btn-bg-hover: rgba(17, 94, 89, 0.6);   --btn-fg: #5eead4; }
+
+/* --- Barra del editor: separador --- */
+.tool-sep {
+  flex-shrink: 0;
+  width: 1px;
+  height: 1rem;
+  margin: 0 0.125rem;
+  background-color: #d1d5db;
+}
+
+.dark .tool-sep { background-color: #374151; }
