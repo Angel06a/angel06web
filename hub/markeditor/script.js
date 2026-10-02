@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'mark_editor_content';
 
-const EMBEDDED_EXPORT_CSS = `:root{color-scheme:light;scrollbar-color:#cbd5e1 #f1f5f9;scrollbar-width:thin}html.dark{color-scheme:dark;scrollbar-color:#383c3e #181a1b}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:#f1f5f9}.dark ::-webkit-scrollbar-track{background:#181a1b}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}::-webkit-scrollbar-thumb:hover{background:#94a3b8}.dark ::-webkit-scrollbar-thumb{background:#383c3e;border-radius:4px}.dark ::-webkit-scrollbar-thumb:hover{background:#4b5563}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}.font-mono{font-family:'Fira Code',monospace}.pane-header{height:33px;min-height:33px;max-height:33px;padding:0 1rem;font-size:.75rem;font-weight:500;color:#6b7280;background-color:#f9fafb;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box;flex-shrink:0}.dark .pane-header{color:#9ca3af;background-color:#222426;border-color:#383c3e}.mark-rendered{color:inherit;line-height:1.6;word-wrap:break-word}.mark-rendered h1{font-size:2.1em;font-weight:700;margin-top:.8em;margin-bottom:.4em;border-bottom:1px solid currentColor;opacity:.95}.mark-rendered h2{font-size:1.65em;font-weight:600;margin-top:.7em;margin-bottom:.35em;border-bottom:1px solid rgba(128,128,128,.2)}.mark-rendered h3{font-size:1.35em;font-weight:600;margin-top:.6em;margin-bottom:.3em}.mark-rendered h4{font-size:1.15em;font-weight:600;margin-top:.5em;margin-bottom:.25em}.mark-rendered h5{font-size:1em;font-weight:600;margin-top:.4em;margin-bottom:.2em}.mark-rendered h6{font-size:.88em;font-weight:600;margin-top:.4em;margin-bottom:.2em;opacity:.8}.mark-rendered p{margin-bottom:.85em}.mark-rendered mark{background-color:#f6e05e;color:#1a202c;padding:.1em .3em;border-radius:.2em}.mark-admonition{border-left:4px solid;padding:.8em 1.1em;margin:1em 0;border-radius:0 .375rem .375rem 0;background-color:rgba(128,128,128,.08)}.mark-admonition-title{font-weight:700;margin-bottom:.4em;text-transform:capitalize;display:flex;align-items:center;gap:.5rem}.mark-admonition.note{border-color:#3b82f6}.mark-admonition.note .mark-admonition-title{color:#3b82f6}.mark-admonition.info{border-color:#06b6d4}.mark-admonition.info .mark-admonition-title{color:#06b6d4}.mark-admonition.warning{border-color:#f59e0b}.mark-admonition.warning .mark-admonition-title{color:#f59e0b}.mark-admonition.danger{border-color:#ef4444}.mark-admonition.danger .mark-admonition-title{color:#ef4444}.mark-admonition.greentext{border-color:#22c55e}.mark-admonition.greentext .mark-admonition-title{color:#22c55e}.mark-admonition.game,.mark-admonition.download{border-color:#8b5cf6}.mark-admonition.game .mark-admonition-title,.mark-admonition.download .mark-admonition-title{color:#8b5cf6}.mark-admonition.requirements,.mark-admonition.specs{border-color:#10b981}.mark-admonition.requirements .mark-admonition-title,.mark-admonition.specs .mark-admonition-title{color:#10b981}.mark-spoiler{background-color:#2d3748;color:transparent;cursor:pointer;padding:.1em .4em;border-radius:.25rem;transition:all .2s ease;user-select:none}.mark-spoiler.revealed,.mark-spoiler:hover{background-color:rgba(128,128,128,.2);color:inherit}.mark-rendered blockquote{border-left:4px solid #a0aec0;padding-left:1rem;margin:.8rem 0;color:#718096;font-style:italic}.dark .mark-rendered blockquote{border-left-color:#4a5568;color:#a0aec0}.mark-rendered table{width:100%;border-collapse:collapse;margin:1rem 0}.mark-rendered td,.mark-rendered th{border:1px solid #cbd5e0;padding:.5rem .8rem}.dark .mark-rendered td,.dark .mark-rendered th{border-color:#4a5568}.mark-rendered th{background-color:rgba(0,0,0,.05);font-weight:600}.dark .mark-rendered th{background-color:rgba(255,255,255,.05)}.mark-rendered pre{background-color:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:.375rem;overflow-x:auto;margin:.8rem 0;font-family:'Fira Code',monospace;font-size:.9em}.mark-rendered code{font-family:'Fira Code',monospace;background-color:rgba(128,128,128,.15);padding:.15em .4em;border-radius:.25rem;font-size:.9em}.mark-rendered pre code{background-color:transparent;padding:0}.mark-toc{background-color:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.2);border-radius:.375rem;padding:1rem;margin:1rem 0;display:inline-block;min-width:240px;max-width:100%}.mark-toc-title{font-weight:700;margin-bottom:.5rem;border-bottom:1px solid rgba(128,128,128,.2);padding-bottom:.25rem}.mark-toc ul{list-style-type:none;padding-left:1rem;margin:0}.mark-toc>ul{padding-left:0}.mark-toc a{color:#3182ce;text-decoration:none}.mark-toc a:hover{text-decoration:underline}.dark .mark-toc a{color:#63b3ed}.mark-link{color:inherit}.mark-rendered ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:.8rem}.mark-rendered ol{list-style-type:decimal;padding-left:1.5rem;margin-bottom:.8rem}.mark-rendered ol ol,.mark-rendered ol ul,.mark-rendered ul ol,.mark-rendered ul ul{margin-bottom:0}.mark-rendered li{margin-bottom:.2rem}.mark-task-list{list-style:none!important;padding-left:.5rem!important}.mark-task-item{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}.img-float-left{float:left;margin-right:1rem;margin-bottom:.5rem}.img-float-right{float:right;margin-left:1rem;margin-bottom:.5rem}.mark-download-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:.75rem;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff!important;padding:.5rem .85rem;border-radius:.375rem;text-decoration:none!important;font-weight:600;box-shadow:0 2px 8px rgba(2,132,199,.25);transition:all .2s ease-in-out;margin:.5rem 0;max-width:100%;width:fit-content;cursor:pointer}.mark-download-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(2,132,199,.35);background:linear-gradient(135deg,#0369a1,#075985)}.mark-download-btn.secondary{background:linear-gradient(135deg,#4b5563,#374151);box-shadow:0 2px 8px rgba(75,85,99,.25)}.mark-download-btn.secondary:hover{background:linear-gradient(135deg,#374151,#1f2937)}.mark-download-btn.success{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 2px 8px rgba(22,163,74,.25)}.mark-download-btn.success:hover{background:linear-gradient(135deg,#15803d,#166534)}.mark-download-btn .btn-text{display:flex;flex-direction:column}.mark-download-btn .btn-title{font-size:.85em;font-weight:600;line-height:1.25}.mark-download-btn .btn-sub{font-size:.7em;opacity:.85;font-weight:400;margin-top:.1rem}.mark-download-btn .btn-icon{font-size:1.1em}.mark-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2em .55em;font-size:.8em;font-weight:600;border-radius:.375rem;background-color:rgba(13,148,136,.15);color:#0d9488;border:1px solid rgba(13,148,136,.3);margin:.15rem .2rem;vertical-align:middle}.dark .mark-badge{color:#2dd4bf;background-color:rgba(13,148,136,.2);border-color:rgba(45,212,191,.35)}.mark-rating{display:inline-flex;align-items:center;gap:.4rem;color:#f59e0b;font-weight:700;font-size:.95em;margin:.25rem 0}.mark-rating-stars{display:inline-flex;gap:.15rem}.mark-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem;margin:1rem 0}.mark-gallery img{width:100%;height:150px;object-fit:cover;border-radius:.375rem;transition:transform .2s ease,box-shadow .2s ease}.mark-gallery img:hover{transform:scale(1.025);box-shadow:0 8px 16px rgba(0,0,0,.3)}`;
+const EMBEDDED_EXPORT_CSS = `*,::before,::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}:root{color-scheme:light;scrollbar-color:#cbd5e1 #f1f5f9;scrollbar-width:thin}html.dark{color-scheme:dark;scrollbar-color:#383c3e #181a1b}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:#f1f5f9}.dark ::-webkit-scrollbar-track{background:#181a1b}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}::-webkit-scrollbar-thumb:hover{background:#94a3b8}.dark ::-webkit-scrollbar-thumb{background:#383c3e;border-radius:4px}.dark ::-webkit-scrollbar-thumb:hover{background:#4b5563}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}.font-mono{font-family:'Fira Code',monospace}.mark-rendered{color:inherit;line-height:1.6;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word;max-width:100%;width:100%}.mark-rendered h1{font-size:2.1em;font-weight:700;margin-top:.8em;margin-bottom:.4em;border-bottom:1px solid currentColor;opacity:.95}.mark-rendered h2{font-size:1.65em;font-weight:600;margin-top:.7em;margin-bottom:.35em;border-bottom:1px solid rgba(128,128,128,.2)}.mark-rendered h3{font-size:1.35em;font-weight:600;margin-top:.6em;margin-bottom:.3em}.mark-rendered h4{font-size:1.15em;font-weight:600;margin-top:.5em;margin-bottom:.25em}.mark-rendered h5{font-size:1em;font-weight:600;margin-top:.4em;margin-bottom:.2em}.mark-rendered h6{font-size:.88em;font-weight:600;margin-top:.4em;margin-bottom:.2em;opacity:.8}.mark-rendered p{margin-bottom:.85em}.mark-rendered mark{background-color:#f6e05e;color:#1a202c;padding:.1em .3em;border-radius:.2em}.mark-admonition{border-left:4px solid;padding:.8em 1.1em;margin:1em 0;border-radius:0 .375rem .375rem 0;background-color:rgba(128,128,128,.08);max-width:100%;overflow-x:auto}.mark-admonition-title{font-weight:700;margin-bottom:.4em;text-transform:capitalize;display:flex;align-items:center;gap:.5rem}.mark-admonition.note{border-color:#3b82f6}.mark-admonition.note .mark-admonition-title{color:#3b82f6}.mark-admonition.info{border-color:#06b6d4}.mark-admonition.info .mark-admonition-title{color:#06b6d4}.mark-admonition.warning{border-color:#f59e0b}.mark-admonition.warning .mark-admonition-title{color:#f59e0b}.mark-admonition.danger{border-color:#ef4444}.mark-admonition.danger .mark-admonition-title{color:#ef4444}.mark-admonition.greentext{border-color:#22c55e}.mark-admonition.greentext .mark-admonition-title{color:#22c55e}.mark-admonition.game,.mark-admonition.download{border-color:#8b5cf6}.mark-admonition.game .mark-admonition-title,.mark-admonition.download .mark-admonition-title{color:#8b5cf6}.mark-admonition.requirements,.mark-admonition.specs{border-color:#10b981}.mark-admonition.requirements .mark-admonition-title,.mark-admonition.specs .mark-admonition-title{color:#10b981}.mark-spoiler{background-color:#2d3748;color:transparent;cursor:pointer;padding:.1em .4em;border-radius:.25rem;transition:all .2s ease;user-select:none}.mark-spoiler.revealed,.mark-spoiler:hover{background-color:rgba(128,128,128,.2);color:inherit}.mark-rendered blockquote{border-left:4px solid #a0aec0;padding-left:1rem;margin:.8rem 0;color:#718096;font-style:italic}.dark .mark-rendered blockquote{border-left-color:#4a5568;color:#a0aec0}.mark-rendered table{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-collapse:collapse;margin:1rem 0}.mark-rendered td,.mark-rendered th{border:1px solid #cbd5e0;padding:.5rem .8rem}.dark .mark-rendered td,.dark .mark-rendered th{border-color:#4a5568}.mark-rendered th{background-color:rgba(0,0,0,.05);font-weight:600}.dark .mark-rendered th{background-color:rgba(255,255,255,.05)}.mark-rendered pre{background-color:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:.375rem;overflow-x:auto;margin:.8rem 0;font-family:'Fira Code',monospace;font-size:.9em;max-width:100%;white-space:pre-wrap;word-break:break-all}.mark-rendered code{font-family:'Fira Code',monospace;background-color:rgba(128,128,128,.15);padding:.15em .4em;border-radius:.25rem;font-size:.9em;word-break:break-word}.mark-rendered pre code{background-color:transparent;padding:0;white-space:pre-wrap;word-break:break-all}.mark-rendered img{max-width:100%!important;height:auto!important}.mark-toc{background-color:rgba(128,128,128,.08);border:1px solid rgba(128,128,128,.2);border-radius:.375rem;padding:1rem;margin:1rem 0;display:block;width:fit-content;max-width:100%;overflow-x:auto}.mark-toc-title{font-weight:700;margin-bottom:.5rem;border-bottom:1px solid rgba(128,128,128,.2);padding-bottom:.25rem}.mark-toc ul{list-style-type:none;padding-left:1rem;margin:0}.mark-toc>ul{padding-left:0}.mark-toc a{color:#3182ce;text-decoration:none}.mark-toc a:hover{text-decoration:underline}.dark .mark-toc a{color:#63b3ed}.mark-link{color:inherit;word-break:break-word}.mark-rendered ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:.8rem}.mark-rendered ol{list-style-type:decimal;padding-left:1.5rem;margin-bottom:.8rem}.mark-rendered ol ol,.mark-rendered ol ul,.mark-rendered ul ol,.mark-rendered ul ul{margin-bottom:0}.mark-rendered li{margin-bottom:.2rem}.mark-task-list{list-style:none!important;padding-left:.5rem!important}.mark-task-item{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}.img-float-left{float:left;margin-right:1rem;margin-bottom:.5rem}.img-float-right{float:right;margin-left:1rem;margin-bottom:.5rem}@media (max-width:640px){.img-float-left,.img-float-right{float:none!important;display:block!important;margin:.5rem auto!important;max-width:100%!important}}.mark-download-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:.75rem;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff!important;padding:.5rem .85rem;border-radius:.375rem;text-decoration:none!important;font-weight:600;box-shadow:0 2px 8px rgba(2,132,199,.25);transition:all .2s ease-in-out;margin:.5rem 0;max-width:100%;width:fit-content;cursor:pointer;word-break:break-word}.mark-download-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(2,132,199,.35);background:linear-gradient(135deg,#0369a1,#075985)}.mark-download-btn.secondary{background:linear-gradient(135deg,#4b5563,#374151);box-shadow:0 2px 8px rgba(75,85,99,.25)}.mark-download-btn.secondary:hover{background:linear-gradient(135deg,#374151,#1f2937)}.mark-download-btn.success{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 2px 8px rgba(22,163,74,.25)}.mark-download-btn.success:hover{background:linear-gradient(135deg,#15803d,#166534)}.mark-download-btn .btn-text{display:flex;flex-direction:column}.mark-download-btn .btn-title{font-size:.85em;font-weight:600;line-height:1.25}.mark-download-btn .btn-sub{font-size:.7em;opacity:.85;font-weight:400;margin-top:.1rem}.mark-download-btn .btn-icon{font-size:1.1em}.mark-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2em .55em;font-size:.8em;font-weight:600;border-radius:.375rem;background-color:rgba(13,148,136,.15);color:#0d9488;border:1px solid rgba(13,148,136,.3);margin:.15rem .2rem;vertical-align:middle}.dark .mark-badge{color:#2dd4bf;background-color:rgba(13,148,136,.2);border-color:rgba(45,212,191,.35)}.mark-rating{display:inline-flex;align-items:center;gap:.4rem;color:#f59e0b;font-weight:700;font-size:.95em;margin:.25rem 0}.mark-rating-stars{display:inline-flex;gap:.15rem}.mark-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:.75rem;margin:1rem 0;width:100%;max-width:100%}.mark-gallery img{width:100%;height:150px;object-fit:cover;border-radius:.375rem;transition:transform .2s ease,box-shadow .2s ease}.mark-gallery img:hover{transform:scale(1.025);box-shadow:0 8px 16px rgba(0,0,0,.3)}`;
 
 const markdownInput = document.getElementById('markdown-input');
 const previewOutput = document.getElementById('preview-output');
@@ -23,7 +23,7 @@ function getCookie(name) {
   const ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {
     let c = ca[i].trim();
-    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
   }
   return null;
 }
@@ -31,7 +31,7 @@ function getCookie(name) {
 let currentLang = getCookie('user_lang') || 'es';
 
 function t(key) {
-  return (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key;
+  return (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[currentLang]?.[key]) || key;
 }
 
 function changeLanguage(lang) {
@@ -53,23 +53,17 @@ function applyLanguage(lang) {
 
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (dict[key]) {
-      el.textContent = dict[key];
-    }
+    if (dict[key]) el.textContent = dict[key];
   });
 
   document.querySelectorAll('[data-i18n-title]').forEach(el => {
     const key = el.getAttribute('data-i18n-title');
-    if (dict[key]) {
-      el.setAttribute('title', dict[key]);
-    }
+    if (dict[key]) el.setAttribute('title', dict[key]);
   });
 
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
-    if (dict[key]) {
-      el.setAttribute('placeholder', dict[key]);
-    }
+    if (dict[key]) el.setAttribute('placeholder', dict[key]);
   });
 }
 
@@ -186,11 +180,9 @@ function parseAndRender() {
     .replace(/^->\s*(.*?)\s*->$/gm, '<p style="text-align: right; font-weight: 600;">$1</p>')
     .replace(/\[TOC(\d?)\]/g, (_, minLevel) => generateTOCHTML(headersList, minLevel ? parseInt(minLevel, 10) : 1));
 
-  text = text.replace(/:::\s*gallery\s*\n([\s\S]*?)\n:::/gi, (_, galleryContent) => {
-    return `<div class="mark-gallery">${galleryContent}</div>`;
-  });
+  text = text.replace(/:::\s*gallery\s*\n([\s\S]*?)\n:::/gi, (_, galleryContent) => `<div class="mark-gallery">${galleryContent}</div>`);
 
-  text = text.replace(/\[download:\s*([^\]]+)\]/gi, (match, content) => {
+  text = text.replace(/\[download:\s*([^\]]+)\]/gi, (_, content) => {
     const parts = content.split('|').map(s => s.trim());
     const title = escapeHTML(parts[0] || 'Descargar');
     const href = parts[1] || '#';
@@ -206,24 +198,20 @@ function parseAndRender() {
     </a>`;
   });
 
-  text = text.replace(/\[badge:\s*([^\]]+)\]/gi, (match, content) => {
+  text = text.replace(/\[badge:\s*([^\]]+)\]/gi, (_, content) => {
     const parts = content.split('|').map(s => s.trim());
     const textVal = escapeHTML(parts[0] || '');
     const color = parts[1] || '';
     let customStyle = '';
     if (color) {
-      if (color.startsWith('#')) {
-        customStyle = `style="background-color: ${color}25; color: ${color}; border-color: ${color}50;"`;
-      } else {
-        customStyle = `style="background-color: ${color};"`;
-      }
+      customStyle = color.startsWith('#')
+        ? `style="background-color: ${color}25; color: ${color}; border-color: ${color}50;"`
+        : `style="background-color: ${color};"`;
     }
     return `<span class="mark-badge" ${customStyle}>${textVal}</span>`;
   });
 
-  text = text.replace(/\[rating:\s*([\d\.]+)(?:\/(\d+))?\]/gi, (match, scoreVal) => {
-    return renderRatingStars(parseFloat(scoreVal) || 0);
-  });
+  text = text.replace(/\[rating:\s*([\d\.]+)(?:\/(\d+))?\]/gi, (_, scoreVal) => renderRatingStars(parseFloat(scoreVal) || 0));
 
   text = parseTables(text);
 
@@ -284,12 +272,8 @@ function parseAndRender() {
   text = parseLists(text);
   text = parseParagraphs(text);
 
-  inlineCodes.forEach((codeHTML, idx) => {
-    text = text.replace(`___INLINE_CODE_${idx}___`, codeHTML);
-  });
-  codeBlocks.forEach((blockHTML, idx) => {
-    text = text.replace(`___CODE_BLOCK_${idx}___`, blockHTML);
-  });
+  inlineCodes.forEach((codeHTML, idx) => { text = text.replace(`___INLINE_CODE_${idx}___`, codeHTML); });
+  codeBlocks.forEach((blockHTML, idx) => { text = text.replace(`___CODE_BLOCK_${idx}___`, blockHTML); });
 
   requestAnimationFrame(() => {
     previewOutput.innerHTML = text;
@@ -302,16 +286,11 @@ function parseAndRender() {
 }
 
 function renderRatingStars(score) {
-  const maxScore = 5;
   let starsHtml = '';
-  for (let i = 1; i <= maxScore; i++) {
-    if (score >= i) {
-      starsHtml += '<i class="fa-solid fa-star"></i>';
-    } else if (score >= i - 0.5) {
-      starsHtml += '<i class="fa-solid fa-star-half-stroke"></i>';
-    } else {
-      starsHtml += '<i class="fa-regular fa-star opacity-40"></i>';
-    }
+  for (let i = 1; i <= 5; i++) {
+    if (score >= i) starsHtml += '<i class="fa-solid fa-star"></i>';
+    else if (score >= i - 0.5) starsHtml += '<i class="fa-solid fa-star-half-stroke"></i>';
+    else starsHtml += '<i class="fa-regular fa-star opacity-40"></i>';
   }
   return `<span class="mark-rating"><span class="mark-rating-stars">${starsHtml}</span> <span class="text-xs font-bold text-gray-700 dark:text-gray-300">(${score.toFixed(1)}/5)</span></span>`;
 }
@@ -325,9 +304,7 @@ function parseAdmonitions(text) {
   const lines = text.split('\n');
   const result = [];
   let inAdmonition = false;
-  let admType = 'warning';
-  let admTitle = '';
-  let admContent = [];
+  let admType = 'warning', admTitle = '', admContent = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -357,50 +334,34 @@ function parseAdmonitions(text) {
     }
   }
 
-  if (inAdmonition) {
-    result.push(renderAdmonitionBlock(admType, admTitle, admContent));
-  }
-
+  if (inAdmonition) result.push(renderAdmonitionBlock(admType, admTitle, admContent));
   return result.join('\n');
 }
 
 function renderAdmonitionBlock(type, title, contentLines) {
   const icons = {
-    note: 'fa-circle-info',
-    info: 'fa-circle-exclamation',
-    warning: 'fa-triangle-exclamation',
-    danger: 'fa-radiation',
-    greentext: 'fa-check-circle',
-    game: 'fa-gamepad',
-    download: 'fa-circle-down',
-    requirements: 'fa-microchip',
-    specs: 'fa-sliders'
+    note: 'fa-circle-info', info: 'fa-circle-exclamation', warning: 'fa-triangle-exclamation',
+    danger: 'fa-radiation', greentext: 'fa-check-circle', game: 'fa-gamepad',
+    download: 'fa-circle-down', requirements: 'fa-microchip', specs: 'fa-sliders'
   };
-  const icon = icons[type] || 'fa-bell';
-  const body = contentLines.join('\n').trim();
   return `<div class="mark-admonition ${type}">
-    <div class="mark-admonition-title"><i class="fa-solid ${icon}"></i> ${escapeHTML(title)}</div>
-    <div>${body}</div>
+    <div class="mark-admonition-title"><i class="fa-solid ${icons[type] || 'fa-bell'}"></i> ${escapeHTML(title)}</div>
+    <div>${contentLines.join('\n').trim()}</div>
   </div>`;
 }
 
 function parseMarkColors(text) {
-  let prevText;
-  const colorRegex = /%([#\w]+)%\s*([\s\S]*?)\s*%%/g;
+  let prev;
   do {
-    prevText = text;
-    text = text.replace(colorRegex, (_, color, content) => `<span style="color: ${color};">${content}</span>`);
-  } while (text !== prevText);
+    prev = text;
+    text = text.replace(/%([#\w]+)%\s*([\s\S]*?)\s*%%/g, '<span style="color: $1;">$2</span>');
+  } while (text !== prev);
   return text;
 }
 
 function formatMarkUnderline(p1, p2, p3, p4, content) {
   const params = [p1, p2, p3, p4].map(p => p ? p.replace(';', '').trim() : 'default');
-
-  let color = 'currentColor';
-  let style = 'solid';
-  let type = 'underline';
-  let thickness = '1px';
+  let color = 'currentColor', style = 'solid', type = 'underline', thickness = '1px';
 
   params.forEach(val => {
     if (!val || val === 'default') return;
@@ -415,8 +376,7 @@ function formatMarkUnderline(p1, p2, p3, p4, content) {
 
 function parseTables(text) {
   const lines = text.split('\n');
-  let inTable = false;
-  let tableBuffer = [];
+  let inTable = false, tableBuffer = [];
   const result = [];
 
   for (let i = 0; i < lines.length; i++) {
@@ -433,9 +393,7 @@ function parseTables(text) {
       result.push(lines[i]);
     }
   }
-  if (inTable) {
-    result.push(renderTable(tableBuffer));
-  }
+  if (inTable) result.push(renderTable(tableBuffer));
   return result.join('\n');
 }
 
@@ -468,8 +426,7 @@ function renderTable(rows) {
     html += '</tr>';
   }
 
-  html += '</tbody></table>';
-  return html;
+  return html + '</tbody></table>';
 }
 
 function parseLists(text) {
@@ -482,21 +439,18 @@ function parseLists(text) {
 
     if (/^\s*[-\*]\s+\[ \]/.test(line)) {
       if (inList) { result.push('</ul>'); inList = false; }
-      line = line.replace(/^\s*[-\*]\s+\[ \]\s*(.*)$/, '<div class="mark-task-item"><input type="checkbox" disabled> <span>$1</span></div>');
-      result.push(line);
+      result.push(line.replace(/^\s*[-\*]\s+\[ \]\s*(.*)$/, '<div class="mark-task-item"><input type="checkbox" disabled> <span>$1</span></div>'));
       continue;
     }
     if (/^\s*[-\*]\s+\[[xX]\]/.test(line)) {
       if (inList) { result.push('</ul>'); inList = false; }
-      line = line.replace(/^\s*[-\*]\s+\[[xX]\]\s*(.*)$/, '<div class="mark-task-item"><input type="checkbox" checked disabled> <span class="line-through">$1</span></div>');
-      result.push(line);
+      result.push(line.replace(/^\s*[-\*]\s+\[[xX]\]\s*(.*)$/, '<div class="mark-task-item"><input type="checkbox" checked disabled> <span class="line-through">$1</span></div>'));
       continue;
     }
 
     if (/^\s*[-\*]\s+(.+)$/.test(line)) {
-      const content = line.replace(/^\s*[-\*]\s+(.+)$/, '$1');
       if (!inList) { result.push('<ul>'); inList = true; }
-      result.push(`<li>${content}</li>`);
+      result.push(`<li>${line.replace(/^\s*[-\*]\s+(.+)$/, '$1')}</li>`);
     } else {
       if (inList) { result.push('</ul>'); inList = false; }
       result.push(line);
@@ -510,9 +464,7 @@ function parseLists(text) {
 function parseParagraphs(text) {
   return text.split(/\n\n+/).map(p => {
     const trimmed = p.trim();
-    if (/^<(h[1-6]|table|div|pre|ul|ol|blockquote)/i.test(trimmed)) {
-      return p;
-    }
+    if (/^<(h[1-6]|table|div|pre|ul|ol|blockquote)/i.test(trimmed)) return p;
     return `<p>${p.replace(/\n/g, '<br>')}</p>`;
   }).join('\n');
 }
@@ -533,13 +485,9 @@ function generateTOCHTML(headers, minLevel) {
 
 function updateStats(text) {
   if (!statChars || !statWords || !statLines) return;
-  const chars = text.length;
-  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const lines = text.split('\n').length;
-
-  statChars.textContent = chars.toLocaleString();
-  statWords.textContent = words.toLocaleString();
-  statLines.textContent = lines.toLocaleString();
+  statChars.textContent = text.length.toLocaleString();
+  statWords.textContent = (text.trim() ? text.trim().split(/\s+/).length : 0).toLocaleString();
+  statLines.textContent = text.split('\n').length.toLocaleString();
 }
 
 function toggleDarkMode() {
@@ -549,10 +497,11 @@ function toggleDarkMode() {
 
 function updateThemeIcon() {
   const icon = document.getElementById('theme-icon');
-  if (!icon) return;
-  icon.className = document.documentElement.classList.contains('dark')
-    ? 'fa-solid fa-sun text-yellow-400'
-    : 'fa-solid fa-moon text-gray-600';
+  if (icon) {
+    icon.className = document.documentElement.classList.contains('dark')
+      ? 'fa-solid fa-sun text-yellow-400'
+      : 'fa-solid fa-moon text-gray-600';
+  }
 }
 
 function switchMobileTab(tab) {
@@ -560,20 +509,17 @@ function switchMobileTab(tab) {
   const panePreview = document.getElementById('pane-preview');
   const tabEdit = document.getElementById('tab-edit');
   const tabPreview = document.getElementById('tab-preview');
-
   const isEdit = tab === 'edit';
+
   if (paneEditor) paneEditor.classList.toggle('hidden', !isEdit);
   if (panePreview) {
     panePreview.classList.toggle('hidden', isEdit);
-    if (!isEdit) {
-      panePreview.classList.add('flex');
-    } else {
-      panePreview.classList.remove('flex');
-    }
+    panePreview.classList.toggle('flex', !isEdit);
   }
 
-  const activeClass = 'flex-1 py-1.5 text-xs font-semibold rounded bg-white dark:bg-gray-700 shadow-sm text-center';
-  const inactiveClass = 'flex-1 py-1.5 text-xs font-semibold rounded text-gray-600 dark:text-gray-400 hover:text-gray-900 text-center';
+  const baseBtnClass = 'flex-1 py-1.5 text-xs font-semibold rounded text-center ';
+  const activeClass = baseBtnClass + 'bg-white dark:bg-gray-700 shadow-sm';
+  const inactiveClass = baseBtnClass + 'text-gray-600 dark:text-gray-400 hover:text-gray-900 text-center';
 
   if (tabEdit) tabEdit.className = isEdit ? activeClass : inactiveClass;
   if (tabPreview) tabPreview.className = isEdit ? inactiveClass : activeClass;
@@ -694,14 +640,14 @@ async function copyRenderedHTML() {
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>${EMBEDDED_EXPORT_CSS}</style>
 </head>
-<body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text p-6 sm:p-10 min-h-screen transition-colors duration-200">
+<body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text p-4 sm:p-8 md:p-10 min-h-screen transition-colors duration-200 max-w-full overflow-x-hidden">
   <script type="text/template" id="mark-raw-markdown">${safeRawMarkdown}</script>
-  <div class="fixed top-4 right-4 z-50">
-    <button onclick="toggleExportDarkMode()" title="Cambiar modo claro/oscuro" class="w-10 h-10 rounded-full bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md transition flex items-center justify-center">
+  <div class="fixed top-3 right-3 sm:top-4 sm:right-4 z-50">
+    <button onclick="toggleExportDarkMode()" title="Cambiar modo claro/oscuro" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md transition flex items-center justify-center">
       <i id="export-theme-icon" class="fa-solid ${isDark ? 'fa-sun text-yellow-400' : 'fa-moon text-gray-600'}"></i>
     </button>
   </div>
-  <div class="max-w-4xl mx-auto mark-rendered">
+  <div class="max-w-4xl mx-auto mark-rendered w-full box-border">
 ${previewOutput.innerHTML}
   </div>
   <script>
