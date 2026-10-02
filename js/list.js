@@ -7,6 +7,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Call of Duty: Black Ops 1 "https://pivigames.blog/call-of-duty-black-ops-zombies-y-multiplayer-online/"
   -Call of Duty: Black Ops 2 "https://pivigames.blog/call-of-duty-black-ops-2-zombies-multiplayer-con-bots/"
   -Call of Duty: Modern Warfare 3 "https://pivigames.blog/call-of-duty-moder-warfare-3-con-multijugador-online/"
+  -CB Servers Launcher (CoD Launcher) "https://docs.cbservers.xyz/launcher"
   -Clone Drone in the Danger Zone "https://www.mediafire.com/file/cs7iz3ckjpuoh6b/Clone_Drone_in_the_Danger_Zone.zip/file"
   -Cuphead "https://steamunlocked.org/cuphead-free-download/"
   -Downwell "https://elenemigos.com/app/downwell-descargar-gratis/21530"
