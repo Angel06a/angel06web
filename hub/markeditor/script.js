@@ -702,3 +702,33 @@ function showToast(message) {
     toast.classList.add('translate-y-10', 'opacity-0');
   }, 2500);
 }
+
+
+// Barra de herramientas del editor: la rueda del mouse desplaza horizontalmente (con suavizado)
+(function () {
+  const toolbar = document.querySelector("#pane-editor .overflow-x-auto");
+  if (!toolbar) return;
+  let target = 0, raf = null;
+
+  function step() {
+    const diff = target - toolbar.scrollLeft;
+    if (Math.abs(diff) < 1) {
+      toolbar.scrollLeft = target;
+      raf = null;
+      return;
+    }
+    const move = diff * 0.18;
+    toolbar.scrollLeft += Math.abs(move) < 1 ? Math.sign(diff) : move;
+    raf = requestAnimationFrame(step);
+  }
+
+  toolbar.addEventListener("wheel", function (e) {
+    const max = toolbar.scrollWidth - toolbar.clientWidth;
+    if (e.deltaX !== 0 || max <= 0) return;
+    e.preventDefault();
+    if (raf === null) target = toolbar.scrollLeft;
+    const delta = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaY;
+    target = Math.max(0, Math.min(max, target + delta));
+    if (raf === null) raf = requestAnimationFrame(step);
+  }, { passive: false });
+})();
