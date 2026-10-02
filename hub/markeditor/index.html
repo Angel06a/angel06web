@@ -31,17 +31,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text h-full flex flex-col transition-colors duration-200">
+<body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text h-full flex flex-col transition-colors duration-200 max-w-full overflow-x-hidden">
 
-  <header class="bg-white dark:bg-mark-card border-b border-gray-200 dark:border-mark-border px-4 py-2.5 flex items-center justify-between shadow-sm z-10 flex-shrink-0">
-    <div class="flex items-center space-x-3">
-      <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-file-pen text-teal-600 dark:text-teal-400 text-xl"></i>
-        <span class="font-bold text-lg tracking-tight">Mark<span class="text-teal-600 dark:text-teal-400">Editor</span></span>
-      </div>
+  <header class="bg-white dark:bg-mark-card border-b border-gray-200 dark:border-mark-border px-3 sm:px-4 py-2 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 shadow-sm z-10 flex-shrink-0 w-full max-w-full">
+    <div class="flex items-center space-x-2 flex-shrink-0">
+      <i class="fa-solid fa-file-pen text-teal-600 dark:text-teal-400 text-xl"></i>
+      <span class="font-bold text-lg tracking-tight">Mark<span class="text-teal-600 dark:text-teal-400">Editor</span></span>
     </div>
 
-    <div class="flex items-center space-x-1.5 sm:space-x-2">
+    <div class="flex items-center gap-1 sm:gap-1.5 flex-wrap justify-end">
       <!-- Selector de Idioma -->
       <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs font-semibold px-2 py-1.5 rounded transition cursor-pointer outline-none border border-gray-200 dark:border-gray-600">
         <option value="es">ES 🇪🇸</option>
@@ -49,7 +47,7 @@
       </select>
 
       <div class="relative inline-block text-left" id="templates-dropdown-container">
-        <button id="btn-templates" onclick="toggleTemplatesDropdown(event)" data-i18n-title="btn_templates" title="Cargar plantillas prediseñadas" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white transition flex items-center gap-1.5 shadow-sm">
+        <button id="btn-templates" onclick="toggleTemplatesDropdown(event)" data-i18n-title="btn_templates" title="Cargar plantillas prediseñadas" class="px-2 sm:px-2.5 py-1.5 rounded text-xs sm:text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white transition flex items-center gap-1.5 shadow-sm">
           <i class="fa-solid fa-folder-open"></i> <span class="hidden md:inline" data-i18n="btn_templates">Plantillas</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
         </button>
         <div id="templates-menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border ring-1 ring-black ring-opacity-5 z-50">
@@ -64,30 +62,30 @@
         </div>
       </div>
 
-      <button id="btn-copy" onclick="copyRenderedHTML()" data-i18n-title="btn_copy" title="Copiar HTML renderizado" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+      <button id="btn-copy" onclick="copyRenderedHTML()" data-i18n-title="btn_copy" title="Copiar HTML renderizado" class="px-2 sm:px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
         <i class="fa-regular fa-copy"></i> <span class="hidden md:inline" data-i18n="btn_copy">Copiar HTML</span>
       </button>
-      <button id="btn-download" onclick="downloadMarkdown()" data-i18n-title="btn_download" title="Descargar texto raw markdown" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+      <button id="btn-download" onclick="downloadMarkdown()" data-i18n-title="btn_download" title="Descargar texto raw markdown" class="px-2 sm:px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
         <i class="fa-solid fa-download"></i> <span class="hidden md:inline" data-i18n="btn_download">Exportar</span>
       </button>
-      <button id="btn-import" onclick="triggerImport()" data-i18n-title="btn_import" title="Importar archivo .md o .html" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
+      <button id="btn-import" onclick="triggerImport()" data-i18n-title="btn_import" title="Importar archivo .md o .html" class="px-2 sm:px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-1.5">
         <i class="fa-solid fa-file-import"></i> <span class="hidden md:inline" data-i18n="btn_import">Importar</span>
       </button>
       <input type="file" id="file-import-input" accept=".md,.markdown,.html,.htm,.txt" onchange="handleFileImport(event)" class="hidden">
-      <button id="btn-clear" onclick="clearEditor()" data-i18n-title="btn_clear" title="Limpiar contenido del editor" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-900/60 dark:text-red-400 transition flex items-center gap-1.5">
+      <button id="btn-clear" onclick="clearEditor()" data-i18n-title="btn_clear" title="Limpiar contenido del editor" class="px-2 sm:px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-900/60 dark:text-red-400 transition flex items-center gap-1.5">
         <i class="fa-solid fa-trash-can"></i> <span class="hidden md:inline" data-i18n="btn_clear">Limpiar</span>
       </button>
-      <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-1"></div>
-      <button onclick="toggleHelpModal(true)" data-i18n-title="btn_help" title="Guía de sintaxis" class="px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-teal-50 hover:bg-teal-100 text-teal-700 dark:bg-teal-950/50 dark:hover:bg-teal-900/80 dark:text-teal-300 transition flex items-center gap-1.5">
+      <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5 sm:mx-1 hidden sm:block"></div>
+      <button onclick="toggleHelpModal(true)" data-i18n-title="btn_help" title="Guía de sintaxis" class="px-2 sm:px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium bg-teal-50 hover:bg-teal-100 text-teal-700 dark:bg-teal-950/50 dark:hover:bg-teal-900/80 dark:text-teal-300 transition flex items-center gap-1.5">
         <i class="fa-solid fa-circle-question"></i> <span class="hidden md:inline" data-i18n="btn_help">Ayuda</span>
       </button>
-      <button onclick="toggleDarkMode()" title="Cambiar tema Oscuro/Claro" class="w-9 h-9 flex items-center justify-center rounded text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+      <button onclick="toggleDarkMode()" title="Cambiar tema Oscuro/Claro" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
         <i id="theme-icon" class="fa-solid fa-moon"></i>
       </button>
     </div>
   </header>
 
-  <div class="flex lg:hidden bg-gray-200 dark:bg-gray-800 p-1 border-b border-gray-300 dark:border-gray-700 flex-shrink-0">
+  <div class="flex lg:hidden bg-gray-200 dark:bg-gray-800 p-1 border-b border-gray-300 dark:border-gray-700 flex-shrink-0 w-full">
     <button id="tab-edit" onclick="switchMobileTab('edit')" class="flex-1 py-1.5 text-xs font-semibold rounded bg-white dark:bg-gray-700 shadow-sm text-center">
       <i class="fa-solid fa-code mr-1"></i> <span data-i18n="tab_edit">Editor Markdown</span>
     </button>
@@ -96,8 +94,8 @@
     </button>
   </div>
 
-  <main class="flex-1 flex overflow-hidden relative min-h-0">
-    <section id="pane-editor" class="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg h-full min-h-0">
+  <main class="flex-1 flex overflow-hidden relative min-h-0 min-w-0 w-full">
+    <section id="pane-editor" class="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg h-full min-h-0 min-w-0">
       <div class="pane-header">
         <div class="flex items-center gap-1.5">
           <i class="fa-solid fa-pen-to-square"></i>
@@ -106,37 +104,37 @@
         <span class="text-[10px] bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 px-1.5 py-0.5 rounded font-semibold leading-none">Extended Dialect</span>
       </div>
 
-      <div class="bg-gray-100 dark:bg-gray-800/60 px-3 py-1.5 border-b border-gray-200 dark:border-mark-border flex flex-wrap gap-1 items-center text-xs overflow-x-auto flex-shrink-0">
-        <button type="button" onclick="insertFormat('**', '**', 'texto en negrita')" data-i18n-title="tool_bold" title="Negrita" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-bold"></i></button>
-        <button type="button" onclick="insertFormat('*', '*', 'texto en cursiva')" data-i18n-title="tool_italic" title="Cursiva" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-italic"></i></button>
-        <button type="button" onclick="insertFormat('~~', '~~', 'texto tachado')" data-i18n-title="tool_strikethrough" title="Tachado" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-strikethrough"></i></button>
-        <button type="button" onclick="insertFormat('==', '==', 'texto resaltado')" data-i18n-title="tool_highlight" title="Resaltador" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-highlighter"></i></button>
-        <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5"></div>
-        <button type="button" onclick="insertFormat('### ', '', 'Título')" data-i18n-title="tool_heading" title="Encabezado H3" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-heading"></i></button>
-        <button type="button" onclick="insertFormat('%red%', '%%', 'texto con color')" data-i18n-title="tool_color" title="Texto con Color (%red%...%%)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-palette text-red-500"></i></button>
-        <button type="button" onclick="insertFormat('!~red;', '~!', 'texto subrayado')" data-i18n-title="tool_underline" title="Subrayado (!~...~!)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-underline"></i></button>
-        <button type="button" onclick="insertFormat('!> ', '', 'Texto secreto oculto')" data-i18n-title="tool_spoiler" title="Spoiler oculto (!>)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-eye-slash"></i></button>
-        <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5"></div>
-        <button type="button" onclick="insertFormat('[download: ', ' | https://ejemplo.com | Subtexto u opciones | primary]', '🚀 Botón de Descarga')" data-i18n-title="btn_download_tool" title="Insertar Botón de Descargar" class="px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/40 dark:hover:bg-blue-800/60 text-blue-700 dark:text-blue-300 transition font-medium flex items-center gap-1"><i class="fa-solid fa-download"></i> <span data-i18n="btn_download_tool">Descarga</span></button>
-        <button type="button" onclick="insertFormat('[badge: ', ']', 'Etiqueta')" data-i18n-title="btn_badge_tool" title="Insertar Badge/Etiqueta" class="px-2 py-1 rounded bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:hover:bg-indigo-800/60 text-indigo-700 dark:text-indigo-300 transition font-medium flex items-center gap-1"><i class="fa-solid fa-tag"></i> <span data-i18n="btn_badge_tool">Badge</span></button>
-        <button type="button" onclick="insertFormat('[rating: ', ']', '4.8')" data-i18n-title="btn_stars_tool" title="Insertar Puntuación / Estrellas" class="px-2 py-1 rounded bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/40 dark:hover:bg-amber-800/60 text-amber-700 dark:text-amber-300 transition font-medium flex items-center gap-1"><i class="fa-solid fa-star"></i> <span data-i18n="btn_stars_tool">Estrellas</span></button>
-        <button type="button" onclick="insertFormat(':::gallery\n![Imagen 1](https://placehold.co/400x225)\n![Imagen 2](https://placehold.co/400x225)\n:::\n', '', '')" data-i18n-title="btn_gallery_tool" title="Insertar Galería de Imágenes" class="px-2 py-1 rounded bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:hover:bg-emerald-800/60 text-emerald-700 dark:text-emerald-300 transition font-medium flex items-center gap-1"><i class="fa-solid fa-images"></i> <span data-i18n="btn_gallery_tool">Galería</span></button>
-        <button type="button" onclick="insertFormat('!!! info 📌 Ficha Técnica\n    - **Nombre:** \n    - **Versión:** \n', '', '')" data-i18n-title="btn_specs_tool" title="Insertar Bloque de Ficha Técnica" class="px-2 py-1 rounded bg-teal-100 hover:bg-teal-200 dark:bg-teal-900/40 dark:hover:bg-teal-800/60 text-teal-700 dark:text-teal-300 transition font-medium flex items-center gap-1"><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="btn_specs_tool">Ficha Técnica</span></button>
-        <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5"></div>
-        <button type="button" onclick="insertFormat('[', '](https://ejemplo.com)', 'texto del enlace')" data-i18n-title="tool_link" title="Enlace" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-link"></i></button>
-        <button type="button" onclick="insertFormat('![Alt](', '){250px:100px}', 'https://placehold.co/400x200')" data-i18n-title="tool_image" title="Imagen con Tamaño" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-image"></i></button>
-        <button type="button" onclick="insertFormat('`', '`', 'código')" data-i18n-title="tool_code_inline" title="Código Inline" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-code"></i></button>
-        <button type="button" onclick="insertFormat('```javascript\n', '\n```', '// código aquí')" data-i18n-title="tool_code_block" title="Bloque de Código" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-file-code"></i></button>
-        <button type="button" onclick="insertFormat('- ', '', 'Elemento de lista')" data-i18n-title="tool_list_ul" title="Lista con Viñetas" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-list-ul"></i></button>
-        <button type="button" onclick="insertFormat('- [ ] ', '', 'Tarea pendiente')" data-i18n-title="tool_task" title="Casilla de Verificación" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-square-check"></i></button>
-        <button type="button" onclick="insertFormat('> ', '', 'Texto de cita')" data-i18n-title="tool_quote" title="Cita" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-quote-right"></i></button>
-        <button type="button" onclick="insertFormat('!!! note Título\n    ', '', 'Contenido de la nota')" data-i18n-title="tool_callout" title="Nota / Callout" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"><i class="fa-solid fa-circle-exclamation"></i></button>
+      <div class="bg-gray-100 dark:bg-gray-800/60 px-2 sm:px-3 py-1.5 border-b border-gray-200 dark:border-mark-border flex items-center gap-1 text-xs overflow-x-auto max-w-full flex-shrink-0 w-full">
+        <button type="button" onclick="insertFormat('**', '**', 'texto en negrita')" data-i18n-title="tool_bold" title="Negrita" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-bold"></i></button>
+        <button type="button" onclick="insertFormat('*', '*', 'texto en cursiva')" data-i18n-title="tool_italic" title="Cursiva" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-italic"></i></button>
+        <button type="button" onclick="insertFormat('~~', '~~', 'texto tachado')" data-i18n-title="tool_strikethrough" title="Tachado" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-strikethrough"></i></button>
+        <button type="button" onclick="insertFormat('==', '==', 'texto resaltado')" data-i18n-title="tool_highlight" title="Resaltador" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-highlighter"></i></button>
+        <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5 flex-shrink-0"></div>
+        <button type="button" onclick="insertFormat('### ', '', 'Título')" data-i18n-title="tool_heading" title="Encabezado H3" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-heading"></i></button>
+        <button type="button" onclick="insertFormat('%red%', '%%', 'texto con color')" data-i18n-title="tool_color" title="Texto con Color (%red%...%%)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-palette text-red-500"></i></button>
+        <button type="button" onclick="insertFormat('!~red;', '~!', 'texto subrayado')" data-i18n-title="tool_underline" title="Subrayado (!~...~!)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-underline"></i></button>
+        <button type="button" onclick="insertFormat('!> ', '', 'Texto secreto oculto')" data-i18n-title="tool_spoiler" title="Spoiler oculto (!>)" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-eye-slash"></i></button>
+        <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5 flex-shrink-0"></div>
+        <button type="button" onclick="insertFormat('[download: ', ' | https://ejemplo.com | Subtexto u opciones | primary]', '🚀 Botón de Descarga')" data-i18n-title="btn_download_tool" title="Insertar Botón de Descargar" class="px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/40 dark:hover:bg-blue-800/60 text-blue-700 dark:text-blue-300 transition font-medium flex items-center gap-1 flex-shrink-0"><i class="fa-solid fa-download"></i> <span data-i18n="btn_download_tool">Descarga</span></button>
+        <button type="button" onclick="insertFormat('[badge: ', ']', 'Etiqueta')" data-i18n-title="btn_badge_tool" title="Insertar Badge/Etiqueta" class="px-2 py-1 rounded bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:hover:bg-indigo-800/60 text-indigo-700 dark:text-indigo-300 transition font-medium flex items-center gap-1 flex-shrink-0"><i class="fa-solid fa-tag"></i> <span data-i18n="btn_badge_tool">Badge</span></button>
+        <button type="button" onclick="insertFormat('[rating: ', ']', '4.8')" data-i18n-title="btn_stars_tool" title="Insertar Puntuación / Estrellas" class="px-2 py-1 rounded bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/40 dark:hover:bg-amber-800/60 text-amber-700 dark:text-amber-300 transition font-medium flex items-center gap-1 flex-shrink-0"><i class="fa-solid fa-star"></i> <span data-i18n="btn_stars_tool">Estrellas</span></button>
+        <button type="button" onclick="insertFormat(':::gallery\n![Imagen 1](https://placehold.co/400x225)\n![Imagen 2](https://placehold.co/400x225)\n:::\n', '', '')" data-i18n-title="btn_gallery_tool" title="Insertar Galería de Imágenes" class="px-2 py-1 rounded bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:hover:bg-emerald-800/60 text-emerald-700 dark:text-emerald-300 transition font-medium flex items-center gap-1 flex-shrink-0"><i class="fa-solid fa-images"></i> <span data-i18n="btn_gallery_tool">Galería</span></button>
+        <button type="button" onclick="insertFormat('!!! info 📌 Ficha Técnica\n    - **Nombre:** \n    - **Versión:** \n', '', '')" data-i18n-title="btn_specs_tool" title="Insertar Bloque de Ficha Técnica" class="px-2 py-1 rounded bg-teal-100 hover:bg-teal-200 dark:bg-teal-900/40 dark:hover:bg-teal-800/60 text-teal-700 dark:text-teal-300 transition font-medium flex items-center gap-1 flex-shrink-0"><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="btn_specs_tool">Ficha Técnica</span></button>
+        <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-0.5 flex-shrink-0"></div>
+        <button type="button" onclick="insertFormat('[', '](https://ejemplo.com)', 'texto del enlace')" data-i18n-title="tool_link" title="Enlace" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-link"></i></button>
+        <button type="button" onclick="insertFormat('![Alt](', '){250px:100px}', 'https://placehold.co/400x200')" data-i18n-title="tool_image" title="Imagen con Tamaño" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-image"></i></button>
+        <button type="button" onclick="insertFormat('`', '`', 'código')" data-i18n-title="tool_code_inline" title="Código Inline" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-code"></i></button>
+        <button type="button" onclick="insertFormat('```javascript\n', '\n```', '// código aquí')" data-i18n-title="tool_code_block" title="Bloque de Código" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-file-code"></i></button>
+        <button type="button" onclick="insertFormat('- ', '', 'Elemento de lista')" data-i18n-title="tool_list_ul" title="Lista con Viñetas" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-list-ul"></i></button>
+        <button type="button" onclick="insertFormat('- [ ] ', '', 'Tarea pendiente')" data-i18n-title="tool_task" title="Casilla de Verificación" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-square-check"></i></button>
+        <button type="button" onclick="insertFormat('> ', '', 'Texto de cita')" data-i18n-title="tool_quote" title="Cita" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-quote-right"></i></button>
+        <button type="button" onclick="insertFormat('!!! note Título\n    ', '', 'Contenido de la nota')" data-i18n-title="tool_callout" title="Nota / Callout" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex-shrink-0"><i class="fa-solid fa-circle-exclamation"></i></button>
       </div>
 
-      <textarea id="markdown-input" data-i18n-placeholder="placeholder_editor" spellcheck="false" class="flex-1 w-full p-4 resize-none outline-none font-mono text-sm leading-relaxed bg-transparent text-gray-800 dark:text-gray-200 focus:ring-0 border-0 overflow-y-auto" placeholder="Escribe o pega tu Markdown aquí..."></textarea>
+      <textarea id="markdown-input" data-i18n-placeholder="placeholder_editor" spellcheck="false" class="flex-1 w-full p-3 sm:p-4 resize-none outline-none font-mono text-sm leading-relaxed bg-transparent text-gray-800 dark:text-gray-200 focus:ring-0 border-0 overflow-y-auto box-border min-w-0" placeholder="Escribe o pega tu Markdown aquí..."></textarea>
     </section>
 
-    <section id="pane-preview" class="hidden lg:flex w-full lg:w-1/2 flex-col bg-gray-50 dark:bg-mark-bg h-full min-h-0">
+    <section id="pane-preview" class="hidden lg:flex w-full lg:w-1/2 flex-col bg-gray-50 dark:bg-mark-bg h-full min-h-0 min-w-0">
       <div class="pane-header">
         <div class="flex items-center gap-1.5">
           <i class="fa-solid fa-eye"></i>
@@ -144,11 +142,11 @@
         </div>
         <span id="rendering-indicator" data-i18n="rendering_indicator" class="text-[10px] text-teal-600 dark:text-teal-400 font-semibold opacity-0 transition-opacity">Actualizado</span>
       </div>
-      <div id="preview-output" class="flex-1 p-6 overflow-y-auto mark-rendered min-h-0"></div>
+      <div id="preview-output" class="flex-1 p-3 sm:p-6 overflow-y-auto mark-rendered min-h-0 min-w-0 w-full max-w-full box-border"></div>
     </section>
   </main>
 
-  <footer class="bg-white dark:bg-mark-card border-t border-gray-200 dark:border-mark-border px-4 py-1.5 text-xs text-gray-500 dark:text-gray-400 flex flex-wrap justify-between items-center gap-2 flex-shrink-0">
+  <footer class="bg-white dark:bg-mark-card border-t border-gray-200 dark:border-mark-border px-3 sm:px-4 py-1.5 text-xs text-gray-500 dark:text-gray-400 flex flex-wrap justify-between items-center gap-2 flex-shrink-0 w-full">
     <div class="flex items-center space-x-4 font-mono text-[11px]">
       <span><span data-i18n="stat_words">Palabras:</span> <strong id="stat-words" class="text-gray-700 dark:text-gray-300">0</strong></span>
       <span><span data-i18n="stat_chars">Caracteres:</span> <strong id="stat-chars" class="text-gray-700 dark:text-gray-300">0</strong></span>
@@ -159,13 +157,13 @@
     </div>
   </footer>
 
-  <div id="help-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+  <div id="help-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 hidden">
     <div class="bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border rounded-lg shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
-      <div class="px-6 py-4 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
-        <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-book text-teal-600 dark:text-teal-400"></i> <span data-i18n="modal_title">Guía de Sintaxis y Extensiones</span></h3>
+      <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-mark-border flex justify-between items-center">
+        <h3 class="text-base sm:text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-book text-teal-600 dark:text-teal-400"></i> <span data-i18n="modal_title">Guía de Sintaxis y Extensiones</span></h3>
         <button onclick="toggleHelpModal(false)" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="p-6 overflow-y-auto font-mono text-xs space-y-4 text-gray-700 dark:text-gray-300">
+      <div class="p-4 sm:p-6 overflow-y-auto font-mono text-xs space-y-4 text-gray-700 dark:text-gray-300">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-teal-50 dark:bg-teal-950/40 p-3 rounded border border-teal-200 dark:border-teal-900/50">
             <div class="font-bold text-teal-700 dark:text-teal-400 mb-1" data-i18n="modal_sec1_title">🚀 Botón de Descarga Estilizado</div>
@@ -174,7 +172,7 @@
             <code>[download: Descargar Software | https://... | v1.2 • 45 MB | primary]</code>
           </div>
           <div class="bg-teal-50 dark:bg-teal-950/40 p-3 rounded border border-teal-200 dark:border-teal-900/50">
-            <div class="font-bold text-teal-700 dark:text-teal-400 mb-1" data-i18n="modal_sec2_title">🏷️ Badges, Rating y Galerías</div>
+            <div class="font-bold text-teal-700 dark:text-teal-400 mb-1" data-i18n="modal_sec2_title">🏷️️ Badges, Rating y Galerías</div>
             <code>[badge: Windows / Linux]</code> o <code>[badge: v1.0 | #22c55e]</code><br>
             <code>[rating: 4.8]</code> <span data-i18n="modal_sec2_desc">(Muestra estrellas doradas)</span><br>
             <code>:::gallery</code><br>
@@ -208,7 +206,7 @@
           </div>
         </div>
       </div>
-      <div class="px-6 py-3 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-mark-border text-right">
+      <div class="px-4 sm:px-6 py-3 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-mark-border text-right">
         <button onclick="toggleHelpModal(false)" class="px-4 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded font-medium text-xs" data-i18n="modal_close">Cerrar</button>
       </div>
     </div>
