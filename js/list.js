@@ -70,7 +70,7 @@ Programas PC (emoji.windows)=⚙️ (emoji.windows)=:
   -OptimizerDuck (Optimizador) "https://optimizerduck.vercel.app/"
   -Patch My PC (Actualizador) "https://patchmypc.com/product/home-updater"
   -Photopea Offline (Editor de Imagen) "https://www.mediafire.com/file/mi1kpb5oyvaint8/Photopea_Offline.zip/file"
-  -Process Lasso (Optimizador) "https://process-lasso-pro.updatestar.com/es"
+  -Process Lasso (Optimizador) "https://descargaspcpro.net/bitsum-process-lasso-pro-herramienta-de-optimizacion-y-automatizacion-de-la-cpu-en-tiempo-real/"
   -qBittorrent "https://www.qbittorrent.org/"
   -Quick CPU (Optimizador) "https://coderbag.com/product/quickcpu"
   -Ratiborus KMS Tools (Activador) "https://descargaspcpro.net/ratiborus-kms-tools-coleccion-de-activadores-para-todos-los-windows-y-office/"
