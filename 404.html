@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Angel06Web</title>
+  <script>
+    // Nº de carpetas del repositorio en la URL:
+    // 1 → usuario.github.io/angel06web/...   |   0 → dominio propio o usuario.github.io/
+    var segmentCount = 1;
+
+    var parts = location.pathname.split('/');
+    var base = parts.slice(0, 1 + segmentCount).join('/') + '/';
+    var rest = parts.slice(1 + segmentCount).join('/');
+    location.replace(location.origin + base + '?p=' + encodeURIComponent(rest));
+  </script>
+</head>
+<body></body>
+</html>
