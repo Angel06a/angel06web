@@ -79,14 +79,6 @@ function attachProjectItemDelegation(containerElement, primaryBtn, secondaryBtn)
       processItemClick(btn, primaryBtn, secondaryBtn);
     }
   });
-
-  // Doble clic: abre directamente el enlace principal
-  containerElement.addEventListener('dblclick', function(e) {
-    const btn = e.target.closest('.project-item');
-    if (btn && containerElement.contains(btn)) {
-      openLink(btn.getAttribute('data-link1'));
-    }
-  });
 }
 
 // Crea un <li> con el botón de un elemento (reutilizado por categorías y búsqueda)
