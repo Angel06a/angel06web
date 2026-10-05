@@ -2,7 +2,8 @@
 
 // ===== Interfaz: tema oscuro/claro, pestañas móviles, modal de ayuda y menú de plantillas =====
 function toggleDarkMode() {
-  document.documentElement.classList.toggle('dark');
+  const isDark = document.documentElement.classList.toggle('dark');
+  try { localStorage.setItem('mark_theme', isDark ? 'dark' : 'light'); } catch (e) {}
   updateThemeIcon();
 }
 
@@ -63,11 +64,72 @@ function insertFormat(startTag, endTag = '', defaultText = '') {
   const content = selectedText.length > 0 ? selectedText : defaultText;
   const replacement = `${startTag}${content}${endTag}`;
 
-  markdownInput.value = text.substring(0, start) + replacement + text.substring(end);
+  // execCommand conserva el historial de deshacer (Ctrl+Z); si falla, se asigna el valor directamente
   markdownInput.focus();
-  
+  markdownInput.setSelectionRange(start, end);
+  let inserted = false;
+  try { inserted = document.execCommand('insertText', false, replacement); } catch (e) {}
+  if (!inserted) {
+    markdownInput.value = text.substring(0, start) + replacement + text.substring(end);
+  }
+
   const cursorStart = start + startTag.length;
   markdownInput.setSelectionRange(cursorStart, cursorStart + content.length);
+  parseAndRender();
+}
+
+// Reemplaza un rango del textarea conservando el historial de deshacer (Ctrl+Z)
+function replaceTextareaRange(start, end, replacement) {
+  const prev = markdownInput.value;
+  markdownInput.focus();
+  markdownInput.setSelectionRange(start, end);
+  let inserted = false;
+  try { inserted = document.execCommand('insertText', false, replacement); } catch (e) {}
+  if (!inserted) markdownInput.value = prev.substring(0, start) + replacement + prev.substring(end);
+}
+
+// Centra la línea del cursor (o todas las líneas de la selección) con la sintaxis -> texto <-
+// Si ya está centrada la descentra, y si estaba alineada a la derecha (-> texto ->) la pasa a centro.
+// En encabezados el marcador va después de los #:  ## -> Título <-
+function toggleLineCenter() {
+  if (!markdownInput) return;
+  const { selectionStart: selStart, selectionEnd: selEnd, value } = markdownInput;
+
+  const blockStart = selStart === 0 ? 0 : value.lastIndexOf('\n', selStart - 1) + 1;
+  const endAnchor = selEnd > selStart && value[selEnd - 1] === '\n' ? selEnd - 1 : selEnd;
+  let blockEnd = value.indexOf('\n', endAnchor);
+  if (blockEnd === -1) blockEnd = value.length;
+
+  const lines = value.substring(blockStart, blockEnd).split('\n');
+
+  // Línea vacía: inserta la plantilla con texto de ejemplo, como los demás botones
+  if (lines.every(l => !l.trim())) {
+    insertFormat('-> ', ' <-', t('tool_center_placeholder'));
+    return;
+  }
+
+  const split = line => {
+    const m = line.match(/^(#{1,6})[ \t]*(.*)$/);
+    return m ? { prefix: m[1] + ' ', body: m[2].trim() } : { prefix: '', body: line.trim() };
+  };
+  const CENTERED = /^->\s*(.*?)\s*<-$/;
+  const ALIGNED = /^->\s*(.*?)\s*(?:<-|->)$/;
+
+  const parts = lines.map(split);
+  const allCentered = parts.every(p => !p.body || CENTERED.test(p.body));
+
+  const result = parts.map((p, i) => {
+    if (!p.body) return lines[i];
+    const aligned = p.body.match(ALIGNED);
+    const inner = aligned ? aligned[1] : p.body;
+    return allCentered ? p.prefix + inner : `${p.prefix}-> ${inner} <-`;
+  });
+
+  const newText = result.join('\n');
+  replaceTextareaRange(blockStart, blockEnd, newText);
+
+  const collapsed = selStart === selEnd;
+  markdownInput.setSelectionRange(collapsed ? blockStart + newText.length : blockStart, blockStart + newText.length);
   parseAndRender();
 }
 
@@ -75,29 +137,53 @@ function insertFormat(startTag, endTag = '', defaultText = '') {
 // start / end: texto que envuelve la selección · placeholder: texto por defecto si no hay selección
 // label + color: botón con texto (variantes de color definidas en styles.css como .tb-<color>)
 const TOOLBAR_ITEMS = [
-  { i18n: 'tool_bold', title: 'Negrita', icon: 'fa-bold', start: '**', end: '**', placeholder: 'texto en negrita' },
-  { i18n: 'tool_italic', title: 'Cursiva', icon: 'fa-italic', start: '*', end: '*', placeholder: 'texto en cursiva' },
-  { i18n: 'tool_strikethrough', title: 'Tachado', icon: 'fa-strikethrough', start: '~~', end: '~~', placeholder: 'texto tachado' },
-  { i18n: 'tool_highlight', title: 'Resaltador', icon: 'fa-highlighter', start: '==', end: '==', placeholder: 'texto resaltado' },
-  'sep',
-  { i18n: 'tool_heading', title: 'Encabezado H3', icon: 'fa-heading', start: '### ', end: '', placeholder: 'Título' },
-  { i18n: 'tool_color', title: 'Texto con Color (%red%...%%)', icon: 'fa-palette', iconClass: 'text-red-500', start: '%red%', end: '%%', placeholder: 'texto con color' },
-  { i18n: 'tool_underline', title: 'Subrayado (!~...~!)', icon: 'fa-underline', start: '!~red;', end: '~!', placeholder: 'texto subrayado' },
-  { i18n: 'tool_spoiler', title: 'Spoiler oculto (!>)', icon: 'fa-eye-slash', start: '!> ', end: '', placeholder: 'Texto secreto oculto' },
-  'sep',
-  { i18n: 'btn_download_tool', title: 'Insertar Botón de Descargar', icon: 'fa-download', label: 'Descarga', color: 'blue', start: '[download: ', end: ' | https://ejemplo.com | Subtexto u opciones | primary]', placeholder: '🚀 Botón de Descarga' },
-  { i18n: 'btn_badge_tool', title: 'Insertar Badge/Etiqueta', icon: 'fa-tag', label: 'Badge', color: 'indigo', start: '[badge: ', end: ']', placeholder: 'Etiqueta' },
-  { i18n: 'btn_stars_tool', title: 'Insertar Puntuación / Estrellas', icon: 'fa-star', label: 'Estrellas', color: 'amber', start: '[rating: ', end: ']', placeholder: '4.8' },
-  { i18n: 'btn_gallery_tool', title: 'Insertar Galería de Imágenes', icon: 'fa-images', label: 'Galería', color: 'emerald', start: ':::gallery\n![Imagen 1](https://placehold.co/400x225)\n![Imagen 2](https://placehold.co/400x225)\n:::\n', end: '', placeholder: '' },
-  { i18n: 'btn_specs_tool', title: 'Insertar Bloque de Ficha Técnica', icon: 'fa-clipboard-list', label: 'Ficha Técnica', color: 'teal', start: '!!! info 📌 Ficha Técnica\n    - **Nombre:** \n    - **Versión:** \n', end: '', placeholder: '' },
-  'sep',
-  { i18n: 'tool_link', title: 'Enlace', icon: 'fa-link', start: '[', end: '](https://ejemplo.com)', placeholder: 'texto del enlace' },
-  { i18n: 'tool_image', title: 'Imagen con Tamaño', icon: 'fa-image', start: '![Alt](', end: '){250px:100px}', placeholder: 'https://placehold.co/400x200' },
-  { i18n: 'tool_code_inline', title: 'Código Inline', icon: 'fa-code', start: '`', end: '`', placeholder: 'código' },
-  { i18n: 'tool_code_block', title: 'Bloque de Código', icon: 'fa-file-code', start: '```javascript\n', end: '\n```', placeholder: '// código aquí' },
-  { i18n: 'tool_list_ul', title: 'Lista con Viñetas', icon: 'fa-list-ul', start: '- ', end: '', placeholder: 'Elemento de lista' },
-  { i18n: 'tool_task', title: 'Casilla de Verificación', icon: 'fa-square-check', start: '- [ ] ', end: '', placeholder: 'Tarea pendiente' },
-  { i18n: 'tool_quote', title: 'Cita', icon: 'fa-quote-right', start: '> ', end: '', placeholder: 'Texto de cita' },
+  { i18n: 'tool_bold', title: 'Negrita', icon: 'fa-bold', start: '**', end: '**', placeholder: 'texto en negrita' },
+
+  { i18n: 'tool_italic', title: 'Cursiva', icon: 'fa-italic', start: '*', end: '*', placeholder: 'texto en cursiva' },
+
+  { i18n: 'tool_strikethrough', title: 'Tachado', icon: 'fa-strikethrough', start: '~~', end: '~~', placeholder: 'texto tachado' },
+
+  { i18n: 'tool_highlight', title: 'Resaltador', icon: 'fa-highlighter', start: '==', end: '==', placeholder: 'texto resaltado' },
+
+  'sep',
+
+  { i18n: 'tool_heading', title: 'Encabezado H3', icon: 'fa-heading', start: '### ', end: '', placeholder: 'Título' },
+  { i18n: 'tool_center', title: 'Centrar línea (-> ... <-)', icon: 'fa-align-center', action: () => toggleLineCenter() },
+
+  { i18n: 'tool_color', title: 'Texto con Color (%red%...%%)', icon: 'fa-palette', iconClass: 'text-red-500', start: '%red%', end: '%%', placeholder: 'texto con color' },
+
+  { i18n: 'tool_underline', title: 'Subrayado (!~...~!)', icon: 'fa-underline', start: '!~red;', end: '~!', placeholder: 'texto subrayado' },
+
+  { i18n: 'tool_spoiler', title: 'Spoiler oculto (!>)', icon: 'fa-eye-slash', start: '!> ', end: '', placeholder: 'Texto secreto oculto' },
+
+  'sep',
+
+  { i18n: 'btn_download_tool', title: 'Insertar Botón de Descargar', icon: 'fa-download', label: 'Descarga', color: 'blue', start: '[download: ', end: ' | https://ejemplo.com | Subtexto u opciones | primary]', placeholder: '🚀 Botón de Descarga' },
+
+  { i18n: 'btn_badge_tool', title: 'Insertar Badge/Etiqueta', icon: 'fa-tag', label: 'Badge', color: 'indigo', start: '[badge: ', end: ']', placeholder: 'Etiqueta' },
+
+  { i18n: 'btn_stars_tool', title: 'Insertar Puntuación / Estrellas', icon: 'fa-star', label: 'Estrellas', color: 'amber', start: '[rating: ', end: ']', placeholder: '4.8' },
+
+  { i18n: 'btn_gallery_tool', title: 'Insertar Galería de Imágenes', icon: 'fa-images', label: 'Galería', color: 'emerald', start: ':::gallery\n![Imagen 1](https://placehold.co/400x225)\n![Imagen 2](https://placehold.co/400x225)\n:::\n', end: '', placeholder: '' },
+
+  { i18n: 'btn_specs_tool', title: 'Insertar Bloque de Ficha Técnica', icon: 'fa-clipboard-list', label: 'Ficha Técnica', color: 'teal', start: '!!! info 📌 Ficha Técnica\n    - **Nombre:** \n    - **Versión:** \n', end: '', placeholder: '' },
+
+  'sep',
+
+  { i18n: 'tool_link', title: 'Enlace', icon: 'fa-link', start: '[', end: '](https://ejemplo.com)', placeholder: 'texto del enlace' },
+
+  { i18n: 'tool_image', title: 'Imagen con Tamaño', icon: 'fa-image', start: '![Alt](', end: '){250px:100px}', placeholder: 'https://placehold.co/400x200' },
+
+  { i18n: 'tool_code_inline', title: 'Código Inline', icon: 'fa-code', start: '`', end: '`', placeholder: 'código' },
+
+  { i18n: 'tool_code_block', title: 'Bloque de Código', icon: 'fa-file-code', start: '```javascript\n', end: '\n```', placeholder: '// código aquí' },
+
+  { i18n: 'tool_list_ul', title: 'Lista con Viñetas', icon: 'fa-list-ul', start: '- ', end: '', placeholder: 'Elemento de lista' },
+
+  { i18n: 'tool_task', title: 'Casilla de Verificación', icon: 'fa-square-check', start: '- [ ] ', end: '', placeholder: 'Tarea pendiente' },
+
+  { i18n: 'tool_quote', title: 'Cita', icon: 'fa-quote-right', start: '> ', end: '', placeholder: 'Texto de cita' },
+
   { i18n: 'tool_callout', title: 'Nota / Callout', icon: 'fa-circle-exclamation', start: '!!! note Título\n    ', end: '', placeholder: 'Contenido de la nota' },
 ];
 
@@ -131,7 +217,7 @@ function renderToolbar() {
       btn.append(' ', span);
     }
 
-    btn.addEventListener('click', () => insertFormat(item.start, item.end, item.placeholder));
+    btn.addEventListener('click', () => item.action ? item.action() : insertFormat(item.start, item.end, item.placeholder));
     bar.appendChild(btn);
   });
 }
