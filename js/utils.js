@@ -74,6 +74,15 @@ function cleanCategoryName(name) {
   return name.replace(/\(emoji\.(windows|android|web)\)/g, "").replace(/\s*\[[^\]]*\]\s*/g, " ").replace(/\s{2,}/g, " ").trim();
 }
 
+// Slug para URLs limpias: sin emojis, tildes ni espacios ("Páginas Web" → "paginas-web")
+function slugify(text) {
+  return cleanCategoryName(text)
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 // Quitar paréntesis y dos puntos para nombres de archivo de imagen
 function stripParentheses(text) {
   if (!text) return "";
