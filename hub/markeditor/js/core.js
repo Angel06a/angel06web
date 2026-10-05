@@ -41,52 +41,93 @@ function debounce(func, wait = 150) {
   };
 }
 
+let toastTimer = null;
+
 function showToast(message) {
   const toast = document.getElementById('toast');
   if (!toast) return;
   toast.textContent = message;
   toast.classList.remove('translate-y-10', 'opacity-0');
-  setTimeout(() => {
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
     toast.classList.add('translate-y-10', 'opacity-0');
   }, 2500);
 }
 
 // ===== Internacionalización: idioma actual, traducciones y cambio de idioma (usa TRANSLATIONS de translations.js) =====
-let currentLang = getCookie('user_lang') || 'es';
+// Textos de respaldo: se usan solo si la clave no existe en TRANSLATIONS (translations.js)
+const FALLBACK_I18N = {
+  es: {
+    confirm_import: 'Al importar se reemplazará el contenido actual. ¿Continuar?',
+    tool_center: 'Centrar línea (-> ... <-)',
+    tool_center_placeholder: 'texto centrado',
+    btn_theme_toggle: 'Cambiar tema Oscuro/Claro',
+    download_default_title: 'Descargar',
+    export_page_title: 'Página exportada de Mark',
+    export_theme_title: 'Cambiar modo claro/oscuro'
+  },
+  en: {
+    confirm_import: 'Importing will replace the current content. Continue?',
+    tool_center: 'Center line (-> ... <-)',
+    tool_center_placeholder: 'centered text',
+    btn_theme_toggle: 'Toggle Dark/Light theme',
+    download_default_title: 'Download',
+    export_page_title: 'Mark Exported Page',
+    export_theme_title: 'Toggle light/dark mode'
+  }
+};
+
+function lookup(lang, key) {
+  return (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[lang]?.[key]) || FALLBACK_I18N[lang]?.[key];
+}
+
+// El idioma se guarda en localStorage (la cookie solo sirve de respaldo/migración y no funciona con file://)
+function getStoredLang() {
+  try {
+    const stored = localStorage.getItem('user_lang');
+    if (stored) return stored;
+  } catch (e) {}
+  return getCookie('user_lang');
+}
+
+function storeLang(lang) {
+  try { localStorage.setItem('user_lang', lang); } catch (e) {}
+  setCookie('user_lang', lang, 365);
+}
+
+let currentLang = getStoredLang() || 'es';
 
 function t(key) {
-  return (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[currentLang]?.[key]) || key;
+  return lookup(currentLang, key) || key;
 }
 
 function changeLanguage(lang) {
   if (typeof TRANSLATIONS === 'undefined' || !TRANSLATIONS[lang]) return;
   currentLang = lang;
-  setCookie('user_lang', lang, 365);
+  storeLang(lang);
   applyLanguage(lang);
   parseAndRender();
 }
 
 function applyLanguage(lang) {
   if (typeof TRANSLATIONS === 'undefined' || !TRANSLATIONS[lang]) return;
-  const dict = TRANSLATIONS[lang];
-
   document.documentElement.lang = lang;
 
   const langSelect = document.getElementById('lang-select');
   if (langSelect) langSelect.value = lang;
 
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) el.textContent = dict[key];
+    const val = lookup(lang, el.getAttribute('data-i18n'));
+    if (val) el.textContent = val;
   });
 
   document.querySelectorAll('[data-i18n-title]').forEach(el => {
-    const key = el.getAttribute('data-i18n-title');
-    if (dict[key]) el.setAttribute('title', dict[key]);
+    const val = lookup(lang, el.getAttribute('data-i18n-title'));
+    if (val) el.setAttribute('title', val);
   });
 
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (dict[key]) el.setAttribute('placeholder', dict[key]);
+    const val = lookup(lang, el.getAttribute('data-i18n-placeholder'));
+    if (val) el.setAttribute('placeholder', val);
   });
 }
