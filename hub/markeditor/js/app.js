@@ -10,6 +10,11 @@ function handleFileImport(event) {
   const file = event.target.files?.[0];
   if (!file) return;
 
+  if (markdownInput.value.trim() && !confirm(t('confirm_import'))) {
+    event.target.value = '';
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = function (e) {
     const content = e.target.result;
@@ -52,7 +57,7 @@ async function copyRenderedHTML() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mark Exported Page</title>
+  <title>${escapeHTML(t('export_page_title'))}</title>
   <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"><\/script>
   <script>
@@ -83,7 +88,7 @@ async function copyRenderedHTML() {
 <body class="bg-gray-100 text-gray-900 dark:bg-mark-bg dark:text-mark-text p-4 sm:p-8 md:p-10 min-h-screen transition-colors duration-200 max-w-full overflow-x-hidden">
   <script type="text/template" id="mark-raw-markdown">${safeRawMarkdown}</script>
   <div class="fixed top-3 right-3 sm:top-4 sm:right-4 z-50">
-    <button onclick="toggleExportDarkMode()" title="Cambiar modo claro/oscuro" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md transition flex items-center justify-center">
+    <button onclick="toggleExportDarkMode()" title="${escapeHTML(t('export_theme_title'))}" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white dark:bg-mark-card border border-gray-200 dark:border-mark-border text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md transition flex items-center justify-center">
       <i id="export-theme-icon" class="fa-solid ${isDark ? 'fa-sun text-yellow-400' : 'fa-moon text-gray-600'}"></i>
     </button>
   </div>
@@ -98,6 +103,16 @@ ${previewOutput.innerHTML}
         icon.className = document.documentElement.classList.contains('dark') ? 'fa-solid fa-sun text-yellow-400' : 'fa-solid fa-moon text-gray-600';
       }
     }
+    document.addEventListener('click', function (e) {
+      var spoiler = e.target.closest && e.target.closest('.mark-spoiler');
+      if (spoiler) spoiler.classList.toggle('revealed');
+    });
+    document.addEventListener('error', function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== 'IMG' || img.dataset.fallbackApplied) return;
+      img.dataset.fallbackApplied = '1';
+      img.src = 'https://placehold.co/300x150?text=Image+Not+Found';
+    }, true);
   <\/script>
 </body>
 </html>`;
@@ -145,12 +160,23 @@ window.onload = function () {
   }
   parseAndRender();
   
-  if (!document.documentElement.classList.contains('dark')) {
-    document.documentElement.classList.add('dark');
-  }
   updateThemeIcon();
 };
 
 if (markdownInput) {
   markdownInput.addEventListener('input', debounce(parseAndRender, 150));
+}
+
+// Los spoilers y el respaldo de imágenes rotas se manejan por delegación (el HTML sanitizado no lleva onclick/onerror)
+if (previewOutput) {
+  previewOutput.addEventListener('click', e => {
+    const spoiler = e.target.closest && e.target.closest('.mark-spoiler');
+    if (spoiler) spoiler.classList.toggle('revealed');
+  });
+  previewOutput.addEventListener('error', e => {
+    const img = e.target;
+    if (!img || img.tagName !== 'IMG' || img.dataset.fallbackApplied) return;
+    img.dataset.fallbackApplied = '1';
+    img.src = IMAGE_FALLBACK_URL;
+  }, true);
 }
