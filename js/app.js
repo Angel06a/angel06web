@@ -18,15 +18,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const goToTab = (tabId) => showTab(tabId, searchInput, primaryDownloadBtn, secondaryDownloadBtn);
 
+  // ---------- Rutas limpias (/juegos-pc, /programas-pc...) ----------
+  const BASE = window.SITE_BASE || location.pathname.replace(/[^\/]*$/, '');
+  const tabExists = (id) => !!id && !!sidebarUl.querySelector(`.tab-button[data-tab="${id}"]`);
+
+  function getTabFromUrl() {
+    let slug = location.pathname.slice(BASE.length).replace(/\/+$/, '');
+    try { slug = decodeURIComponent(slug); } catch (e) {}
+    return tabExists(slug) ? slug : null;
+  }
+
+  function updateUrl(tabId, mode) {
+    const target = BASE + tabId;
+    if (location.pathname === target) return;
+    try {
+      history[mode === 'replace' ? 'replaceState' : 'pushState']({ tab: tabId }, '', target);
+    } catch (e) { /* p. ej. file:// → se ignora */ }
+  }
+
   // Pestaña actual (para volver a ella al borrar la búsqueda)
   const firstTabButton = sidebarUl.querySelector('.tab-button');
   let currentTabId = firstTabButton ? firstTabButton.getAttribute('data-tab') : null;
 
-  // Restaurar última pestaña visitada
+  // Pestaña inicial: la de la URL, si no la última visitada
   const savedTab = loadPref('last_tab');
-  if (savedTab && savedTab !== 'busqueda' && sidebarUl.querySelector(`.tab-button[data-tab="${savedTab}"]`)) {
-    currentTabId = savedTab;
-    goToTab(savedTab);
+  const startTab = getTabFromUrl() || (tabExists(savedTab) ? savedTab : null);
+  if (startTab) {
+    currentTabId = startTab;
+    goToTab(startTab);
+    updateUrl(startTab, 'replace');
   }
 
   // Cambio de pestañas
@@ -36,7 +56,17 @@ document.addEventListener('DOMContentLoaded', function() {
       currentTabId = btn.getAttribute('data-tab');
       searchInput.value = "";
       goToTab(currentTabId);
+      updateUrl(currentTabId, 'push');
     }
+  });
+
+  // Botones Atrás / Adelante del navegador
+  window.addEventListener('popstate', function() {
+    const tabId = getTabFromUrl() || (firstTabButton && firstTabButton.getAttribute('data-tab'));
+    if (!tabId) return;
+    currentTabId = tabId;
+    searchInput.value = "";
+    goToTab(tabId);
   });
 
   // Búsqueda: sin tildes, ignora mayúsculas y exige que coincidan todas las palabras
