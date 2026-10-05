@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es" class="h-full dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="page_title">MarkEditor</title>
+  <script>try { if (localStorage.getItem('mark_theme') === 'light') document.documentElement.classList.remove('dark'); } catch (e) {}</script>
   <link rel="icon" type="image/svg+xml" href="icon.svg">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="js/tailwind-config.js"></script>
@@ -61,7 +62,7 @@
       <button onclick="toggleHelpModal(true)" data-i18n-title="btn_help" title="Guía de sintaxis" class="hdr-btn hdr-btn--help">
         <i class="fa-solid fa-circle-question"></i> <span class="hidden md:inline" data-i18n="btn_help">Ayuda</span>
       </button>
-      <button onclick="toggleDarkMode()" title="Cambiar tema Oscuro/Claro" class="hdr-icon-btn">
+      <button onclick="toggleDarkMode()" data-i18n-title="btn_theme_toggle" title="Cambiar tema Oscuro/Claro" class="hdr-icon-btn">
         <i id="theme-icon" class="fa-solid fa-moon"></i>
       </button>
     </div>
@@ -77,7 +78,7 @@
   </div>
 
   <main class="flex-1 flex overflow-hidden relative min-h-0 min-w-0 w-full">
-    <section id="pane-editor" class="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg h-full min-h-0 min-w-0">
+    <section id="pane-editor" class="w-full lg:w-1/2 flex lg:flex flex-col border-r border-gray-200 dark:border-mark-border bg-white dark:bg-mark-bg h-full min-h-0 min-w-0">
       <div class="pane-header">
         <div class="flex items-center gap-1.5">
           <i class="fa-solid fa-pen-to-square"></i>
