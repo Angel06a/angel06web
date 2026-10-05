@@ -125,7 +125,7 @@ function createCategoryTabAndContent(cat, index, sidebarUl, mainContent) {
   btn.type = 'button';
   btn.classList.add('tab-button');
   btn.innerHTML = convertEmoji(cat.name);
-  const categoryId = cleanCategoryName(cat.name).toLowerCase().replace(/\s+/g, '-');
+  const categoryId = slugify(cat.name);
   btn.setAttribute('data-tab', categoryId);
   if (index === 0) btn.classList.add('active');
   li.appendChild(btn);
