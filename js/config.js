@@ -20,13 +20,25 @@ const SITE_CONFIG = {
     { href: "https://gravatar.com/totallytacoc43f8d4da2", icon: "./img/gravatar.webp", label: "Gravatar" }
   ],
 
+  // Idiomas del menú desplegable (code debe existir en list.js)
+  languages: [
+    { code: "es", name: "Español", short: "ES" },
+    { code: "en", name: "English", short: "EN" }
+  ],
+
   // Opciones del panel de configuración (se generan solas como interruptores).
   // key = nombre con el que se guarda; apply(valor) se ejecuta al cargar y al cambiar.
   settings: [
-    { key: "grid_view", label: "Activar vista grid de iconos", default: false, apply: (v) => applyGridView(v) }
+    { key: "grid_view", label: { es: "Activar vista grid de iconos", en: "Enable icon grid view" }, default: false, apply: (v) => applyGridView(v) }
   ],
 
   // Widgets que se insertan al cargar. Ejemplo:
   // { slot: 'sidebar-right', html: '<strong>Anuncio</strong><p>Texto…</p>' }
   widgets: []
+};
+
+// Textos de la interfaz por idioma (los de la lista están en list.js)
+const I18N = {
+  es: { search: 'Buscar...', clear: 'Borrar búsqueda', categories: 'Categorías', results: 'Búsqueda', noResults: 'No se encontraron resultados.', download: 'Descargar', config: 'Configuración', close: 'Cerrar', language: 'Idioma' },
+  en: { search: 'Search...', clear: 'Clear search', categories: 'Categories', results: 'Search', noResults: 'No results found.', download: 'Download', config: 'Settings', close: 'Close', language: 'Language' }
 };
