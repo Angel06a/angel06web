@@ -47,28 +47,31 @@ header {
   background: rgba(31, 31, 31, 0.85); height: var(--header-height); min-height: var(--header-height); flex-shrink: 0;
   display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
   border-bottom: 1px solid var(--card-border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative; z-index: 100; gap: 16px;
 }
 
-header h1 { margin: 0; font-size: 18px; font-weight: 600; color: var(--text-main); letter-spacing: 0.5px; }
-
-header > div {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+header h1 {
+  margin: 0; font-size: 18px; font-weight: 600; color: var(--text-main); letter-spacing: 0.5px;
+  min-width: 0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+
+/* Zona derecha: [enlaces] | [idioma + configuración] */
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.header-links, .header-controls { display: flex; align-items: center; gap: 6px; }
+.header-sep { width: 1px; height: 20px; background: var(--card-border); }
 
 header a,
 #config-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: none;
   border: none;
-  padding: 0;
+  padding: 4px;
   margin: 0;
   cursor: pointer;
   transition: var(--transition);
@@ -337,4 +340,60 @@ aside.sidebar-right {
 
 @media (max-width: 768px) {
   aside.sidebar-right { width: 100%; order: 3; }
+}
+
+/* ===== Selector de idioma (menú desplegable) ===== */
+.lang-menu { position: relative; }
+
+#lang-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 10px; border-radius: 16px;
+  border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main); font: 600 12px 'Segoe UI', sans-serif; letter-spacing: 0.5px;
+  cursor: pointer; transition: var(--transition);
+}
+#lang-btn:hover,
+#lang-btn[aria-expanded="true"] { background: rgba(255, 255, 255, 0.1); border-color: var(--primary-color); }
+#lang-btn:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+.lang-globe { color: var(--primary-color); flex-shrink: 0; }
+.lang-chevron { color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s ease; }
+#lang-btn[aria-expanded="true"] .lang-chevron { transform: rotate(180deg); }
+
+#lang-list {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 10;
+  min-width: 160px; margin: 0; padding: 6px; list-style: none;
+  background: rgba(31, 31, 31, 0.97); border: 1px solid var(--card-border);
+  border-radius: var(--radius-md); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  animation: lang-pop 0.15s ease-out; transform-origin: top right;
+}
+#lang-list[hidden] { display: none; }
+
+#lang-list [role="option"] {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 8px 10px; border-radius: var(--radius-sm); cursor: pointer;
+  font-size: 14px; color: var(--text-main); outline: none; transition: var(--transition);
+}
+#lang-list [role="option"]:hover,
+#lang-list [role="option"]:focus-visible { background: rgba(255, 255, 255, 0.08); }
+#lang-list [role="option"]:focus-visible { box-shadow: inset 0 0 0 2px var(--primary-color); }
+#lang-list [role="option"][aria-selected="true"] { background: rgba(26, 188, 156, 0.18); font-weight: 600; }
+.lang-short { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: var(--text-muted); }
+#lang-list [aria-selected="true"] .lang-short { color: var(--primary-color); }
+
+@keyframes lang-pop {
+  from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ===== Encabezado en móvil ===== */
+@media (max-width: 768px) {
+  header { padding: 0 12px; gap: 10px; }
+  header h1 { font-size: 15px; }
+  .header-actions { gap: 8px; }
+}
+@media (max-width: 420px) {
+  .header-links, .header-controls { gap: 2px; }
+  .header-actions { gap: 6px; }
+  #lang-btn { padding: 0 8px; gap: 4px; }
+  .lang-chevron { display: none; }
 }
