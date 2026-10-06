@@ -3,7 +3,8 @@
 document.addEventListener('DOMContentLoaded', function() {
   applySiteConfig();
 
-  const categories = parseListData(listData);
+  initLanguage();
+  let categories = parseListData(getListText(currentLang), getListText('es'));
 
   const searchInput = document.querySelector('.search-bar input');
   const sidebarUl = document.getElementById('sidebar-categories');
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   setupUIStructure(categories);
   setupConfigPanel();
+  applyStaticTexts();
 
   const goToTab = (tabId) => showTab(tabId, searchInput, primaryDownloadBtn, secondaryDownloadBtn);
 
@@ -48,6 +50,19 @@ document.addEventListener('DOMContentLoaded', function() {
     goToTab(startTab);
     updateUrl(startTab, 'replace');
   }
+
+  // Cambio de idioma (reconstruye la lista y conserva pestaña y búsqueda)
+  function setLanguage(lang) {
+    currentLang = lang;
+    savePref('lang', lang);
+    categories = parseListData(getListText(lang), getListText('es'));
+    renderCategories(categories);
+    applyStaticTexts();
+    renderSettingsPanel();
+    if (searchInput.value.trim()) runSearch();
+    else if (currentTabId) goToTab(currentTabId);
+  }
+  setupLanguageMenu(setLanguage);
 
   // Cambio de pestañas
   sidebarUl.addEventListener('click', function(e) {
@@ -89,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     displaySearchResults(matchingItems, busquedaList);
-    busquedaTitle.textContent = `Búsqueda (${matchingItems.length})`;
+    busquedaTitle.textContent = `${t('results')} (${matchingItems.length})`;
     const typed = searchInput.value;
     goToTab('busqueda');
     searchInput.value = typed; // showTab no borra en 'busqueda', pero por seguridad
@@ -146,7 +161,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-function parseListData(rawText) {
+// Analiza el idioma actual; id de pestaña e imágenes salen siempre del texto en español
+// (así las URLs y los nombres de archivo no cambian), y la búsqueda funciona en ambos idiomas.
+function parseListData(rawText, esText) {
+  const cats = parseCategories(rawText);
+  const es = !esText || esText === rawText ? cats : parseCategories(esText);
+  cats.forEach((cat, i) => {
+    const ref = es[i] || cat;
+    cat.id = slugify(ref.name);
+    cat.items.forEach((item, j) => {
+      const r = ref.items[j] || item;
+      item.imgCategory = ref.name;
+      item.imgName = r.displayName;
+      if (r !== item) item.searchText += ' ' + r.searchText;
+    });
+  });
+  return cats;
+}
+
+function parseCategories(rawText) {
   const categories = [];
   let currentCategory = null;
 
