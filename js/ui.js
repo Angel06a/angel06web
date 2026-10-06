@@ -20,19 +20,29 @@ function applyGridView(enabled) {
 // Actualiza botones de descarga (data = null → estado inicial)
 function setDownloadState(primaryBtn, secondaryBtn, data) {
   const d = data || {};
+  const primaryWasOff = primaryBtn.disabled; // ¿el botón 1 venía apagado (nada seleccionado)?
   selectedDownloadLink1 = d.link1 || "";
   selectedDownloadLink2 = d.link2 || "";
 
-  primaryBtn.textContent = d.text1 || "Descargar";
+  primaryBtn.textContent = d.text1 || t('download');
   primaryBtn.disabled = !selectedDownloadLink1;
 
   if (selectedDownloadLink2) {
-    secondaryBtn.style.display = "inline-flex";
-    secondaryBtn.textContent = d.text2 || "Descargar";
+    const wasHidden = secondaryBtn.style.display === "none";
+    secondaryBtn.textContent = d.text2 || t('download');
+    if (wasHidden && primaryWasOff) {
+      // Solo si el botón 1 también se está encendiendo ahora: ambos animan juntos
+      secondaryBtn.disabled = true;
+      secondaryBtn.style.display = "inline-flex";
+      void secondaryBtn.offsetWidth; // fuerza el reflow para que la transición se ejecute
+    } else {
+      // El botón 1 ya estaba encendido: el 2 aparece encendido, sin animación
+      secondaryBtn.style.display = "inline-flex";
+    }
     secondaryBtn.disabled = false;
   } else {
     secondaryBtn.style.display = "none";
-    secondaryBtn.textContent = "Descargar";
+    secondaryBtn.textContent = t('download');
   }
 }
 
@@ -49,9 +59,7 @@ function setupUIStructure(categoriesData) {
 
   attachProjectItemDelegation(mainContent, primaryDownloadBtn, secondaryDownloadBtn);
 
-  categoriesData.forEach((cat, index) => {
-    createCategoryTabAndContent(cat, index, sidebarUl, mainContent);
-  });
+  renderCategories(categoriesData);
 
   renderSettingsPanel(); // genera interruptores y aplica los valores guardados
 
@@ -95,7 +103,7 @@ function createItemElement(item, categoryName, labelText) {
   iconImg.alt = '';
   iconImg.setAttribute('draggable', 'false');
   button.appendChild(iconImg);
-  loadImageAsync(getItemImagePath(categoryName, item.displayName), iconImg);
+  loadImageAsync(getItemImagePath(item.imgCategory || categoryName, item.imgName || item.displayName), iconImg);
 
   const textSpan = document.createElement('span');
   textSpan.classList.add('item-text');
@@ -117,7 +125,7 @@ function createCategoryTabAndContent(cat, index, sidebarUl, mainContent) {
   btn.type = 'button';
   btn.classList.add('tab-button');
   btn.innerHTML = convertEmoji(cat.name);
-  const categoryId = slugify(cat.name);
+  const categoryId = cat.id || slugify(cat.name);
   btn.setAttribute('data-tab', categoryId);
   if (index === 0) btn.classList.add('active');
   li.appendChild(btn);
@@ -184,7 +192,7 @@ function displaySearchResults(items, busquedaListElement) {
   if (items.length === 0) {
     const noResultsLi = document.createElement('li');
     noResultsLi.classList.add('no-results');
-    noResultsLi.textContent = 'No se encontraron resultados.';
+    noResultsLi.textContent = t('noResults');
     fragment.appendChild(noResultsLi);
   } else {
     items.forEach(item => {
@@ -304,7 +312,7 @@ function renderSettingsPanel() {
     input.addEventListener('change', () => setSetting(s.key, input.checked));
     const slider = document.createElement('span');
     slider.className = 'switch-slider';
-    label.append(document.createTextNode(s.label), input, slider);
+    label.append(document.createTextNode(tr(s.label)), input, slider);
     container.appendChild(label);
     if (s.apply) s.apply(getSetting(s.key));
   });
@@ -351,4 +359,133 @@ function applySiteConfig() {
   });
 
   (SITE_CONFIG.widgets || []).forEach(w => addWidget(w.slot, w.node || w.html || '', w.className));
+}
+
+// ---------- Idioma: reconstruir categorías y textos fijos ----------
+function renderCategories(categoriesData) {
+  const sidebarUl = document.getElementById('sidebar-categories');
+  const mainContent = document.getElementById('main-content');
+  sidebarUl.innerHTML = '';
+  document.querySelectorAll('#tabs-container > section.tab-content:not(#busqueda)').forEach(sec => sec.remove());
+  categoriesData.forEach((cat, index) => createCategoryTabAndContent(cat, index, sidebarUl, mainContent));
+  initLazyLoading();
+}
+
+function applyStaticTexts() {
+  document.documentElement.lang = currentLang;
+  const set = (sel, attrs, text) => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    if (text !== undefined) el.textContent = text;
+    Object.entries(attrs || {}).forEach(([k, v]) => el.setAttribute(k, v));
+  };
+  set('.search-bar input', { placeholder: t('search'), 'aria-label': t('search') });
+  set('#search-clear', { title: t('clear'), 'aria-label': t('clear') });
+  set('nav', { 'aria-label': t('categories') });
+  set('#config-btn', { title: t('config'), 'aria-label': t('config') });
+  set('#config-title', {}, t('config'));
+  set('#config-close-btn', { title: t('close'), 'aria-label': t('close') });
+  updateLanguageMenu();
+  const bt = document.getElementById('busqueda-title');
+  const bs = document.getElementById('busqueda');
+  if (bt && bs && !bs.classList.contains('active')) bt.textContent = t('results');
+}
+
+
+// ---------- Selector de idioma (menú desplegable) ----------
+function getLanguages() {
+  const l = SITE_CONFIG.languages;
+  return l && l.length ? l : [{ code: 'es', name: 'Español', short: 'ES' }, { code: 'en', name: 'English', short: 'EN' }];
+}
+
+function setLangMenuOpen(open, returnFocus) {
+  const btn = document.getElementById('lang-btn');
+  const list = document.getElementById('lang-list');
+  if (!btn || !list) return;
+  list.hidden = !open;
+  btn.setAttribute('aria-expanded', String(open));
+  if (open) {
+    const opt = list.querySelector('[aria-selected="true"]') || list.firstElementChild;
+    if (opt) opt.focus();
+  } else if (returnFocus) {
+    btn.focus();
+  }
+}
+
+// Reconstruye las opciones y actualiza el texto del botón
+function updateLanguageMenu() {
+  const btn = document.getElementById('lang-btn');
+  const list = document.getElementById('lang-list');
+  const cur = document.getElementById('lang-current');
+  if (!btn || !list || !cur) return;
+
+  const langs = getLanguages();
+  const current = langs.find(l => l.code === currentLang) || langs[0];
+  cur.textContent = current.short;
+  btn.title = `${t('language')}: ${current.name}`;
+  btn.setAttribute('aria-label', `${t('language')}: ${current.name}`);
+  list.setAttribute('aria-label', t('language'));
+
+  list.innerHTML = '';
+  langs.forEach(l => {
+    const li = document.createElement('li');
+    li.setAttribute('role', 'option');
+    li.tabIndex = -1;
+    li.dataset.lang = l.code;
+    li.lang = l.code;
+    li.setAttribute('aria-selected', String(l.code === current.code));
+    const name = document.createElement('span');
+    name.className = 'lang-name';
+    name.textContent = l.name;
+    const short = document.createElement('span');
+    short.className = 'lang-short';
+    short.textContent = l.short;
+    li.append(name, short);
+    list.appendChild(li);
+  });
+}
+
+function setupLanguageMenu(onChange) {
+  const wrap = document.getElementById('lang-menu');
+  const btn = document.getElementById('lang-btn');
+  const list = document.getElementById('lang-list');
+  if (!wrap || !btn || !list) return;
+
+  updateLanguageMenu();
+
+  const choose = (opt) => {
+    if (!opt) return;
+    const code = opt.dataset.lang;
+    setLangMenuOpen(false, true);
+    if (code && code !== currentLang) onChange(code);
+  };
+
+  btn.addEventListener('click', () => setLangMenuOpen(list.hidden, false));
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      setLangMenuOpen(true);
+    }
+  });
+
+  list.addEventListener('click', (e) => choose(e.target.closest('[role="option"]')));
+  list.addEventListener('keydown', (e) => {
+    const items = Array.from(list.children);
+    const i = items.indexOf(document.activeElement);
+    const focusAt = (n) => { e.preventDefault(); items[(n + items.length) % items.length].focus(); };
+    switch (e.key) {
+      case 'ArrowDown': focusAt(i + 1); break;
+      case 'ArrowUp': focusAt(i - 1); break;
+      case 'Home': focusAt(0); break;
+      case 'End': focusAt(items.length - 1); break;
+      case 'Enter':
+      case ' ': e.preventDefault(); choose(items[i]); break;
+      case 'Escape': e.preventDefault(); setLangMenuOpen(false, true); break;
+      case 'Tab': setLangMenuOpen(false, false); break;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!list.hidden && !wrap.contains(e.target)) setLangMenuOpen(false, false);
+  });
 }
