@@ -147,3 +147,22 @@ function loadImageAsync(src, imgElement) {
   imgElement.src = './img/placeholder.webp';
   imgElement.dataset.src = src;
 }
+
+// ---------- Idioma ----------
+let currentLang = 'es';
+function t(key) {
+  const d = (typeof I18N !== 'undefined' && (I18N[currentLang] || I18N.es)) || {};
+  return d[key] !== undefined ? d[key] : key;
+}
+// Acepta texto o {es, en}
+function tr(v) {
+  return v && typeof v === 'object' ? (v[currentLang] ?? v.es ?? '') : (v ?? '');
+}
+function initLanguage() {
+  const s = loadPref('lang');
+  currentLang = (s === 'es' || s === 'en') ? s : ((navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en');
+}
+// Compatible con el formato antiguo (listData como string)
+function getListText(lang) {
+  return typeof listData === 'string' ? listData : (listData[lang] || listData.es || '');
+}
