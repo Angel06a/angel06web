@@ -20,18 +20,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const goToTab = (tabId) => showTab(tabId, searchInput, primaryDownloadBtn, secondaryDownloadBtn);
 
-  // ---------- Rutas limpias (/juegos-pc, /programas-pc...) ----------
+  // ---------- Rutas limpias (/juegos-pc, /pc-games...) ----------
   const BASE = window.SITE_BASE || location.pathname.replace(/[^\/]*$/, '');
   const tabExists = (id) => !!id && !!sidebarUl.querySelector(`.tab-button[data-tab="${id}"]`);
+
+  // slug (de cualquier idioma) → id interna. Así /juegos-pc y /pc-games abren la misma pestaña.
+  const slugMap = {};
+  SITE_CONFIG.languages.forEach(l => {
+    parseListData(getListText(l.code), getListText('es')).forEach(c => {
+      slugMap[slugify(c.name)] = c.id;
+    });
+  });
+
+  // id interna → slug en el idioma actual
+  function slugForTab(id) {
+    const c = categories.find(c => c.id === id);
+    return c ? c.slug : id;
+  }
 
   function getTabFromUrl() {
     let slug = location.pathname.slice(BASE.length).replace(/\/+$/, '');
     try { slug = decodeURIComponent(slug); } catch (e) {}
-    return tabExists(slug) ? slug : null;
+    const id = slugMap[slug];
+    return tabExists(id) ? id : null;
   }
 
   function updateUrl(tabId, mode) {
-    const target = BASE + tabId;
+    const target = BASE + slugForTab(tabId);
     if (location.pathname === target) return;
     try {
       history[mode === 'replace' ? 'replaceState' : 'pushState']({ tab: tabId }, '', target);
@@ -60,7 +75,10 @@ document.addEventListener('DOMContentLoaded', function() {
     applyStaticTexts();
     renderSettingsPanel();
     if (searchInput.value.trim()) runSearch();
-    else if (currentTabId) goToTab(currentTabId);
+    else if (currentTabId) {
+      goToTab(currentTabId);
+      updateUrl(currentTabId, 'replace');   // actualiza la URL al slug del nuevo idioma
+    }
   }
   setupLanguageMenu(setLanguage);
 
@@ -162,13 +180,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Analiza el idioma actual; id de pestaña e imágenes salen siempre del texto en español
-// (así las URLs y los nombres de archivo no cambian), y la búsqueda funciona en ambos idiomas.
+// (así los nombres de archivo y el estado interno no cambian), y la búsqueda funciona en ambos idiomas.
+// El slug de la URL, en cambio, sale del nombre en el idioma actual.
 function parseListData(rawText, esText) {
   const cats = parseCategories(rawText);
   const es = !esText || esText === rawText ? cats : parseCategories(esText);
   cats.forEach((cat, i) => {
     const ref = es[i] || cat;
-    cat.id = slugify(ref.name);
+    cat.id = slugify(ref.name);     // interno, siempre en español
+    cat.slug = slugify(cat.name);   // para la URL, en el idioma actual
     cat.items.forEach((item, j) => {
       const r = ref.items[j] || item;
       item.imgCategory = ref.name;
