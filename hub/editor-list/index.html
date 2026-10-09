@@ -45,6 +45,9 @@ input::placeholder{color:#5c636b}
 .hint code{background:var(--in);padding:1px 5px;border-radius:4px;color:#cfe}
 .empty{color:var(--m);padding:40px 10px;text-align:center}
 h3{margin:14px 0 8px;font-size:13px;color:var(--m);font-weight:600}
+.sorthead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 8px}
+.sorthead h3{margin:0}
+.sorthead .tools{display:flex;gap:6px;flex-wrap:wrap}
 .searchbox{padding:8px 8px 0}
 .qwrap{position:relative}
 #q{padding-right:30px}
@@ -246,14 +249,28 @@ function renderMain() {
       ${field('s3', 'Categoría', 'data-cf="name"', c[lang].name, c[o].name)}
       ${field('s3', 'Extra de categoría (=…=)', 'data-cf="extra"', c[lang].extra, c[o].extra)}
     </div></div>
-    <h3>Elementos (${c.items.length})</h3>${items}
-    <button class="pri" data-act="add">+ Elemento</button>`;
+    <div class="sorthead"><h3>Elementos (${c.items.length})</h3><div class="tools"><button class="pri sm" data-act="add">+ Elemento</button><button class="sm" data-act="sort" title="Ordenar los elementos de esta categoría alfabéticamente">Ordenar A→Z</button></div></div>${items}`;
 }
 
 function render() {
   $('#tab-es').classList.toggle('on', lang === 'es');
   $('#tab-en').classList.toggle('on', lang === 'en');
   renderCats(); renderMain();
+}
+
+/* ---------- Ordenar A→Z ---------- */
+// Usa el nombre del idioma activo (o el del otro si está vacío), sin distinguir mayúsculas/tildes y con números naturales.
+// Como cada elemento guarda ambos idiomas juntos, el orden se aplica a es y en a la vez.
+function sortAZ(arr) {
+  const col = new Intl.Collator(lang, { sensitivity: 'base', numeric: true });
+  const nm = o => (o[lang].name || o[other()].name || '').trim();
+  return arr.sort((a, b) => {
+    const x = nm(a), y = nm(b);
+    if (!x && !y) return 0;
+    if (!x) return 1;   // los vacíos al final
+    if (!y) return -1;
+    return col.compare(x, y);
+  });
 }
 
 /* ---------- Eventos ---------- */
@@ -301,6 +318,13 @@ $('#main').addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if (!b) return;
   const c = data[ci], i = +b.dataset.i, a = b.dataset.act, arr = c.items;
   if (a === 'add') { arr.push({ link1: '', link2: '', es: { name: '', tags: [], extra: '', b1: '', b2: '' }, en: { name: '', tags: [], extra: '', b1: '', b2: '' } }); render(); const r = document.querySelectorAll('.row'); r[r.length - 1]?.querySelector('input').focus(); return; }
+  if (a === 'sort') {
+    if (arr.length < 2) return;
+    if (!confirm('¿Ordenar alfabéticamente los elementos de esta categoría? Se perderá el orden actual.')) return;
+    sortAZ(arr); cj = -1; render();
+    status(`Elementos de «${c[lang].name || '(sin nombre)'}» ordenados de la A a la Z (según ${lang === 'es' ? 'español' : 'inglés'}, en ambos idiomas).`);
+    return;
+  }
   cj = -1;
   if (a === 'del') arr.splice(i, 1);
   if (a === 'up' && i > 0) [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
