@@ -89,6 +89,7 @@ Juegos Android (emoji.android)=🎮 (emoji.android)=:
   -Alien Shooter "https://www.mediafire.com/file/qtxntb41f2tfaib/Alien_Shooter_1.2.5.apk/file"
   -Call of Duty: Black Ops Zombies "https://www.mediafire.com/file/a9cb3i70ft7ms7n/COD_BOZ_1.0.11.zip/file"
   -Crash Bandicoot: On the Run [Sin conexión] "https://agmod.org/crash-bandicoot-on-the-run-full-offline-apk-obb/"
+  -Cuphead "https://apkvision.org/games/action/cuphead-100069/"
   -Dead Effect 2 "https://agmod.org/dead-effect-2/"
   -Dead Space "https://agmod.org/dead-space/"
   -Downwell "https://www.mediafire.com/file/kgf4ethmk88byy3/Downwell_1.1.1.apk/file"
@@ -129,6 +130,7 @@ Programas Android (emoji.android)=⚙️ (emoji.android)=:
   -PPSSPP Gold [Emular PSP] =🕹️= "https://apkretro.com/ppsspp-gold-apk-download/"
   -RAR [Premium desbloqueado] "https://apkretro.com/rar-premium-apk-download/"
   -ReVanced Manager Plus "https://vanced.to/revanced-manager"
+  -Super Archivo "https://liteapks.com/super-file.html"
   -VPN Super Unlimited Proxy [Premium desbloqueado] "https://liteapks.com/vpn-super-unlimited-proxy.html"
 Páginas Web (emoji.web)=(emoji.web)=:
   -Bios [Roms][Emular] =🕹️= "https://github.com/Angel06a/Bios-RetroBat"
@@ -246,6 +248,7 @@ Android Games (emoji.android)=🎮 (emoji.android)=:
   -Alien Shooter "https://www.mediafire.com/file/qtxntb41f2tfaib/Alien_Shooter_1.2.5.apk/file"
   -Call of Duty: Black Ops Zombies "https://www.mediafire.com/file/a9cb3i70ft7ms7n/COD_BOZ_1.0.11.zip/file"
   -Crash Bandicoot: On the Run [Offline] "https://agmod.org/crash-bandicoot-on-the-run-full-offline-apk-obb/"
+  -Cuphead "https://apkvision.org/games/action/cuphead-100069/"
   -Dead Effect 2 "https://agmod.org/dead-effect-2/"
   -Dead Space "https://agmod.org/dead-space/"
   -Downwell "https://www.mediafire.com/file/kgf4ethmk88byy3/Downwell_1.1.1.apk/file"
@@ -286,6 +289,7 @@ Android Programs (emoji.android)=⚙️ (emoji.android)=:
   -PPSSPP Gold [Emulate PSP] =🕹️= "https://apkretro.com/ppsspp-gold-apk-download/"
   -RAR [Premium Unlocked] "https://apkretro.com/rar-premium-apk-download/"
   -ReVanced Manager Plus "https://vanced.to/revanced-manager"
+  -Super File "https://liteapks.com/super-file.html"
   -VPN Super Unlimited Proxy [Premium Unlocked] "https://liteapks.com/vpn-super-unlimited-proxy.html"
 Websites (emoji.web)=(emoji.web)=:
   -Bios [ROMs][Emulate] =🕹️= "https://github.com/Angel06a/Bios-RetroBat"
