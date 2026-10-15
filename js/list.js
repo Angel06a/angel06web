@@ -1,5 +1,5 @@
 // list.js — se puede editar a mano o con editor-list.html
-// Mismo formato en ambos idiomas; el orden de categorías y elementos debe coincidir.
+// Mismo formato en ambos idiomas; el orden de las categorías debe coincidir. Los elementos se emparejan por sus enlaces (pueden estar en distinto orden).
 const listData = {
   es: `
 Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
@@ -124,6 +124,7 @@ Juegos Android (emoji.android)=🎮 (emoji.android)=:
   -Undertale "https://undertale.es.xyzapk.com/"
   -Zombie Avengers Dreamsky Stickman War "https://www.mediafire.com/file/7qmtqoinva2itn4/Zombie_Avengers_Dreamsky_Stickman_War_2.0.3.apk/file"
 Programas Android (emoji.android)=⚙️ (emoji.android)=:
+  -Archivos: Acceso directo "https://play.google.com/store/apps/details?id=com.files.shortcut"
   -ARMSX2 [Emular PS2] =🕹️= "https://play.google.com/store/apps/details?id=come.nanodata.armsx2"
   -Azahar [Emular 3DS] =🕹️= "https://play.google.com/store/apps/details?id=io.github.lime3ds.android"
   -CapCut Pro [Editor de Video] "https://www.mediafire.com/file/wvhjm75wj4cqdoc/CapCut+Pro+v13.9.0_(AndroidApkData.net).apk/file"
@@ -143,7 +144,7 @@ Programas Android (emoji.android)=⚙️ (emoji.android)=:
   -Super Archivo "https://liteapks.com/super-file.html"
   -VPN Super Unlimited Proxy [Premium desbloqueado] "https://liteapks.com/vpn-super-unlimited-proxy.html"
 Páginas Web (emoji.web)=(emoji.web)=:
-  -Bios [Roms][Emular] =🕹️= "https://github.com/Angel06a/Bios-RetroBat"
+  -Bios [Roms][Emular][Por Angel06] =🕹️= "https://github.com/Angel06a/Bios-RetroBat"
   -BT4 HD [Pack de texturas DBZ BT4][Por Angel06] =⚙️= "https://angel06a.github.io/BT4-HD/"
   -BuscaMinas [Por Angel06] =🎮= "https://angel06a.github.io/angel06web/hub/minesweeper/" *Jugar*
   -DaedalOS [Escritorio] =⚙️= "https://dustinbrett.com/" *Utilizar*
@@ -297,6 +298,7 @@ Android Programs (emoji.android)=⚙️ (emoji.android)=:
   -Azahar [Emulate 3DS] =🕹️= "https://play.google.com/store/apps/details?id=io.github.lime3ds.android"
   -CapCut Pro [Video Editor] "https://www.mediafire.com/file/wvhjm75wj4cqdoc/CapCut+Pro+v13.9.0_(AndroidApkData.net).apk/file"
   -Daijishō [Frontend][Emulate] =🕹️= "https://play.google.com/store/apps/details?id=com.magneticchen.daijishou"
+  -Files: Shortcut "https://play.google.com/store/apps/details?id=com.files.shortcut"
   -Filmora [Video Editor] "https://apkpure.com/es/filmora-movie-video-editor/com.wondershare.filmorago"
   -Gestor de archivos + "https://apkretro.com/file-manager-premium-apk-download/"
   -LibreTorrent "https://f-droid.org/es/packages/org.proninyaroslav.libretorrent/"
@@ -312,9 +314,8 @@ Android Programs (emoji.android)=⚙️ (emoji.android)=:
   -Super File "https://liteapks.com/super-file.html"
   -VPN Super Unlimited Proxy [Premium Unlocked] "https://liteapks.com/vpn-super-unlimited-proxy.html"
 Websites (emoji.web)=(emoji.web)=:
-  -Bios [ROMs][Emulate] =🕹️= "https://github.com/Angel06a/Bios-RetroBat"
+  -Bios [ROMs][Emulate][By Angel06] =🕹️= "https://github.com/Angel06a/Bios-RetroBat"
   -BT4 HD [DBZ BT4 Texture Pack][By Angel06] =⚙️= "https://angel06a.github.io/BT4-HD/"
-  -BuscaMinas [By Angel06] =🎮= "https://angel06a.github.io/angel06web/hub/minesweeper/" *Play*
   -DaedalOS [Desktop] =⚙️= "https://dustinbrett.com/" *Use*
   -Flappy Bird =🎮= "https://emupedia.net/emupedia-game-flappy-bird/" *Play*
   -Friday Night Funkin =🎮= "https://ninja-muffin24.itch.io/funkin" *Play*
@@ -322,6 +323,7 @@ Websites (emoji.web)=(emoji.web)=:
   -Icon Converter =⚙️= "https://redketchup.io/icon-converter" *Use*
   -Jetpack Joyride =🎮= "https://emupedia.net/emupedia-game-jetpack-joyride/" *Play*
   -MarkEditor [By Angel06] =⚙️= "https://angel06a.github.io/angel06web/hub/markeditor/" *Use*
+  -Minesweeper [By Angel06] =🎮= "https://angel06a.github.io/angel06web/hub/minesweeper/" *Play*
   -NoPayStation [PS3 ROMs][Emulate] =🕹️= "https://nopaystation.com/browse"
   -OpenLara [Tomb Raider] =🎮= "https://emupedia.net/emupedia-game-tomb-raider/" *Play*
   -Photopea [Image Editor] =⚙️= "https://www.photopea.com/" *Use*
