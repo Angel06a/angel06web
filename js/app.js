@@ -189,8 +189,15 @@ function parseListData(rawText, esText) {
     const ref = es[i] || cat;
     cat.id = slugify(ref.name);     // interno, siempre en español
     cat.slug = slugify(cat.name);   // para la URL, en el idioma actual
+    // Cada idioma puede tener su propio orden: los elementos se emparejan por sus enlaces
+    // (iguales en ambos idiomas); con enlaces repetidos se usa el orden de aparición.
+    const key = it => it.link + '|' + it.link2;
+    const pool = {};
+    ref.items.forEach((r, k) => (pool[key(r)] ||= []).push(k));
     cat.items.forEach((item, j) => {
-      const r = ref.items[j] || item;
+      const q = pool[key(item)];
+      const k = q && q.length ? q.shift() : j;   // sin coincidencia: por posición
+      const r = ref.items[k] || item;
       item.imgCategory = ref.name;
       item.imgName = r.displayName;
       if (r !== item) item.searchText += ' ' + r.searchText;
