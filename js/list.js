@@ -12,6 +12,8 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -CB Servers Launcher [CoD Launcher] "https://docs.cbservers.xyz/launcher"
   -Clone Drone in the Danger Zone "https://www.mediafire.com/file/cs7iz3ckjpuoh6b/Clone_Drone_in_the_Danger_Zone.zip/file"
   -Cuphead "https://angel06a.github.io/angel06web/games/pc/cuphead/"
+  -Dead Cells "https://steamunlocked.org/dead-cells-free-download/"
+  -Doki Doki Literature Club Plus! "https://steamunlocked.org/doki-doki-literature-club-plus-free-download/"
   -Downwell "https://elenemigos.com/app/downwell-descargar-gratis/21530"
   -Dragon Ball FighterZ "https://steamunlocked.org/dragon-ball-fighterz-free-download/"
   -Dragon Ball Sparking ZERO "https://pivigames.blog/dragon-ball-sparking-zero-oferta-25/"
@@ -19,6 +21,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Far Cry 3 "https://steamunlocked.org/far-cry-3-deluxe-edition-free-download/"
   -Flare "https://flarerpg.org/download/"
   -Friday Night Funkin’ "https://ninja-muffin24.itch.io/funkin"
+  -Gang Beasts "https://steamunlocked.org/gang-beasts-free-download/"
   -GTA III "https://www.blizzboygames.net/gta-iii-pc-full-espanol/"
   -GTA IV "https://pivigames.blog/grand-theft-auto-iv-episodes-from-liberty/"
   -GTA V "https://pivigames.blog/grand-theft-auto-v-premium-online-edition/"
@@ -28,6 +31,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Halo: Combat Evolved "https://steamunlocked.org/halo-combat-evolved-free-download/"
   -I, Gladiator "https://steamunlocked.org/i-gladiator-free-download/"
   -Injustice: Gods Among Us "https://steamunlocked.org/injustice-gods-among-us-ultimate-edition-free-download/"
+  -Journey "https://steamunlocked.org/journey-free-download/"
   -Killer Instinct "https://pivigames.blog/killer-instinct/"
   -Left 4 Dead 2 "https://pivigames.blog/left-4-dead2-online-steam-ultima-version/"
   -Mario Kart 64 Port "https://github.com/sonicdcer/MarioKart64Recomp/releases" "https://vimm.net/vault/2649" *Descargar* *Rom*
@@ -38,6 +42,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Nidhogg 2 "https://steamunlocked.org/nidhogg-2-free-download/"
   -Pureya "https://steamunlocked.org/pureya-free-download/"
   -Quake III Arena "https://steamunlocked.org/quake-iii-arena-free-download/" "https://ioquake3.org/" *Juego Base* *Ioquake3*
+  -Raft "https://steamunlocked.org/raft-free-download/"
   -Rayman Legends "https://angel06a.github.io/angel06web/games/pc/rayman-legends/"
   -Serious Sam HD "https://steamunlocked.org/serious-sam-hd-the-second-encounter-free-download/"
   -Slayin DX "https://steamunlocked.org/slayin-dx-free-download/"
@@ -48,6 +53,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Super Mario 64 Port "https://sm64coopdx.com/" "https://vimm.net/vault/2764" *Descargar* *Rom*
   -Super Smash Flash 2 "https://www.supersmashflash.com/play/ssf2/downloads/"
   -The Legend of Zelda Port "https://www.shipofharkinian.com/" "https://vimm.net/vault/2637" *Descargar* *Rom*
+  -The Unfinished Swan "https://steamunlocked.org/the-unfinished-swan-free-download/"
   -Ultimate Marvel vs Capcom 3 "https://rentry.co/3b2zfkhf"
   -Undertale "https://pivigames.blog/undertale-en-espanol/"
 Programas PC (emoji.windows)=⚙️ (emoji.windows)=:
@@ -112,6 +118,7 @@ Juegos Android (emoji.android)=🎮 (emoji.android)=:
   -Modern Combat 4: Zero Hour "https://apkvision.org/games/action/modern-combat-4-zero-hour-3190/"
   -N.O.V.A. 3 – Near Orbit Vanguard Alliance "https://apkvision.org/games/action/nova-3-near-orbit-vanguard-alliance-apk-3186/"
   -NARUTO: Ultimate Ninja STORM "https://apkvision.org/games/action/naruto-ultimate-ninja-storm-124113/"
+  -Nidhogg "https://apkvision.org/games/action/nidhogg-134743/"
   -Paladog "https://www.mediafire.com/file/1xbi8es1hh3sscx/Paladog_2.2.0.apk/file"
   -Pureya "https://www.mediafire.com/file/6n6i3m4cso48zfd/Pureya_1.0.15.apk/file"
   -Run & Gun: Banditos "https://www.mediafire.com/file/cu23w1yl9t4qp64/Run_%2526_Gun_BANDITOS_1.3.2.apk/file"
@@ -168,7 +175,7 @@ Páginas Web (emoji.web)=(emoji.web)=:
   -The Binding of Isaac =🎮= "https://emupedia.net/emupedia-game-binding-of-isaac/" *Jugar*
   -UNO Online =🎮= "https://scuffeduno.online/" *Jugar*
   -Vimm's Lair [Roms][Emular] =🕹️= "https://vimm.net/vault"
-  -WallpaperStore =⚙️= "https://angel06a.github.io/WallpaperStore/" *Utilizar*
+  -WallpaperStore [Por Angel06] =⚙️= "https://angel06a.github.io/WallpaperStore/" *Utilizar*
   -WoWroMs [Roms][Emular] =🕹️= "https://wowroms.com/es/"
 `,
   en: `
@@ -182,6 +189,8 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -CB Servers Launcher [CoD Launcher] "https://docs.cbservers.xyz/launcher"
   -Clone Drone in the Danger Zone "https://www.mediafire.com/file/cs7iz3ckjpuoh6b/Clone_Drone_in_the_Danger_Zone.zip/file"
   -Cuphead "https://angel06a.github.io/angel06web/games/pc/cuphead/"
+  -Dead Cells "https://steamunlocked.org/dead-cells-free-download/"
+  -Doki Doki Literature Club Plus! "https://steamunlocked.org/doki-doki-literature-club-plus-free-download/"
   -Downwell "https://elenemigos.com/app/downwell-descargar-gratis/21530"
   -Dragon Ball FighterZ "https://steamunlocked.org/dragon-ball-fighterz-free-download/"
   -Dragon Ball Sparking ZERO "https://pivigames.blog/dragon-ball-sparking-zero-oferta-25/"
@@ -189,6 +198,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Far Cry 3 "https://steamunlocked.org/far-cry-3-deluxe-edition-free-download/"
   -Flare "https://flarerpg.org/download/"
   -Friday Night Funkin’ "https://ninja-muffin24.itch.io/funkin"
+  -Gang Beasts "https://steamunlocked.org/gang-beasts-free-download/"
   -GTA III "https://www.blizzboygames.net/gta-iii-pc-full-espanol/"
   -GTA IV "https://pivigames.blog/grand-theft-auto-iv-episodes-from-liberty/"
   -GTA V "https://pivigames.blog/grand-theft-auto-v-premium-online-edition/"
@@ -198,6 +208,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Halo: Combat Evolved "https://steamunlocked.org/halo-combat-evolved-free-download/"
   -I, Gladiator "https://steamunlocked.org/i-gladiator-free-download/"
   -Injustice: Gods Among Us "https://steamunlocked.org/injustice-gods-among-us-ultimate-edition-free-download/"
+  -Journey "https://steamunlocked.org/journey-free-download/"
   -Killer Instinct "https://pivigames.blog/killer-instinct/"
   -Left 4 Dead 2 "https://pivigames.blog/left-4-dead2-online-steam-ultima-version/"
   -Mario Kart 64 Port "https://github.com/sonicdcer/MarioKart64Recomp/releases" "https://vimm.net/vault/2649" *Download* *ROM*
@@ -208,6 +219,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Nidhogg 2 "https://steamunlocked.org/nidhogg-2-free-download/"
   -Pureya "https://steamunlocked.org/pureya-free-download/"
   -Quake III Arena "https://steamunlocked.org/quake-iii-arena-free-download/" "https://ioquake3.org/" *Base Game* *Ioquake3*
+  -Raft "https://steamunlocked.org/raft-free-download/"
   -Rayman Legends "https://angel06a.github.io/angel06web/games/pc/rayman-legends/"
   -Serious Sam HD "https://steamunlocked.org/serious-sam-hd-the-second-encounter-free-download/"
   -Slayin DX "https://steamunlocked.org/slayin-dx-free-download/"
@@ -218,6 +230,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Super Mario 64 Port "https://sm64coopdx.com/" "https://vimm.net/vault/2764" *Download* *ROM*
   -Super Smash Flash 2 "https://www.supersmashflash.com/play/ssf2/downloads/"
   -The Legend of Zelda Port "https://www.shipofharkinian.com/" "https://vimm.net/vault/2637" *Download* *ROM*
+  -The Unfinished Swan "https://steamunlocked.org/the-unfinished-swan-free-download/"
   -Ultimate Marvel vs Capcom 3 "https://rentry.co/3b2zfkhf"
   -Undertale "https://pivigames.blog/undertale-en-espanol/"
 PC Programs (emoji.windows)=⚙️ (emoji.windows)=:
@@ -282,6 +295,7 @@ Android Games (emoji.android)=🎮 (emoji.android)=:
   -Modern Combat 4: Zero Hour "https://apkvision.org/games/action/modern-combat-4-zero-hour-3190/"
   -N.O.V.A. 3 – Near Orbit Vanguard Alliance "https://apkvision.org/games/action/nova-3-near-orbit-vanguard-alliance-apk-3186/"
   -NARUTO: Ultimate Ninja STORM "https://apkvision.org/games/action/naruto-ultimate-ninja-storm-124113/"
+  -Nidhogg "https://apkvision.org/games/action/nidhogg-134743/"
   -Paladog "https://www.mediafire.com/file/1xbi8es1hh3sscx/Paladog_2.2.0.apk/file"
   -Pureya "https://www.mediafire.com/file/6n6i3m4cso48zfd/Pureya_1.0.15.apk/file"
   -Run & Gun: Banditos "https://www.mediafire.com/file/cu23w1yl9t4qp64/Run_%2526_Gun_BANDITOS_1.3.2.apk/file"
@@ -338,7 +352,7 @@ Websites (emoji.web)=(emoji.web)=:
   -The Binding of Isaac =🎮= "https://emupedia.net/emupedia-game-binding-of-isaac/" *Play*
   -UNO Online =🎮= "https://scuffeduno.online/" *Play*
   -Vimm's Lair [ROMs][Emulate] =🕹️= "https://vimm.net/vault"
-  -WallpaperStore =⚙️= "https://angel06a.github.io/WallpaperStore/" *Use*
+  -WallpaperStore [By Angel06] =⚙️= "https://angel06a.github.io/WallpaperStore/" *Use*
   -WoWroMs [ROMs][Emulate] =🕹️= "https://wowroms.com/es/"
 `
 };
