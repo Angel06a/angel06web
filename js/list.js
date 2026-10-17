@@ -34,6 +34,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Journey "https://steamunlocked.org/journey-free-download/"
   -Killer Instinct "https://pivigames.blog/killer-instinct/"
   -Left 4 Dead 2 "https://pivigames.blog/left-4-dead2-online-steam-ultima-version/"
+  -Little Nightmares "https://steamunlocked.org/little-nightmares-free-download/"
   -Mario Kart 64 Port "https://github.com/sonicdcer/MarioKart64Recomp/releases" "https://vimm.net/vault/2649" *Descargar* *Rom*
   -Minecraft Bedrock "https://www.xbox.com/es-ES/games/store/minecraft-for-windows/9NBLGGH2JHXJ" "https://online-fix.me/games/sandbox/16708-minecraft-for-windows-po-seti.html" *Descargar* *OnlineFix*
   -Mortal Kombat Komplete Edition "https://steamunlocked.org/mortal-kombat-komplete-edition-free-download/"
@@ -49,7 +50,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Slime Rancher "https://rentry.co/dzwd6zp4"
   -Sonic The Hedgehog 3D "https://rentry.co/m46az9tz"
   -Spore "https://steamunlocked.org/spore-collection-free-download/"
-  -Street Fighter X Tekken "https://angel06a.github.io/angel06web/games/pc/SFTK/"
+  -Street Fighter X Tekken "https://angel06a.github.io/angel06web/games/pc/street-fighter-x-tekken/"
   -Super Mario 64 Port "https://sm64coopdx.com/" "https://vimm.net/vault/2764" *Descargar* *Rom*
   -Super Smash Flash 2 "https://www.supersmashflash.com/play/ssf2/downloads/"
   -The Legend of Zelda Port "https://www.shipofharkinian.com/" "https://vimm.net/vault/2637" *Descargar* *Rom*
@@ -113,7 +114,9 @@ Juegos Android (emoji.android)=🎮 (emoji.android)=:
   -Halo: Combat Evolved "https://apkvision.org/games/action/halo-combat-evolved-134895/"
   -Human: Fall Flat "https://apkvision.org/games/adventure/human-fall-flat-apk-2-39274/"
   -I, Gladiator "https://apkretro.com/i-gladiator-apk-download/"
+  -Into the Dead "https://apkvision.org/games/action/into-the-dead-8332/"
   -Lego DC Mighty Micros "https://www.mediafire.com/file/1i6ga7bi2qo1voh/LEGO_DC_Mighty_Micros_1.7.1418.apk/file"
+  -Little Nightmares "https://apkvision.org/games/action/little-nightmares-114874/"
   -Minecraft Bedrock "https://mcpelife.com/download/"
   -Modern Combat 4: Zero Hour "https://apkvision.org/games/action/modern-combat-4-zero-hour-3190/"
   -N.O.V.A. 3 – Near Orbit Vanguard Alliance "https://apkvision.org/games/action/nova-3-near-orbit-vanguard-alliance-apk-3186/"
@@ -130,6 +133,7 @@ Juegos Android (emoji.android)=🎮 (emoji.android)=:
   -The Legend of Zelda Port "https://github.com/linkzenic/Shipwright-Android/releases" "https://vimm.net/vault/2637" *Descargar* *Rom*
   -Undertale "https://undertale.es.xyzapk.com/"
   -Zombie Avengers Dreamsky Stickman War "https://www.mediafire.com/file/7qmtqoinva2itn4/Zombie_Avengers_Dreamsky_Stickman_War_2.0.3.apk/file"
+  -Zombie Highway 2 "https://apkvision.org/games/racing/zombie-highway-2-9838/"
 Programas Android (emoji.android)=⚙️ (emoji.android)=:
   -Archivos: Acceso directo "https://play.google.com/store/apps/details?id=com.files.shortcut"
   -ARMSX2 [Emular PS2] =🕹️= "https://play.google.com/store/apps/details?id=come.nanodata.armsx2"
@@ -211,6 +215,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Journey "https://steamunlocked.org/journey-free-download/"
   -Killer Instinct "https://pivigames.blog/killer-instinct/"
   -Left 4 Dead 2 "https://pivigames.blog/left-4-dead2-online-steam-ultima-version/"
+  -Little Nightmares "https://steamunlocked.org/little-nightmares-free-download/"
   -Mario Kart 64 Port "https://github.com/sonicdcer/MarioKart64Recomp/releases" "https://vimm.net/vault/2649" *Download* *ROM*
   -Minecraft Bedrock "https://www.xbox.com/es-ES/games/store/minecraft-for-windows/9NBLGGH2JHXJ" "https://online-fix.me/games/sandbox/16708-minecraft-for-windows-po-seti.html" *Download* *OnlineFix*
   -Mortal Kombat Komplete Edition "https://steamunlocked.org/mortal-kombat-komplete-edition-free-download/"
@@ -226,7 +231,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Slime Rancher "https://rentry.co/dzwd6zp4"
   -Sonic The Hedgehog 3D "https://rentry.co/m46az9tz"
   -Spore "https://steamunlocked.org/spore-collection-free-download/"
-  -Street Fighter X Tekken "https://angel06a.github.io/angel06web/games/pc/SFTK/"
+  -Street Fighter X Tekken "https://angel06a.github.io/angel06web/games/pc/street-fighter-x-tekken/"
   -Super Mario 64 Port "https://sm64coopdx.com/" "https://vimm.net/vault/2764" *Download* *ROM*
   -Super Smash Flash 2 "https://www.supersmashflash.com/play/ssf2/downloads/"
   -The Legend of Zelda Port "https://www.shipofharkinian.com/" "https://vimm.net/vault/2637" *Download* *ROM*
@@ -290,7 +295,9 @@ Android Games (emoji.android)=🎮 (emoji.android)=:
   -Halo: Combat Evolved "https://apkvision.org/games/action/halo-combat-evolved-134895/"
   -Human: Fall Flat "https://apkvision.org/games/adventure/human-fall-flat-apk-2-39274/"
   -I, Gladiator "https://apkretro.com/i-gladiator-apk-download/"
+  -Into the Dead "https://apkvision.org/games/action/into-the-dead-8332/"
   -Lego DC Mighty Micros "https://www.mediafire.com/file/1i6ga7bi2qo1voh/LEGO_DC_Mighty_Micros_1.7.1418.apk/file"
+  -Little Nightmares "https://apkvision.org/games/action/little-nightmares-114874/"
   -Minecraft Bedrock "https://mcpelife.com/download/"
   -Modern Combat 4: Zero Hour "https://apkvision.org/games/action/modern-combat-4-zero-hour-3190/"
   -N.O.V.A. 3 – Near Orbit Vanguard Alliance "https://apkvision.org/games/action/nova-3-near-orbit-vanguard-alliance-apk-3186/"
@@ -307,6 +314,7 @@ Android Games (emoji.android)=🎮 (emoji.android)=:
   -The Legend of Zelda Port "https://github.com/linkzenic/Shipwright-Android/releases" "https://vimm.net/vault/2637" *Download* *ROM*
   -Undertale "https://undertale.es.xyzapk.com/"
   -Zombie Avengers Dreamsky Stickman War "https://www.mediafire.com/file/7qmtqoinva2itn4/Zombie_Avengers_Dreamsky_Stickman_War_2.0.3.apk/file"
+  -Zombie Highway 2 "https://apkvision.org/games/racing/zombie-highway-2-9838/"
 Android Programs (emoji.android)=⚙️ (emoji.android)=:
   -ARMSX2 [Emulate PS2] =🕹️= "https://play.google.com/store/apps/details?id=come.nanodata.armsx2"
   -Azahar [Emulate 3DS] =🕹️= "https://play.google.com/store/apps/details?id=io.github.lime3ds.android"
