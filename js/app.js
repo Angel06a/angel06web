@@ -1,10 +1,11 @@
 // app.js
 
-document.addEventListener('DOMContentLoaded', function() {
+function initApp() {
   applySiteConfig();
 
   initLanguage();
-  let categories = parseListData(getListText(currentLang), getListText('es'));
+  let categories = getCategories(currentLang);
+  let allItems = categories.flatMap(c => c.items);
 
   const searchInput = document.querySelector('.search-bar input');
   const sidebarUl = document.getElementById('sidebar-categories');
@@ -18,19 +19,30 @@ document.addEventListener('DOMContentLoaded', function() {
   setupConfigPanel();
   applyStaticTexts();
 
-  const goToTab = (tabId) => showTab(tabId, searchInput, primaryDownloadBtn, secondaryDownloadBtn);
+  // Última búsqueda pintada: evita repintar (y deseleccionar) si la consulta no ha cambiado
+  let lastSearchKey = null;
+
+  const goToTab = (tabId) => {
+    if (tabId !== 'busqueda') lastSearchKey = null;
+    showTab(tabId, searchInput, primaryDownloadBtn, secondaryDownloadBtn);
+  };
 
   // ---------- Rutas limpias (/juegos-pc, /pc-games...) ----------
   const BASE = window.SITE_BASE || location.pathname.replace(/[^\/]*$/, '');
   const tabExists = (id) => !!id && !!sidebarUl.querySelector(`.tab-button[data-tab="${id}"]`);
 
   // slug (de cualquier idioma) → id interna. Así /juegos-pc y /pc-games abren la misma pestaña.
-  const slugMap = {};
-  SITE_CONFIG.languages.forEach(l => {
-    parseListData(getListText(l.code), getListText('es')).forEach(c => {
-      slugMap[slugify(c.name)] = c.id;
-    });
-  });
+  // Se crea solo cuando hace falta: el otro idioma no se analiza hasta que se necesita.
+  let slugMap = null;
+  function getSlugMap() {
+    if (!slugMap) {
+      slugMap = {};
+      SITE_CONFIG.languages.forEach(l => {
+        getCategories(l.code).forEach(c => { slugMap[c.slug] = c.id; });
+      });
+    }
+    return slugMap;
+  }
 
   // id interna → slug en el idioma actual
   function slugForTab(id) {
@@ -40,8 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function getTabFromUrl() {
     let slug = location.pathname.slice(BASE.length).replace(/\/+$/, '');
+    if (!slug) return null;
     try { slug = decodeURIComponent(slug); } catch (e) {}
-    const id = slugMap[slug];
+    const id = getSlugMap()[slug];
     return tabExists(id) ? id : null;
   }
 
@@ -64,13 +77,17 @@ document.addEventListener('DOMContentLoaded', function() {
     currentTabId = startTab;
     goToTab(startTab);
     updateUrl(startTab, 'replace');
+  } else if (currentTabId) {
+    ensureCategoryRendered(currentTabId); // la primera pestaña ya está activa en el HTML
   }
 
   // Cambio de idioma (reconstruye la lista y conserva pestaña y búsqueda)
   function setLanguage(lang) {
     currentLang = lang;
     savePref('lang', lang);
-    categories = parseListData(getListText(lang), getListText('es'));
+    categories = getCategories(lang);
+    allItems = categories.flatMap(c => c.items);
+    lastSearchKey = null; // hay que repintar los resultados en el nuevo idioma
     renderCategories(categories);
     applyStaticTexts();
     renderSettingsPanel();
@@ -112,20 +129,18 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    const matchingItems = [];
-    categories.forEach(cat => {
-      cat.items.forEach(item => {
-        if (tokens.every(t => item.searchText.includes(t))) {
-          matchingItems.push(item);
-        }
-      });
-    });
+    // Misma consulta que la ya mostrada (p. ej. al teclear un espacio): no hay nada que repintar
+    const key = tokens.join(' ');
+    if (key === lastSearchKey && busquedaSection.classList.contains('active')) return;
+
+    const matchingItems = allItems.filter(item => tokens.every(tok => item.searchText.includes(tok)));
 
     displaySearchResults(matchingItems, busquedaList);
     busquedaTitle.textContent = `${t('results')} (${matchingItems.length})`;
     const typed = searchInput.value;
     goToTab('busqueda');
     searchInput.value = typed; // showTab no borra en 'busqueda', pero por seguridad
+    lastSearchKey = key;       // después de goToTab, que lo reinicia
   }
 
   searchInput.addEventListener('input', debounce(runSearch, 100));
@@ -167,24 +182,28 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, { passive: false });
   }
+}
 
-  // Fade out del overlay de carga
-  window.addEventListener('load', function() {
-    const bgOverlay = document.getElementById('bg-overlay');
-    if (bgOverlay) {
-      bgOverlay.style.opacity = '0';
-      setTimeout(() => bgOverlay.remove(), 1000);
-    }
-  });
-});
+// ---------- Lista de categorías (con caché por idioma) ----------
+// Cada idioma se analiza una sola vez, y solo cuando hace falta (el otro idioma
+// no se procesa hasta que se cambia de idioma o se abre una URL con su slug).
+const categoryCache = {};
+function getCategories(lang) {
+  if (!categoryCache[lang]) {
+    const raw = getListText(lang);
+    const refCats = (lang === 'es' || raw === getListText('es')) ? null : getCategories('es');
+    categoryCache[lang] = parseListData(raw, refCats);
+  }
+  return categoryCache[lang];
+}
 
-
-// Analiza el idioma actual; id de pestaña e imágenes salen siempre del texto en español
+// Analiza el idioma indicado; id de pestaña e imágenes salen siempre del texto en español
 // (así los nombres de archivo y el estado interno no cambian), y la búsqueda funciona en ambos idiomas.
 // El slug de la URL, en cambio, sale del nombre en el idioma actual.
-function parseListData(rawText, esText) {
+// refCats: categorías ya analizadas en español (null si este mismo texto es el español).
+function parseListData(rawText, refCats) {
   const cats = parseCategories(rawText);
-  const es = !esText || esText === rawText ? cats : parseCategories(esText);
+  const es = refCats || cats;
   cats.forEach((cat, i) => {
     const ref = es[i] || cat;
     cat.id = slugify(ref.name);     // interno, siempre en español
@@ -266,3 +285,9 @@ function parseCategories(rawText) {
   });
   return categories;
 }
+
+
+// Arranque (al final del archivo para que todo lo anterior ya esté definido).
+// Los scripts se cargan con "defer": el DOM ya está listo cuando se ejecutan.
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp);
+else initApp();
