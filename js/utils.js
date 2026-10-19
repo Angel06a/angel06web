@@ -34,6 +34,26 @@ function loadPref(key) {
 }
 
 // ---------- Texto ----------
+// Las expresiones regulares se crean una sola vez (estas funciones se llaman miles de veces)
+const RE_EMOJI = /\(emoji\.(?:windows|android|web)\)/g;
+const RE_EMOJI_CAP = /\(emoji\.(windows|android|web)\)/g;
+const RE_EMOJI_OR_TAG = /\(emoji\.(windows|android|web)\)|\[([^\[\]]+)\]/g;
+const RE_BRACKETS = /\s*\[[^\]]*\]\s*/g;
+const RE_PARENS_LAZY = /\s*\(.*?\)\s*/g;
+const RE_BRACKETS_LAZY = /\s*\[.*?\]\s*/g;
+const RE_SPACES = /\s{2,}/g;
+const RE_ACCENTS = /[\u0300-\u036f]/g;
+const RE_NON_SLUG = /[^a-z0-9]+/g;
+const RE_EDGE_DASH = /^-+|-+$/g;
+const RE_ESCAPE = /[&<>"']/g;
+const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+
+const EMOJI_IMG = {
+  windows: '<img src="./img/emoji.windows.webp" alt="Windows" class="emoji" draggable="false" />',
+  android: '<img src="./img/emoji.android.webp" alt="Android" class="emoji" draggable="false" />',
+  web: '<img src="./img/emoji.web.webp" alt="Web" class="emoji" draggable="false" />'
+};
+
 function debounce(func, delay) {
   let timeout;
   return function() {
@@ -46,47 +66,50 @@ function debounce(func, delay) {
 }
 
 function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, ch => (
-    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
-  ));
+  return String(str).replace(RE_ESCAPE, ch => HTML_ESCAPES[ch]);
 }
 
-// Conversión de marcadores a imágenes de emoji (el texto se escapa antes)
+// ¿El texto contiene marcadores que requieren HTML? (si no, basta con textContent)
+function needsMarkup(text) {
+  return !!text && (text.indexOf('(emoji.') !== -1 || text.indexOf('[') !== -1);
+}
+
+// Conversión de marcadores a imágenes de emoji y etiquetas, en una sola pasada
+// (el texto se escapa antes). [Texto] → etiqueta; (emoji.x) → icono.
 function convertEmoji(text) {
   if (!text) return "";
-  return escapeHtml(text)
-    .replace(/\(emoji\.windows\)/g, '<img src="./img/emoji.windows.webp" alt="Windows" class="emoji" draggable="false" />')
-    .replace(/\(emoji\.android\)/g, '<img src="./img/emoji.android.webp" alt="Android" class="emoji" draggable="false" />')
-    .replace(/\(emoji\.web\)/g, '<img src="./img/emoji.web.webp" alt="Web" class="emoji" draggable="false" />')
-    // [Texto] → etiqueta (el contenido ya viene escapado)
-    .replace(/\[([^\[\]]+)\]/g, '<span class="tag">$1</span>');
+  return escapeHtml(text).replace(RE_EMOJI_OR_TAG, (m, platform, tag) =>
+    platform
+      ? EMOJI_IMG[platform]
+      : '<span class="tag">' + tag.replace(RE_EMOJI_CAP, (mm, p) => EMOJI_IMG[p]) + '</span>'
+  );
 }
 
 // Texto plano para tooltips: sin marcadores de emoji (conserva [etiquetas])
 function plainText(text) {
   if (!text) return "";
-  return text.replace(/\(emoji\.(windows|android|web)\)/g, "").replace(/\s{2,}/g, " ").trim();
+  return text.replace(RE_EMOJI, "").replace(RE_SPACES, " ").trim();
 }
 
 // Quitar marcadores de emoji (para rutas, títulos y tooltips)
 function cleanCategoryName(name) {
   if (!name) return "";
-  return name.replace(/\(emoji\.(windows|android|web)\)/g, "").replace(/\s*\[[^\]]*\]\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+  return name.replace(RE_EMOJI, "").replace(RE_BRACKETS, " ").replace(RE_SPACES, " ").trim();
 }
 
 // Slug para URLs limpias: sin emojis, tildes ni espacios ("Páginas Web" → "paginas-web")
 function slugify(text) {
   return cleanCategoryName(text)
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFD').replace(RE_ACCENTS, '')
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(RE_NON_SLUG, '-')
+    .replace(RE_EDGE_DASH, '');
 }
 
 // Quitar paréntesis y dos puntos para nombres de archivo de imagen
 function stripParentheses(text) {
   if (!text) return "";
-  return text.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s*\[.*?\]\s*/g, ' ').replace(/:/g, '').replace(/\s{2,}/g, ' ').trim();
+  return text.replace(RE_PARENS_LAZY, ' ').replace(RE_BRACKETS_LAZY, ' ').replace(/:/g, '').replace(RE_SPACES, ' ').trim();
 }
 
 // Ruta de imagen segura (codifica caracteres como & # ? %)
@@ -99,47 +122,58 @@ function getItemImagePath(categoryName, displayName) {
 // ("windows", "android", "web") en lugar de la palabra "emoji", que coincidía con todo.
 function searchableText(text) {
   return String(text || "")
-    .replace(/\(emoji\.windows\)/g, ' windows ')
-    .replace(/\(emoji\.android\)/g, ' android ')
-    .replace(/\(emoji\.web\)/g, ' web ')
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(RE_EMOJI_CAP, ' $1 ')
+    .normalize('NFD').replace(RE_ACCENTS, '')
     .toLowerCase();
 }
 
 // ---------- Carga diferida de imágenes ----------
-let lazyImageObserver;
-function initLazyLoading() {
-  const lazyImages = document.querySelectorAll('img[data-src]');
+// Un observador por lista (.list-container) usando esa lista como "root":
+// así el margen de precarga se aplica de verdad dentro del scroll de la lista y las
+// imágenes ya están cargadas cuando llegas a ellas. Solo se observan las imágenes nuevas.
+const lazyObservers = new WeakMap();
 
-  const loadImg = (img) => {
-    const src = img.dataset.src;
-    if (!src) return;
-    const tempImg = new Image();
-    tempImg.onload = function() {
-      img.src = src;
-      img.removeAttribute('data-src');
-    };
-    tempImg.onerror = function() {
-      img.src = './img/fallback.webp';
-      img.removeAttribute('data-src');
-    };
-    tempImg.src = src;
+function loadLazyImage(img) {
+  const src = img.dataset.src;
+  if (!src) return;
+  img.removeAttribute('data-src');
+  img.onerror = function() {
+    img.onerror = null;
+    img.src = './img/fallback.webp';
   };
+  img.src = src; // el placeholder se mantiene visible hasta que la imagen real esté lista
+}
 
-  if ('IntersectionObserver' in window) {
-    if (!lazyImageObserver) {
-      lazyImageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            observer.unobserve(entry.target);
-            loadImg(entry.target);
-          }
-        });
-      }, { rootMargin: '200px' });
-    }
-    lazyImages.forEach(img => lazyImageObserver.observe(img));
-  } else {
-    lazyImages.forEach(loadImg);
+function observeLazyImages(imgs, list) {
+  if (!imgs.length) return;
+  if (!('IntersectionObserver' in window)) {
+    imgs.forEach(loadLazyImage);
+    return;
+  }
+  const root = list.closest('.list-container');
+  const key = root || document;
+  let io = lazyObservers.get(key);
+  if (!io) {
+    io = new IntersectionObserver((entries, observer) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          loadLazyImage(entry.target);
+        }
+      }
+    }, { root: root || null, rootMargin: '300px 0px' });
+    lazyObservers.set(key, io);
+  }
+  imgs.forEach(img => io.observe(img));
+}
+
+// Libera el observador de una lista que se va a vaciar (evita retener nodos eliminados)
+function releaseLazyImages(list) {
+  const key = list.closest('.list-container') || document;
+  const io = lazyObservers.get(key);
+  if (io) {
+    io.disconnect();
+    lazyObservers.delete(key);
   }
 }
 
