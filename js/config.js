@@ -12,7 +12,13 @@
 
 const SITE_CONFIG = {
   title: "Angel06 Web (emoji.windows) (emoji.android) (emoji.web)",
-  footer: "© 2026 Angel06 Web",
+  footer: "",   // texto opcional del pie (vacío = no se muestra)
+
+  // Botón de donaciones del pie
+  donate: {
+    url: "https://ko-fi.com/angel06oficial",
+    label: { es: "Apóyame en Ko-fi", en: "Support me on Ko-fi" }
+  },
 
   // Iconos de la cabecera (a la izquierda del botón de configuración)
   headerLinks: [
