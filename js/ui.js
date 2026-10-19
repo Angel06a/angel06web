@@ -47,7 +47,6 @@ function setDownloadState(primaryBtn, secondaryBtn, data) {
 }
 
 function setupUIStructure(categoriesData) {
-  const sidebarUl = document.getElementById('sidebar-categories');
   const mainContent = document.getElementById('main-content');
   const primaryDownloadBtn = document.getElementById('primary-download-btn');
   const secondaryDownloadBtn = document.getElementById('secondary-download-btn');
@@ -62,8 +61,6 @@ function setupUIStructure(categoriesData) {
   renderCategories(categoriesData);
 
   renderSettingsPanel(); // genera interruptores y aplica los valores guardados
-
-  initLazyLoading();
 }
 
 function processItemClick(button, primaryBtn, secondaryBtn) {
@@ -89,37 +86,89 @@ function attachProjectItemDelegation(containerElement, primaryBtn, secondaryBtn)
   });
 }
 
+// Plantilla del <li> de un elemento: se clona en vez de crear 4 nodos por elemento
+let itemTemplate = null;
+function getItemTemplate() {
+  if (!itemTemplate) {
+    const li = document.createElement('li');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'project-item';
+    const iconImg = document.createElement('img');
+    iconImg.className = 'item-icon';
+    iconImg.alt = '';
+    iconImg.decoding = 'async';
+    iconImg.draggable = false;
+    const textSpan = document.createElement('span');
+    textSpan.className = 'item-text';
+    button.append(iconImg, textSpan);
+    li.appendChild(button);
+    itemTemplate = li;
+  }
+  return itemTemplate;
+}
+
 // Crea un <li> con el botón de un elemento (reutilizado por categorías y búsqueda)
 function createItemElement(item, categoryName, labelText) {
-  const liItem = document.createElement('li');
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.classList.add('project-item');
-  const plainLabel = plainText(labelText);
-  button.title = plainLabel; // tooltip: útil en vista grid, donde se oculta el texto
+  const liItem = getItemTemplate().cloneNode(true);
+  const button = liItem.firstChild;
+  const iconImg = button.firstChild;
+  const textSpan = button.lastChild;
 
-  const iconImg = document.createElement('img');
-  iconImg.classList.add('item-icon');
-  iconImg.alt = '';
-  iconImg.setAttribute('draggable', 'false');
-  button.appendChild(iconImg);
+  button.title = plainText(labelText); // tooltip: útil en vista grid, donde se oculta el texto
   loadImageAsync(getItemImagePath(item.imgCategory || categoryName, item.imgName || item.displayName), iconImg);
 
-  const textSpan = document.createElement('span');
-  textSpan.classList.add('item-text');
-  textSpan.innerHTML = convertEmoji(labelText);
-  button.appendChild(textSpan);
+  // Solo se parsea HTML si el texto lleva marcadores ((emoji.x) o [etiqueta])
+  if (needsMarkup(labelText)) textSpan.innerHTML = convertEmoji(labelText);
+  else textSpan.textContent = labelText;
 
   button.setAttribute('data-link1', item.link || "");
   button.setAttribute('data-link2', item.link2 || "");
   if (item.buttonText) button.setAttribute('data-button-text1', item.buttonText);
   if (item.buttonText2) button.setAttribute('data-button-text2', item.buttonText2);
 
-  liItem.appendChild(button);
   return liItem;
 }
 
-function createCategoryTabAndContent(cat, index, sidebarUl, mainContent) {
+// ---------- Render por lotes ----------
+// Los primeros elementos se pintan al instante y el resto en los siguientes fotogramas,
+// así una lista enorme (o una búsqueda muy amplia) no bloquea la interfaz.
+const FIRST_BATCH = 60;
+const NEXT_BATCH = 150;
+
+function renderItemsInto(ul, items, makeLi) {
+  const token = (ul._renderToken = {}); // un render nuevo invalida el anterior
+  let i = 0;
+  const step = (size) => {
+    if (ul._renderToken !== token) return;
+    const fragment = document.createDocumentFragment();
+    const end = Math.min(i + size, items.length);
+    for (; i < end; i++) fragment.appendChild(makeLi(items[i]));
+    const imgs = fragment.querySelectorAll('img[data-src]');
+    ul.appendChild(fragment);
+    observeLazyImages(imgs, ul);
+    if (i < items.length) requestAnimationFrame(() => step(NEXT_BATCH));
+  };
+  step(FIRST_BATCH);
+}
+
+function clearList(ul) {
+  ul._renderToken = null;
+  releaseLazyImages(ul);
+  ul.textContent = '';
+}
+
+// Categorías cuyos elementos aún no se han creado (se crean al abrir la pestaña)
+const pendingCategories = new Map();
+
+function ensureCategoryRendered(categoryId) {
+  const p = pendingCategories.get(categoryId);
+  if (!p) return;
+  pendingCategories.delete(categoryId);
+  renderItemsInto(p.ul, p.cat.items, item => createItemElement(item, p.cat.name, item.displayName));
+}
+
+function createCategoryTabAndContent(cat, index, tabsParent, sectionsParent) {
   const li = document.createElement('li');
   const btn = document.createElement('button');
   btn.type = 'button';
@@ -129,7 +178,7 @@ function createCategoryTabAndContent(cat, index, sidebarUl, mainContent) {
   btn.setAttribute('data-tab', categoryId);
   if (index === 0) btn.classList.add('active');
   li.appendChild(btn);
-  sidebarUl.appendChild(li);
+  tabsParent.appendChild(li);
 
   const section = document.createElement('section');
   section.id = categoryId;
@@ -147,23 +196,22 @@ function createCategoryTabAndContent(cat, index, sidebarUl, mainContent) {
   listContainer.classList.add('list-container');
 
   const ul = document.createElement('ul');
-  const fragment = document.createDocumentFragment();
-  cat.items.forEach(item => {
-    fragment.appendChild(createItemElement(item, cat.name, item.displayName));
-  });
-  ul.appendChild(fragment);
   if (isGridEnabled()) ul.classList.add('grid');
 
   listContainer.appendChild(ul);
   projectListDiv.appendChild(listContainer);
   section.appendChild(projectListDiv);
-  (document.getElementById('tabs-container') || mainContent).appendChild(section);
+  sectionsParent.appendChild(section);
+
+  pendingCategories.set(categoryId, { cat, ul }); // los elementos se crean al abrir la pestaña
 }
 
 function showTab(tabId, searchInput, primaryBtn, secondaryBtn) {
-  document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-  document.querySelectorAll('.project-item.selected').forEach(item => item.classList.remove('selected'));
+  ensureCategoryRendered(tabId);
+
+  document.querySelectorAll('.tab-button.active, .tab-content.active, .project-item.selected').forEach(el => {
+    el.classList.remove('active', 'selected');
+  });
 
   setDownloadState(primaryBtn, secondaryBtn, null);
 
@@ -186,28 +234,25 @@ function showTab(tabId, searchInput, primaryBtn, secondaryBtn) {
 }
 
 function displaySearchResults(items, busquedaListElement) {
-  const fragment = document.createDocumentFragment();
-  busquedaListElement.innerHTML = '';
+  clearList(busquedaListElement);
+  busquedaListElement.classList.toggle('grid', isGridEnabled());
 
   if (items.length === 0) {
     const noResultsLi = document.createElement('li');
     noResultsLi.classList.add('no-results');
     noResultsLi.textContent = t('noResults');
-    fragment.appendChild(noResultsLi);
-  } else {
-    items.forEach(item => {
-      let label = item.displayName;
-      if (item.itemExtra) label += ` ${item.itemExtra}`;
-      if (item.categoryExtra && !label.toLowerCase().includes(item.categoryExtra.toLowerCase())) {
-        label += ` ${item.categoryExtra}`;
-      }
-      fragment.appendChild(createItemElement(item, item.category, label));
-    });
+    busquedaListElement.appendChild(noResultsLi);
+    return;
   }
 
-  busquedaListElement.appendChild(fragment);
-  busquedaListElement.classList.toggle('grid', isGridEnabled());
-  initLazyLoading();
+  renderItemsInto(busquedaListElement, items, item => {
+    let label = item.displayName;
+    if (item.itemExtra) label += ` ${item.itemExtra}`;
+    if (item.categoryExtra && !label.toLowerCase().includes(item.categoryExtra.toLowerCase())) {
+      label += ` ${item.categoryExtra}`;
+    }
+    return createItemElement(item, item.category, label);
+  });
 }
 
 function setupConfigPanel() {
@@ -343,6 +388,12 @@ function applySiteConfig() {
   const footerEl = document.getElementById('footer-text');
   if (footerEl) footerEl.textContent = SITE_CONFIG.footer || '';
 
+  const kofi = document.getElementById('kofi-btn');
+  if (kofi) {
+    if (SITE_CONFIG.donate && SITE_CONFIG.donate.url) kofi.href = SITE_CONFIG.donate.url;
+    else kofi.remove();
+  }
+
   const actions = document.querySelector('[data-slot="header-actions"]');
   (SITE_CONFIG.headerLinks || []).forEach(l => {
     const a = document.createElement('a');
@@ -364,11 +415,21 @@ function applySiteConfig() {
 // ---------- Idioma: reconstruir categorías y textos fijos ----------
 function renderCategories(categoriesData) {
   const sidebarUl = document.getElementById('sidebar-categories');
-  const mainContent = document.getElementById('main-content');
-  sidebarUl.innerHTML = '';
-  document.querySelectorAll('#tabs-container > section.tab-content:not(#busqueda)').forEach(sec => sec.remove());
-  categoriesData.forEach((cat, index) => createCategoryTabAndContent(cat, index, sidebarUl, mainContent));
-  initLazyLoading();
+  const tabsContainer = document.getElementById('tabs-container') || document.getElementById('main-content');
+
+  document.querySelectorAll('#tabs-container > section.tab-content:not(#busqueda)').forEach(sec => {
+    const ul = sec.querySelector('ul');
+    if (ul) clearList(ul);
+    sec.remove();
+  });
+  pendingCategories.clear();
+  sidebarUl.textContent = '';
+
+  const tabsFragment = document.createDocumentFragment();
+  const sectionsFragment = document.createDocumentFragment();
+  categoriesData.forEach((cat, index) => createCategoryTabAndContent(cat, index, tabsFragment, sectionsFragment));
+  sidebarUl.appendChild(tabsFragment);
+  tabsContainer.appendChild(sectionsFragment);
 }
 
 function applyStaticTexts() {
@@ -385,6 +446,12 @@ function applyStaticTexts() {
   set('#config-btn', { title: t('config'), 'aria-label': t('config') });
   set('#config-title', {}, t('config'));
   set('#config-close-btn', { title: t('close'), 'aria-label': t('close') });
+  const kofiLabel = document.getElementById('kofi-label');
+  if (kofiLabel && SITE_CONFIG.donate) {
+    const txt = tr(SITE_CONFIG.donate.label);
+    kofiLabel.textContent = txt;
+    kofiLabel.parentElement.title = txt;
+  }
   updateLanguageMenu();
   const bt = document.getElementById('busqueda-title');
   const bs = document.getElementById('busqueda');
