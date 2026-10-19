@@ -18,7 +18,7 @@
   --transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease),
                 box-shadow 0.25s var(--ease), transform 0.25s var(--ease), opacity 0.25s var(--ease);
   --header-height: 52px;
-  --footer-height: 42px;
+  --footer-height: 52px;
   --layout-gap: 12px;
   --sidebar-width: 260px;
   --sidebar-right-width: 240px;
@@ -108,25 +108,69 @@ footer { gap: 14px; }
 footer p { margin: 0; font-size: 12px; color: var(--text-muted); }
 footer p:empty { display: none; }
 
-/* ===== Botón de donaciones (Ko-fi) ===== */
+/* ===== Botón de donaciones (Ko-fi) — estilo importado de la otra web ===== */
+:root { --kofi: #ff5e5b; --kofi-dark: #e0403d; }
+
 .kofi-btn {
-  display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 16px 0 12px;
-  border-radius: 999px; text-decoration: none; color: #fff;
-  font-size: 13px; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap;
-  background: linear-gradient(135deg, #ff5e5b 0%, #ff7e67 100%);
-  box-shadow: 0 2px 10px rgba(255, 94, 91, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 22px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  background: linear-gradient(135deg, #ff7875, var(--kofi));
+  border-radius: 50px;
+  /* Borde inferior sólido (efecto botón físico) + sombra suave, sin resplandor de color */
+  box-shadow: 0 3px 0 var(--kofi-dark), 0 6px 12px rgba(0, 0, 0, 0.35);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
+.kofi-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* Destello diagonal que cruza el botón de vez en cuando (queda dentro del botón) */
+.kofi-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  animation: kofiShine 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
 .kofi-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(255, 94, 91, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 var(--kofi-dark), 0 10px 16px rgba(0, 0, 0, 0.35);
+  filter: brightness(1.06);
 }
-.kofi-btn:active { transform: translateY(0); }
-.kofi-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-.kofi-cup { flex-shrink: 0; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)); }
-.kofi-heart { transform-box: fill-box; transform-origin: center; }
-.kofi-btn:hover .kofi-heart { animation: kofi-beat 0.9s ease-in-out infinite; }
-@keyframes kofi-beat { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.35); } }
+.kofi-btn:hover svg { animation: kofiWiggle 0.6s ease; }
+
+.kofi-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--kofi-dark), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.kofi-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+@keyframes kofiShine {
+  0%, 55% { transform: translateX(0) skewX(-20deg); }
+  100% { transform: translateX(410%) skewX(-20deg); }
+}
+@keyframes kofiWiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-14deg); }
+  75% { transform: rotate(14deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kofi-btn::before, .kofi-btn:hover svg { animation: none; }
+}
 
 .container {
   flex: 1 1 auto; display: flex; min-height: 0; min-width: 0;
