@@ -45,6 +45,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Nidhogg 2 "https://steamunlocked.org/nidhogg-2-free-download/"
   -Pureya "https://steamunlocked.org/pureya-free-download/"
   -Quake III Arena "https://steamunlocked.org/quake-iii-arena-free-download/" "https://ioquake3.org/" *Juego Base* *Ioquake3*
+  -Quiver Launcher [Decomp][Recomp] "https://github.com/tgeorgiadis/quiver-launcher/releases"
   -Raft "https://steamunlocked.org/raft-free-download/"
   -Rayman Legends "https://angel06a.github.io/angel06web/games/pc/rayman-legends/"
   -Serious Sam HD "https://steamunlocked.org/serious-sam-hd-the-second-encounter-free-download/"
@@ -87,6 +88,7 @@ Programas PC (emoji.windows)=⚙️ (emoji.windows)=:
   -Quick CPU [Optimizador] "https://coderbag.com/product/quickcpu"
   -Ratiborus KMS Tools [Activador] "https://descargaspcpro.net/ratiborus-kms-tools-coleccion-de-activadores-para-todos-los-windows-y-office/"
   -RetroBat [Frontend][Emular] =🕹️= "https://www.retrobat.org/descargar/"
+  -Sandboxie Plus "https://sandboxie-plus.com/downloads/"
   -TeraBox [Almacenamiento en la Nube] "https://www.terabox.com/"
   -UniGetUI [Actualizador] "https://devolutions.net/unigetui/"
   -Upscayl [Escalar imagen] "https://upscayl.org/download"
@@ -128,7 +130,9 @@ Juegos Android (emoji.android)=🎮 (emoji.android)=:
   -NARUTO: Ultimate Ninja STORM "https://apkvision.org/games/action/naruto-ultimate-ninja-storm-124113/"
   -Nidhogg "https://apkvision.org/games/action/nidhogg-134743/"
   -Paladog "https://www.mediafire.com/file/1xbi8es1hh3sscx/Paladog_2.2.0.apk/file"
+  -Pascal's Wager "https://liteapks.com/pascals-wager.html"
   -Pureya "https://www.mediafire.com/file/6n6i3m4cso48zfd/Pureya_1.0.15.apk/file"
+  -Quiver Launcher [Decomp][Recomp] "https://github.com/tgeorgiadis/quiver-launcher/releases"
   -Run & Gun: Banditos "https://www.mediafire.com/file/cu23w1yl9t4qp64/Run_%2526_Gun_BANDITOS_1.3.2.apk/file"
   -SHADOWGUN "https://apkvision.org/games/action/shadowgun-8342/"
   -Slayin "https://www.mediafire.com/file/aya455c8ig96hjw/Slayin_2.0.13.apk/file"
@@ -169,6 +173,7 @@ Páginas Web (emoji.web)=(emoji.web)=:
   -GamesGX [Ps2 Roms][Emular] =🕹️= "https://www.gamesgx.net/"
   -Icon Converter =⚙️= "https://redketchup.io/icon-converter" *Utilizar*
   -Jetpack Joyride =🎮= "https://emupedia.net/emupedia-game-jetpack-joyride/" *Jugar*
+  -LocalSend Web "https://web.localsend.org/" *Utilizar*
   -MarkEditor [Por Angel06] =⚙️= "https://angel06a.github.io/angel06web/hub/markeditor/" *Utilizar*
   -NoPayStation [Ps3 Roms][Emular] =🕹️= "https://nopaystation.com/browse"
   -OpenLara [Tomb Raider] =🎮= "https://emupedia.net/emupedia-game-tomb-raider/" *Jugar*
@@ -231,6 +236,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Nidhogg 2 "https://steamunlocked.org/nidhogg-2-free-download/"
   -Pureya "https://steamunlocked.org/pureya-free-download/"
   -Quake III Arena "https://steamunlocked.org/quake-iii-arena-free-download/" "https://ioquake3.org/" *Base Game* *Ioquake3*
+  -Quiver Launcher [Decomp][Recomp] "https://github.com/tgeorgiadis/quiver-launcher/releases"
   -Raft "https://steamunlocked.org/raft-free-download/"
   -Rayman Legends "https://angel06a.github.io/angel06web/games/pc/rayman-legends/"
   -Serious Sam HD "https://steamunlocked.org/serious-sam-hd-the-second-encounter-free-download/"
@@ -273,6 +279,7 @@ PC Programs (emoji.windows)=⚙️ (emoji.windows)=:
   -Quick CPU [Optimizer] "https://coderbag.com/product/quickcpu"
   -Ratiborus KMS Tools [Activator] "https://descargaspcpro.net/ratiborus-kms-tools-coleccion-de-activadores-para-todos-los-windows-y-office/"
   -RetroBat [Frontend][Emulate] =🕹️= "https://www.retrobat.org/descargar/"
+  -Sandboxie Plus "https://sandboxie-plus.com/downloads/"
   -TeraBox [Cloud Storage] "https://www.terabox.com/"
   -UniGetUI [Updater] "https://devolutions.net/unigetui/"
   -Upscayl [Image Upscaler] "https://upscayl.org/download"
@@ -314,7 +321,9 @@ Android Games (emoji.android)=🎮 (emoji.android)=:
   -NARUTO: Ultimate Ninja STORM "https://apkvision.org/games/action/naruto-ultimate-ninja-storm-124113/"
   -Nidhogg "https://apkvision.org/games/action/nidhogg-134743/"
   -Paladog "https://www.mediafire.com/file/1xbi8es1hh3sscx/Paladog_2.2.0.apk/file"
+  -Pascal's Wager "https://liteapks.com/pascals-wager.html"
   -Pureya "https://www.mediafire.com/file/6n6i3m4cso48zfd/Pureya_1.0.15.apk/file"
+  -Quiver Launcher [Decomp][Recomp] "https://github.com/tgeorgiadis/quiver-launcher/releases"
   -Run & Gun: Banditos "https://www.mediafire.com/file/cu23w1yl9t4qp64/Run_%2526_Gun_BANDITOS_1.3.2.apk/file"
   -SHADOWGUN "https://apkvision.org/games/action/shadowgun-8342/"
   -Slayin "https://www.mediafire.com/file/aya455c8ig96hjw/Slayin_2.0.13.apk/file"
@@ -354,6 +363,7 @@ Websites (emoji.web)=(emoji.web)=:
   -GamesGX [PS2 ROMs][Emulate] =🕹️= "https://www.gamesgx.net/"
   -Icon Converter =⚙️= "https://redketchup.io/icon-converter" *Use*
   -Jetpack Joyride =🎮= "https://emupedia.net/emupedia-game-jetpack-joyride/" *Play*
+  -LocalSend Web "https://web.localsend.org/" *Use*
   -MarkEditor [By Angel06] =⚙️= "https://angel06a.github.io/angel06web/hub/markeditor/" *Use*
   -Minesweeper [By Angel06] =🎮= "https://angel06a.github.io/angel06web/hub/minesweeper/" *Play*
   -NoPayStation [PS3 ROMs][Emulate] =🕹️= "https://nopaystation.com/browse"
