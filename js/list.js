@@ -5,6 +5,7 @@ const listData = {
 Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Alien Shooter "https://gogunlocked.com/alien-shooter-expansions-free-download/"
   -Alien Shooter 2: Reloaded "https://gogunlocked.com/alien-shooter-2-reloaded-free-download/"
+  -Blue Estate The Game "https://steamunlocked.org/blue-estate-the-game-free-download/"
   -Call of Duty Mobile PC [Versión china] "https://codm.qq.com/main.shtml"
   -Call of Duty: Black Ops 1 "https://pivigames.blog/call-of-duty-black-ops-zombies-y-multiplayer-online/"
   -Call of Duty: Black Ops 2 "https://pivigames.blog/call-of-duty-black-ops-2-zombies-multiplayer-con-bots/"
@@ -37,6 +38,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Killer Instinct "https://pivigames.blog/killer-instinct/"
   -Left 4 Dead 2 "https://pivigames.blog/left-4-dead2-online-steam-ultima-version/"
   -Little Nightmares "https://steamunlocked.org/little-nightmares-free-download/"
+  -Los Caballeros del Zodiaco: Alma de Soldados "https://steamunlocked.org/saint-seiya-soldiers-soul-free-download/"
   -Mario Kart 64 Port "https://github.com/sonicdcer/MarioKart64Recomp/releases" "https://vimm.net/vault/2649" *Descargar* *Rom*
   -Minecraft Bedrock "https://www.xbox.com/es-ES/games/store/minecraft-for-windows/9NBLGGH2JHXJ" "https://online-fix.me/games/sandbox/16708-minecraft-for-windows-po-seti.html" *Descargar* *OnlineFix*
   -Mortal Kombat Komplete Edition "https://steamunlocked.org/mortal-kombat-komplete-edition-free-download/"
@@ -56,6 +58,7 @@ Juegos PC (emoji.windows)=🎮 (emoji.windows)=:
   -Street Fighter X Tekken "https://angel06a.github.io/angel06web/games/pc/street-fighter-x-tekken/"
   -Super Mario 64 Port "https://sm64coopdx.com/" "https://vimm.net/vault/2764" *Descargar* *Rom*
   -Super Smash Flash 2 "https://www.supersmashflash.com/play/ssf2/downloads/"
+  -The Forest "https://steamunlocked.org/the-forest-free-download/"
   -The Legend of Zelda Port "https://www.shipofharkinian.com/" "https://vimm.net/vault/2637" *Descargar* *Rom*
   -The Unfinished Swan "https://steamunlocked.org/the-unfinished-swan-free-download/"
   -Ultimate Marvel vs Capcom 3 "https://rentry.co/3b2zfkhf"
@@ -196,6 +199,7 @@ Páginas Web (emoji.web)=(emoji.web)=:
 PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Alien Shooter "https://gogunlocked.com/alien-shooter-expansions-free-download/"
   -Alien Shooter 2: Reloaded "https://gogunlocked.com/alien-shooter-2-reloaded-free-download/"
+  -Blue Estate The Game "https://steamunlocked.org/blue-estate-the-game-free-download/"
   -Call of Duty Mobile PC [Chinese version] "https://codm.qq.com/main.shtml"
   -Call of Duty: Black Ops 1 "https://pivigames.blog/call-of-duty-black-ops-zombies-y-multiplayer-online/"
   -Call of Duty: Black Ops 2 "https://pivigames.blog/call-of-duty-black-ops-2-zombies-multiplayer-con-bots/"
@@ -239,6 +243,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Quiver Launcher [Decomp][Recomp] "https://github.com/tgeorgiadis/quiver-launcher/releases"
   -Raft "https://steamunlocked.org/raft-free-download/"
   -Rayman Legends "https://angel06a.github.io/angel06web/games/pc/rayman-legends/"
+  -Saint Seiya: Soldiers’ Soul "https://steamunlocked.org/saint-seiya-soldiers-soul-free-download/"
   -Serious Sam HD "https://steamunlocked.org/serious-sam-hd-the-second-encounter-free-download/"
   -Slayin DX "https://steamunlocked.org/slayin-dx-free-download/"
   -Slime Rancher "https://rentry.co/dzwd6zp4"
@@ -247,6 +252,7 @@ PC Games (emoji.windows)=🎮 (emoji.windows)=:
   -Street Fighter X Tekken "https://angel06a.github.io/angel06web/games/pc/street-fighter-x-tekken/"
   -Super Mario 64 Port "https://sm64coopdx.com/" "https://vimm.net/vault/2764" *Download* *ROM*
   -Super Smash Flash 2 "https://www.supersmashflash.com/play/ssf2/downloads/"
+  -The Forest "https://steamunlocked.org/the-forest-free-download/"
   -The Legend of Zelda Port "https://www.shipofharkinian.com/" "https://vimm.net/vault/2637" *Download* *ROM*
   -The Unfinished Swan "https://steamunlocked.org/the-unfinished-swan-free-download/"
   -Ultimate Marvel vs Capcom 3 "https://rentry.co/3b2zfkhf"
