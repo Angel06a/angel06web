@@ -69,7 +69,7 @@ Programas PC (emoji.windows)=⚙️ (emoji.windows)=:
   -BleachBit [Limpieza] "https://www.bleachbit.org/"
   -Bulk Crap Uninstaller [Limpieza] "https://www.bcuninstaller.com/"
   -CCleaner [Optimizador][Limpieza] "https://taiwebs.org/herramientas/ccleaner/"
-  -CHDman [Compresor] "https://www.mediafire.com/file/gpehgmsgtnk3yz3/CHDman-0.276.zip/file"
+  -CHD Manager [Compresor] "https://angel06a.github.io/chd-manager/"
   -CompactGUI [Optimizador][Compresor] "https://compactgui.org/"
   -DirectX Runtime [Instalador] "https://www.techpowerup.com/download/directx-redistributable-runtime/"
   -DXVK [DirectX a Vulkan] "https://github.com/Digger1955/dxvk-gplall/releases" "https://github.com/doitsujin/dxvk/releases" *LowLatency* *Original*
@@ -263,7 +263,7 @@ PC Programs (emoji.windows)=⚙️ (emoji.windows)=:
   -BleachBit [Cleaning] "https://www.bleachbit.org/"
   -Bulk Crap Uninstaller [Cleaning] "https://www.bcuninstaller.com/"
   -CCleaner [Optimizer][Cleaning] "https://taiwebs.org/herramientas/ccleaner/"
-  -CHDman [Compressor] "https://www.mediafire.com/file/gpehgmsgtnk3yz3/CHDman-0.276.zip/file"
+  -CHD Manager [Compressor] "https://angel06a.github.io/chd-manager/"
   -CompactGUI [Optimizer][Compressor] "https://compactgui.org/"
   -DirectX Runtime [Installer] "https://www.techpowerup.com/download/directx-redistributable-runtime/"
   -DXVK [DirectX to Vulkan] "https://github.com/Digger1955/dxvk-gplall/releases" "https://github.com/doitsujin/dxvk/releases" *LowLatency* *Original*
